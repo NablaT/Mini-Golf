@@ -36,3 +36,13 @@ http.listen(3000, function () {
     console.log('Example app listening');
 
 });*/
+
+var sphero = require("sphero");
+var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
+
+orb.connect(function() {
+    // Sphero is connected, tell it to do stuff!
+    orb.color("blue");
+
+    orb.roll(100, 0);
+});
