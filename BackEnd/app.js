@@ -5,7 +5,7 @@ var http = require('./core/core.js').getHttp();
 var app = require('./core/core.js').app;
 require('./sockets/sphero.js');
 
-var ecranRouter = require('./restAPI/ecran.js');
+var ecranRouter = require('./webAPI/ecran.js');
 
 /**
  * Utilisation du logger en mode développement.
