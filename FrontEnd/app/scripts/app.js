@@ -25,9 +25,14 @@ angular
         controllerAs: 'main'
       })
       .when('/jeu', {
-        templateUrl: '../views/jeu.html',
-        controller: 'AboutCtrl',
+        templateUrl: 'views/jeu.html',
+        controller: 'JeuCtrl',
         controllerAs: 'about'
+      })
+      .when('/scores',{
+        templateUrl: 'views/scores.html',
+        controller: 'ScoresCtrl',
+        controllerAs: 'scores'
       })
       .otherwise({
         redirectTo: '/'
