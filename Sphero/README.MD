@@ -1,0 +1,1 @@
+Faire npm start pour lancer le serveur, et npm test pour lancer les tests
