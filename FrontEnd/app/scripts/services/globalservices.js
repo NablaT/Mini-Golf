@@ -49,7 +49,7 @@ angular.module('frontEndApp')
       getScore: function () {
         return $http({
           method : 'GET',
-          url : constants.backendUrl + 'scores/',
+          url : constants.backendUrl + 'ecran/scores/',
           headers: {'Content-Type': 'application/json'}
         }).then(
           function (response) { // success de node js
@@ -65,8 +65,8 @@ angular.module('frontEndApp')
       postMap: function(data){
         return $http({
           method : 'POST',
-          url: constants.backendUrl + 'map/',
-          data: data,
+          url: constants.backendUrl + 'ecran/map',
+          data: {numeromap:data},
           headers: {'Content-Type': 'application/json'}
         }).then(
           function (response) { // success de node js
