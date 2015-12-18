@@ -46,25 +46,18 @@ angular.module('frontEndApp')
        * </ul>
        */
       getScore: function () {
-        var deferred = $q.defer();
-        $http({
+        return $http({
           method : 'GET',
           url : constants.backendUrl + 'scores/',
           headers: {'Content-Type': 'application/json'}
         }).then(
-          function (data) { // success de node js
-            if (data.status === 200 ) { // success de la bdd
-              deferred.resolve(data.data);
-            }
-            else { // erreur de la bdd
-              deferred.reject('Erreur BDD : ' + data.status);
-            }
+          function (response) { // success de node js
+            return response.data;
           },
-          function () { // erreur de node js.
-            deferred.reject('Erreur de connexion !');
+          function (response) { // erreur de node js.
+            return response.status;
           }
         );
-        return deferred.promise;
       },
 
       /**
@@ -87,28 +80,20 @@ angular.module('frontEndApp')
        * @param {Object} data - Un tableau contenant la liste des magasins choisis (leur id).
        * @returns {Function|promise} Retourne une promesse de réponse.
        */
-      // TODO : vérifier que la liste envoyée est bien une liste ne contenant que des integer pour les ids.
       postScore : function (data) {
-        var deferred = $q.defer();
-        $http({
+        return $http({
           method: 'POST',
           url: constants.backendUrl + 'scores/',
           data: data,
           headers: {'Content-Type': 'application/json'}
         }).then(
-          function (data) { // success de node js
-            if (data.status === 200 ) { // success de la bdd
-              deferred.resolve(data.data);
-            }
-            else { // erreur de la bdd
-              deferred.reject('Erreur BDD : ' + data.status);
-            }
+          function (response) { // success de node js
+            return response.data;
           },
-          function () { // erreur de node js.
-            deferred.reject('Erreur de connexion !');
+          function (response) { // erreur de node js.
+            return response.status;
           }
         );
-        return deferred.promise;
       }
     };
   }]);

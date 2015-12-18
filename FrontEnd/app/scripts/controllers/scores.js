@@ -8,19 +8,16 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ScoresCtrl', ['$scope','$http', function ($scope, $http) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('ScoresCtrl', ['$scope','serviceCtrl', function ($scope, service) {
 
-    $http.get('/scores')
-      .success(function(data) {
-        $scope.informations = data;
-        console.log(data);
-      })
-      .error(function(error) {
-        console.log(error);
-      });
+    $scope.getbackScore=function(){
+      service.postScore($scope.data).then(
+        function(data){
+          console.log(data);
+        },
+      function (msg){
+        console.log(msg);
+      }
+      )
+    }
   }]);
