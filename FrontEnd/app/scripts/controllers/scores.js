@@ -8,16 +8,28 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ScoresCtrl', ['$scope','serviceCtrl', function ($scope, service) {
+  .controller('ScoresCtrl', ['$scope','services', function ($scope, services) {
 
-    $scope.getbackScore=function(){
-      service.postScore($scope.data).then(
-        function(data){
+    $scope.getbackScore=function() {
+      services.getScore().then(
+        function (data) {
           console.log(data);
         },
-      function (msg){
-        console.log(msg);
-      }
-      )
+        function (msg) {
+          console.log(msg);
+        }
+      );
+    },
+
+      $scope.sendMap=function(map){
+        console.log(map);
+        services.postMap(map).then(
+          function(data){
+            console.log(data);
+          },
+          function (msg){
+            console.log(msg);
+          }
+        )
     }
   }]);

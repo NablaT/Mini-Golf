@@ -25,12 +25,12 @@ angular
         controllerAs: 'main'
       })
       .when('/jeu', {
-        templateUrl: '../views/jeu.html',
+        templateUrl: 'views/jeu.html',
         controller: 'JeuCtrl',
         controllerAs: 'about'
       })
       .when('/scores',{
-        templateUrl: '../views/scores.html',
+        templateUrl: 'views/scores.html',
         controller: 'ScoresCtrl',
         controllerAs: 'scores'
       })

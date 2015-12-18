@@ -6,6 +6,14 @@
 </head>
 <body>
 <p> This is the scores frame with</p>
-<button> A BUTTON !</button>
+
+<select name="mapSelect" id="mapSelect" ng-model="selectValue" >
+  <option value="1">Map 1</option> <!-- not selected / blank option -->
+  <option value="2">Map 2</option> <!-- interpolation -->
+  <option value="3">Map 3</option>
+</select><br>
+<button ng-click="sendMap(selectValue)"> Validate </button>
+
+
 </body>
 </html>

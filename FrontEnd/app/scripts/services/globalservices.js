@@ -9,7 +9,7 @@
  */
 
 angular.module('frontEndApp')
-  .factory("serviceCtrl", ['$q', '$http', 'constants', function ($q, $http, constants) {
+  .factory("services", [ '$http', 'constants', function ( $http, constants) {
 
     return {
 
@@ -45,6 +45,7 @@ angular.module('frontEndApp')
        *     <li>soit un message d'erreurs</li>
        * </ul>
        */
+
       getScore: function () {
         return $http({
           method : 'GET',
@@ -59,6 +60,24 @@ angular.module('frontEndApp')
           }
         );
       },
+
+
+      postMap: function(data){
+        return $http({
+          method : 'POST',
+          url: constants.backendUrl + 'map/',
+          data: data,
+          headers: {'Content-Type': 'application/json'}
+        }).then(
+          function (response) { // success de node js
+            return response.data;
+          },
+          function (response) { // erreur de node js.
+            return response.status;
+          }
+        );
+      },
+
 
       /**
        * Cette fonction permet de poster un nouveau score du joueur courant en l'enregistrant en base de données.
@@ -80,20 +99,8 @@ angular.module('frontEndApp')
        * @param {Object} data - Un tableau contenant la liste des magasins choisis (leur id).
        * @returns {Function|promise} Retourne une promesse de réponse.
        */
-      postScore : function (data) {
-        return $http({
-          method: 'POST',
-          url: constants.backendUrl + 'scores/',
-          data: data,
-          headers: {'Content-Type': 'application/json'}
-        }).then(
-          function (response) { // success de node js
-            return response.data;
-          },
-          function (response) { // erreur de node js.
-            return response.status;
-          }
-        );
-      }
+
+
+
     };
   }]);

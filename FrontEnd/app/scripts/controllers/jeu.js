@@ -8,16 +8,6 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('JeuCtrl', ['$scope','global', function ($scope, $http) {
+  .controller('JeuCtrl', ['$scope','services', function ($scope, services) {
 
-    $scope.sendScore=function(){
-      service.getScore($scope).then(
-        function(data){
-          console.log(data);
-        },
-        function (msg){
-          console.log(msg);
-        }
-      )
-    }
   }]);
