@@ -1,8 +1,9 @@
-var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-var app = express();
+var http = require('./core/core.js').getHttp();
+var app = require('./core/core.js').app;
+require('./sockets/sphero.js');
 
 /**
  * Utilisation du logger en mode développement.
@@ -26,11 +27,8 @@ app.use(function(req, res, next) {
  * Permet de créer un serveur qui écoute sur le port 3000.
  * @type {http.Server}
  */
-var server = app.listen(3000, function () {
+http.listen(3000, function () {
 
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Example app listening at http://%s:%s', host, port);
+    console.log('Example app listening');
 
 });
