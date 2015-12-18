@@ -34,4 +34,4 @@ var getHttp = function() {
     return http;
 };
 
-module.exports = {getIO : getIO, getHttp : getHttp, app: app};
+module.exports = {getIO : getIO, getHttp : getHttp, app: app, express : express};
