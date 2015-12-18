@@ -1,15 +1,17 @@
-/*var logger = require('morgan');
+var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-var http = require('./core/core.js').getHttp();
-var app = require('./core/core.js').app;
-require('./sockets/sphero.js');
+var express = require('express');
+var app = express();
+var http = http = require('http').Server(app);
+var io = require('socket.io-client');
 
-var ecranRouter = require('./restAPI/ecran.js');
+var sphero = require("sphero");
+var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
 
 /**
  * Utilisation du logger en mode développement.
- * /
+ */
 app.use(logger('dev'));
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -17,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // for parsing application/
 
 /**
  * Permet de définir les autorisations pour les requêtes HTTP.
- * /
+ */
 app.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*"); // Définit qui a le droit d'appeler le serveur.
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -25,19 +27,26 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/ecran', ecranRouter);
+var socket = io.connect('http://localhost:3000/sphero');
+socket.on('hello', function (params) {
+    orb.connect(function() {
+        // Sphero is connected, tell it to do stuff!
+        orb.color("blue");
 
+        orb.roll(100, 0);
+    });
+});
 /**
  * Permet de créer un serveur qui écoute sur le port 3000.
  * @type {http.Server}
- * /
-http.listen(3000, function () {
+ */
+http.listen(3001, function () {
 
     console.log('Example app listening');
 
-});*/
+});
 
-var sphero = require("sphero");
+/*var sphero = require("sphero");
 var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
 
 orb.connect(function() {
@@ -45,4 +54,4 @@ orb.connect(function() {
     orb.color("blue");
 
     orb.roll(100, 0);
-});
+});*/
