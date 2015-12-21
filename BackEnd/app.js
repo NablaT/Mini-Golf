@@ -7,6 +7,8 @@ var app = require('./core/core.js').app;
 var ecranRouter = require('./webAPI/ecran.js');
 var smartphoneRouter = require('./webAPI/smartphone.js');
 
+require('./sockets/sphero.js');
+
 /**
  * Utilisation du logger en mode développement.
  */

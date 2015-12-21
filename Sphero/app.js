@@ -1,13 +1,10 @@
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
-var express = require('express');
-var app = express();
-var http = http = require('http').Server(app);
-var io = require('socket.io-client');
+var http = require('./core/core.js').getHttp();
+var app = require('./core/core.js').app;
 
-var sphero = require("sphero");
-var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
+require('./sockets/sphero.js');
 
 /**
  * Utilisation du logger en mode développement.
@@ -27,15 +24,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-var socket = io.connect('http://localhost:3000/sphero');
-socket.on('hello', function (params) {
-    orb.connect(function() {
-        // Sphero is connected, tell it to do stuff!
-        orb.color("blue");
-
-        orb.roll(100, 0);
-    });
-});
 /**
  * Permet de créer un serveur qui écoute sur le port 3000.
  * @type {http.Server}
@@ -45,13 +33,3 @@ http.listen(3001, function () {
     console.log('Example app listening');
 
 });
-
-/*var sphero = require("sphero");
-var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
-
-orb.connect(function() {
-    // Sphero is connected, tell it to do stuff!
-    orb.color("blue");
-
-    orb.roll(100, 0);
-});*/
