@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<link rel="stylesheet" href="styles/scores.css">
 <p> This is the scores frame with</p>
 
 <select name="mapSelect" id="mapSelect" ng-model="selectValue" >
@@ -13,7 +7,9 @@
   <option value="3">Map 3</option>
 </select><br>
 <button ng-click="sendMap(selectValue)"> Validate </button>
+<br/>
+<br/>
 
 
-</body>
-</html>
+<button ng-click="getbackScore()"> Get score ! </button>
+
