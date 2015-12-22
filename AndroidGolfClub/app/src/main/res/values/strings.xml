@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mini golf</string>
+
+    <string name="dummy_button">Shoot try</string>
+    <string name="dummy_content_before">Maintenez votre doigt enfoncé en tirant</string>
+    <string name="dummy_content_shoot">Tirez puis relachez</string>
+    <string name="dummy_content_after">Tir effectué !</string>
+    <string name="dummy_content_fail">Mauvais tir !</string>
+
+
+</resources>
