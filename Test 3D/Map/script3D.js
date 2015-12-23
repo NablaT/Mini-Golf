@@ -14,8 +14,10 @@ window.addEventListener("resize", function () {
     engine.resize();
 });
 
-
-
+/**
+ * Function createAndGetScene. This function create the complete game view (the scene).
+ * @returns {BABYLON.Scene}
+ */
 function createAndGetScene() {
     var scene = new BABYLON.Scene(engine);
 
@@ -26,21 +28,27 @@ function createAndGetScene() {
 
     camera.attachControl(canvas, true);
 
-    getLights(scene);
+    // Les lumieres
+    initialisationLights(scene);
 
+    //La source d'eau
     var fountain = initialisationFountain(scene);
 
+    //On initialise le plateau
     initialisationGround(scene);
 
+    //On crée les particules et leurs comportements.
     var particleSystem = initialisationParticles(scene, fountain);
 
-    // Start the particle system
+    //On lance le systeme de particule
     particleSystem.start();
 
+    //On initialise l'animation
     var animation = initialisationAnimation();
 
     fountain.animations.push(animation);
 
+    //on lance l'animation
     scene.beginAnimation(fountain, 0, 100, true);
     return scene;
 }
@@ -48,13 +56,13 @@ function createAndGetScene() {
 
 
 /**
- * Function getLights. Cette fonction initialise les boules de lumières qui éclairent le terrain.
+ * Function getLights. This function initializes three lights in the scene (in the game)
  * @param scene
  */
 
-function getLights(scene){
+function initialisationLights(scene){
     // Les lumieres sur le terrain sont definies par 2 spheres, elles font office de projecteur
-    // light1
+    // Lumiere 1
     var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(20, 40, 50),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
     light.intensity = 0.8;
@@ -64,7 +72,7 @@ function getLights(scene){
     lightSphere1.material = new BABYLON.StandardMaterial("light", scene);
     lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
-    // light2
+    // Lumiere 2
     var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(50, 40, 20),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
     light2.intensity = 0.8;
@@ -74,7 +82,7 @@ function getLights(scene){
     lightSphere2.material = new BABYLON.StandardMaterial("light", scene);
     lightSphere2.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
-    // light3
+    // Lumiere 3
     var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(70, 40, 70),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
     light3.intensity = 1.4;
@@ -86,6 +94,10 @@ function getLights(scene){
 
 }
 
+/**
+ * Function initialisationGround. This function initializes the ground (game floor).
+ * @param scene
+ */
 function initialisationGround(scene){
     // On crée le sol en definissant ses caracteristiques
     var ground = BABYLON.Mesh.CreatePlane("ground", 50.0, scene);
@@ -98,6 +110,11 @@ function initialisationGround(scene){
     //BABYLON.Color3(0.3, 0.3, 1);
 }
 
+/**
+ * Function initialisationFountain. This function initializes the fountain. The fountain is the source of water.
+ * @param scene
+ * @returns {*}
+ */
 function initialisationFountain(scene){
     // On crée ensuite l'objet fountain. Cet objet est une sphere et va servir de "source visuelle"
     // a la fontaine.
@@ -106,6 +123,13 @@ function initialisationFountain(scene){
     fountain.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
     return fountain;
 }
+
+/**
+ * Function initliasationParticles. This function initializes particles behavior.
+ * @param scene
+ * @param fountain
+ * @returns {BABYLON.ParticleSystem}
+ */
 
 function initialisationParticles(scene, fountain){
     // On cree une particule. Cette particule correspond a une goute d'eau de la fontaine.
@@ -124,13 +148,6 @@ function initialisationParticles(scene, fountain){
     particleSystem.color2 = new BABYLON.Color4(0, 0.4, 1, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.7, 0.0);
 
-    /*
-     particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
-     particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
-     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
-
-
-     */
     // On definit la taille d'une particule. On donne deux valeurs qui sont la taille minimum
     // et la taille minimum de nos particules. Ensuite un random est fait entre ces deux valeurs
     // lors de la creation du particule
@@ -146,21 +163,20 @@ function initialisationParticles(scene, fountain){
     particleSystem.emitRate = 1500;
 
     // On initialise ensuite le blend mode du system de particule à BLENDMODE_ONEONE (ou BLENDMODE_STANDARD)
-    // Ensuite on de
     particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-    // Set the gravity of all particles
+    // On définit la gravité des particules
     particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
-    // Direction of each particle after it has been emitted
+    // On définit la direction de propagation des particules
     particleSystem.direction1 = new BABYLON.Vector3(-4, 8, 3);
     particleSystem.direction2 = new BABYLON.Vector3(4, 8, -3);
 
-    // Angular speed, in radians
+    // On définit l'angle des particules (aleatoirement entre le max et le min)
     particleSystem.minAngularSpeed = 0;
     particleSystem.maxAngularSpeed = Math.PI;
 
-    // Speed
+    // On définit la vitesse de propagation (min et max) et la vitesse de mise a jour
     particleSystem.minEmitPower = 1;
     particleSystem.maxEmitPower = 3;
     particleSystem.updateSpeed = 0.005;
@@ -168,10 +184,15 @@ function initialisationParticles(scene, fountain){
     return particleSystem;
 }
 
+/**
+ * Function initialisationAnimation. This function initializes all fountain's animation.
+ * @returns {*}
+ */
+
 function initialisationAnimation(){
-    // Fountain's animation
     var keys = [];
 
+    //On initialise la variable animation
     var animation = new BABYLON.Animation("animation", "rotation.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
         BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
     // At the animation key 0, the value of scaling is "1"
