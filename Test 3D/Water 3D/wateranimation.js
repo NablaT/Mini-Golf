@@ -5,8 +5,8 @@ if (BABYLON.Engine.isSupported()) {
     var scene = new BABYLON.Scene(engine);
     //Initialisation camera
     //var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-    var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10,new BABYLON.Vector3(0, 0, 0), scene);
-
+    //var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10,new BABYLON.Vector3(0, 0, 0), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 20, new BABYLON.Vector3(0, 0, 0), scene);
 
     var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
@@ -44,6 +44,7 @@ if (BABYLON.Engine.isSupported()) {
 
 
         WaterMaterial.prototype = Object.create(BABYLON.Material.prototype);
+
         WaterMaterial.bumpTexture = new BABYLON.Texture("water.png", scene);
         // Properties
         WaterMaterial.prototype.needAlphaBlending = function () {
@@ -75,7 +76,7 @@ if (BABYLON.Engine.isSupported()) {
     })();
     var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
 
-    var beforeRenderFunction = function () {
+   /* var beforeRenderFunction = function () {
         // Camera
         if (camera.beta < 0.1)
             camera.beta = 0.1;
@@ -87,11 +88,11 @@ if (BABYLON.Engine.isSupported()) {
 
         if (camera.radius < 5)
             camera.radius = 5;
-    };
+    };*/
 
     camera.attachControl(canvas);
 
-    scene.registerBeforeRender(beforeRenderFunction);
+   // scene.registerBeforeRender(beforeRenderFunction);
 
     engine.runRenderLoop(function () {
         scene.render();
