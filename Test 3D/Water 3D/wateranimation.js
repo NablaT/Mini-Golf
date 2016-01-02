@@ -29,10 +29,10 @@ if (BABYLON.Engine.isSupported()) {
     groundMaterial.diffuseTexture.uScale = 6;
     groundMaterial.diffuseTexture.vScale = 6;
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    ground.position.y = -2.0;
+    ground.position.y = 6.5;
     ground.material = groundMaterial;
 
-    (function() {
+    /*(function() {
         WaterMaterial = function (name, scene, light) {
             this.name = name;
             this.id = name;
@@ -74,21 +74,34 @@ if (BABYLON.Engine.isSupported()) {
         WaterMaterial.colorBlendFactor = 2.0; // Factor to determine how the water color is blended with the reflected and refracted world
         WaterMaterial.waveLength = 0.1; // The lenght of waves. With smaller values, more waves are generated
     })();
-    var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
+    */
+    //var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
+    var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 2048, 2048, 16, scene, false);
+    var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
+    water.backFaceCulling = true;
+    water.bumpTexture = new BABYLON.Texture("water.png", scene);
+    water.windForce = -10;
+    water.waveHeight = 1.7;
+    water.bumpHeight = 0.1;
+    water.windDirection = new BABYLON.Vector2(1, 1);
+    water.waterColor = new BABYLON.Color3(0, 0, 221 / 255);
+    water.colorBlendFactor = 0.0;
+    water.addToRenderList(skybox);
+    waterMesh.material = water;
 
-   /* var beforeRenderFunction = function () {
-        // Camera
-        if (camera.beta < 0.1)
-            camera.beta = 0.1;
-        else if (camera.beta > (Math.PI / 2) * 0.9)
-            camera.beta = (Math.PI / 2) * 0.9;
+    /* var beforeRenderFunction = function () {
+         // Camera
+         if (camera.beta < 0.1)
+             camera.beta = 0.1;
+         else if (camera.beta > (Math.PI / 2) * 0.9)
+             camera.beta = (Math.PI / 2) * 0.9;
 
-        if (camera.radius > 50)
-            camera.radius = 50;
+         if (camera.radius > 50)
+             camera.radius = 50;
 
-        if (camera.radius < 5)
-            camera.radius = 5;
-    };*/
+         if (camera.radius < 5)
+             camera.radius = 5;
+     };*/
 
     camera.attachControl(canvas);
 
