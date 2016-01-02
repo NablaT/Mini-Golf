@@ -12,6 +12,36 @@ if (BABYLON.Engine.isSupported()) {
 
     camera.setPosition(new BABYLON.Vector3(-40, 40, 0));
 
+    var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(20, 40, 50),
+        new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+    light.intensity = 0.8;
+
+    var lightSphere1 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
+    lightSphere1.position = light.position;
+    lightSphere1.material = new BABYLON.StandardMaterial("light", scene);
+    lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+
+    // Lumiere 2
+    var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(50, 40, 20),
+        new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+    light2.intensity = 0.8;
+
+    var lightSphere2 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
+    lightSphere2.position = light2.position;
+    lightSphere2.material = new BABYLON.StandardMaterial("light", scene);
+    lightSphere2.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+
+    // Lumiere 3
+    var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(70, 40, 70),
+        new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+    light3.intensity = 1.4;
+
+    var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
+    lightSphere3.position = light3.position;
+    lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
+    lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+
+    
     // Skybox
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -81,7 +111,7 @@ if (BABYLON.Engine.isSupported()) {
     water.backFaceCulling = true;
     water.bumpTexture = new BABYLON.Texture("water.png", scene);
     water.windForce = -10;
-    water.waveHeight = 1.7;
+    water.waveHeight = 1.3;
     water.bumpHeight = 0.1;
     water.windDirection = new BABYLON.Vector2(1, 1);
     water.waterColor = new BABYLON.Color3(0, 0, 221 / 255);
