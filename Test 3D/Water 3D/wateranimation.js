@@ -12,9 +12,10 @@ if (BABYLON.Engine.isSupported()) {
 
     camera.setPosition(new BABYLON.Vector3(-40, 40, 0));
 
-    var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(20, 40, 50),
+    //Lumiere 1
+    var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, 250),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light.intensity = 0.8;
+    light.intensity = 108;
 
     var lightSphere1 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     lightSphere1.position = light.position;
@@ -22,9 +23,9 @@ if (BABYLON.Engine.isSupported()) {
     lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
     // Lumiere 2
-    var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(50, 40, 20),
+    var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(-80, 250, -80),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light2.intensity = 10.8;
+    light2.intensity = 100;
 
     var lightSphere2 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     lightSphere2.position = light2.position;
@@ -32,9 +33,9 @@ if (BABYLON.Engine.isSupported()) {
     lightSphere2.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
     // Lumiere 3
-    var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(70, 40, 70),
+    var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(350, 250, 350),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light3.intensity = 2.4;
+    light3.intensity = 100.4;
 
     var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     lightSphere3.position = light3.position;
@@ -44,7 +45,7 @@ if (BABYLON.Engine.isSupported()) {
     // Lumiere 4
     var light4 = new BABYLON.SpotLight("spot04", new BABYLON.Vector3(50, 50, 70),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light4.intensity = 1.8;
+    light4.intensity = 100;
 
     var light4 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     light4.position = light2.position;
@@ -68,9 +69,97 @@ if (BABYLON.Engine.isSupported()) {
     groundMaterial.diffuseTexture.uScale = 6;
     groundMaterial.diffuseTexture.vScale = 6;
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    ground.position.y = 6.5;
+    ground.position.y = 7;
     ground.material = groundMaterial;
 
+    var fountain = BABYLON.Mesh.CreateSphere("foutain", 1.0,1.0, scene);
+    fountain.position = new BABYLON.Vector3(0, -10, 0);
+    fountain.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+
+    // On cree une particule. Cette particule correspond a une goute d'eau de la fontaine.
+    var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+
+    //On definit la texture de la particule
+    particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
+
+    // On definit la source de la particule. L'emeteur est ici notre fontaine.
+    particleSystem.emitter = fountain; // the starting object, the emitter
+    particleSystem.minEmitBox = new BABYLON.Vector3(0.1, 0, 0); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(0.1, 0, -1); // To...
+
+    // On definit les couleurs de particules. On definit un spectre de 3 couleurs.
+    particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(0, 0.4, 1, 1.0);
+    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.7, 0.0);
+
+    // On definit la taille d'une particule. On donne deux valeurs qui sont la taille minimum
+    // et la taille minimum de nos particules. Ensuite un random est fait entre ces deux valeurs
+    // lors de la creation du particule
+    particleSystem.minSize = 0.1; //0.1;
+    particleSystem.maxSize = 0.5; //0.5;
+
+    // On définit la durée de vie d'une particule. Comme pour sa taille, on donne deux valeurs min/max
+    //et on randomise ensuite la durée de vie d'une particule emise
+    particleSystem.minLifeTime = 0.3;
+    particleSystem.maxLifeTime = 1.5;
+
+    // On definit le taux d'émission des particules
+    particleSystem.emitRate = 1500;
+
+    // On initialise ensuite le blend mode du system de particule à BLENDMODE_ONEONE (ou BLENDMODE_STANDARD)
+    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+    // On définit la gravité des particules
+    particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
+
+    // On définit la direction de propagation des particules
+    particleSystem.direction1 = new BABYLON.Vector3(-4, 8, 3);
+    particleSystem.direction2 = new BABYLON.Vector3(4, 8, -3);
+
+    // On définit l'angle des particules (aleatoirement entre le max et le min)
+    particleSystem.minAngularSpeed = 0;
+    particleSystem.maxAngularSpeed = Math.PI;
+
+    // On définit la vitesse de propagation (min et max) et la vitesse de mise a jour
+    particleSystem.minEmitPower = 1;
+    particleSystem.maxEmitPower = 3;
+    particleSystem.updateSpeed = 0.005;
+
+
+    particleSystem.start();
+
+
+    var keys = [];
+
+    //On initialise la variable animation
+    var animation = new BABYLON.Animation("animation", "rotation.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+        BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    // At the animation key 0, the value of scaling is "1"
+    keys.push({
+        frame: 0,
+        value: 0
+    });
+
+    // At the animation key 50, the value of scaling is "0.2"
+    keys.push({
+        frame: 50,
+        value: (Math.PI)/2
+    });
+
+    // At the animation key 100, the value of scaling is "1"
+    /*keys.push({
+     frame: 100,
+     value: 0
+     });*/
+
+    // Launch animation
+    animation.setKeys(keys);
+
+
+    fountain.animations.push(animation);
+
+    //on lance l'animation
+    scene.beginAnimation(fountain, 0, 100, true);
     /*(function() {
         WaterMaterial = function (name, scene, light) {
             this.name = name;
@@ -120,7 +209,7 @@ if (BABYLON.Engine.isSupported()) {
     water.backFaceCulling = true;
     water.bumpTexture = new BABYLON.Texture("13_DIFFUSE.png", scene);
     water.windForce = -10;
-    water.waveHeight = 1.3;
+    water.waveHeight = 0.5;
     water.bumpHeight = 0.1;
     water.windDirection = new BABYLON.Vector2(1, 1);
     water.waterColor = new BABYLON.Color3(0, 0, 221 / 255);
