@@ -73,8 +73,8 @@ if (BABYLON.Engine.isSupported()) {
     ground.material = groundMaterial;
 
     var fountain = BABYLON.Mesh.CreateSphere("foutain", 1,1, scene); // 15,15,
-    fountain.position = new BABYLON.Vector3(140, 20, -150);
-    fountain.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+    fountain.position = new BABYLON.Vector3(170, 17, -150);
+    fountain.rotation = new BABYLON.Vector3(Math.PI/2 , Math.PI, 2*(Math.PI));
 
     // On cree une particule. Cette particule correspond a une goute d'eau de la fontaine.
     var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
@@ -84,8 +84,8 @@ if (BABYLON.Engine.isSupported()) {
 
     // On definit la source de la particule. L'emeteur est ici notre fontaine.
     particleSystem.emitter = fountain; // the starting object, the emitter
-    particleSystem.minEmitBox = new BABYLON.Vector3(10, 0, 0); // Starting all from
-    particleSystem.maxEmitBox = new BABYLON.Vector3(-10, 0, -1); // To...
+    particleSystem.minEmitBox = new BABYLON.Vector3(20, 0, 0); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(-20, 0, -1); // To...
 
     // On definit les couleurs de particules. On definit un spectre de 3 couleurs.
     /*particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
@@ -211,7 +211,7 @@ if (BABYLON.Engine.isSupported()) {
     var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1000, 1000, 16, scene, false);  //2048, 2048, 16, scene, false);
     var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
     water.backFaceCulling = true;
-    water.bumpTexture = new BABYLON.Texture("13_DIFFUSE.png", scene);
+    water.bumpTexture = new BABYLON.Texture("13_DIFFUSE.png", scene); //13_DIFFUSE
     water.windForce = -10;
     water.waveHeight = 0.5;
     water.bumpHeight = 0.1;
