@@ -24,7 +24,7 @@ if (BABYLON.Engine.isSupported()) {
     // Lumiere 2
     var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(50, 40, 20),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light2.intensity = 0.8;
+    light2.intensity = 10.8;
 
     var lightSphere2 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     lightSphere2.position = light2.position;
@@ -34,14 +34,23 @@ if (BABYLON.Engine.isSupported()) {
     // Lumiere 3
     var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(70, 40, 70),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light3.intensity = 1.4;
+    light3.intensity = 2.4;
 
     var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
     lightSphere3.position = light3.position;
     lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
     lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
-    
+    // Lumiere 4
+    var light4 = new BABYLON.SpotLight("spot04", new BABYLON.Vector3(50, 50, 70),
+        new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+    light4.intensity = 1.8;
+
+    var light4 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
+    light4.position = light2.position;
+    light4.material = new BABYLON.StandardMaterial("light", scene);
+    light4.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+
     // Skybox
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -53,7 +62,7 @@ if (BABYLON.Engine.isSupported()) {
     skybox.material = skyboxMaterial;
 
 
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMap2.png", 100, 100, 100, 0, 10, scene, false);
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMap2.png", 500, 500, 100, 0, 10, scene, false);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
     groundMaterial.diffuseTexture = new BABYLON.Texture("grass.png", scene);
     groundMaterial.diffuseTexture.uScale = 6;
@@ -106,10 +115,10 @@ if (BABYLON.Engine.isSupported()) {
     })();
     */
     //var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
-    var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 2048, 2048, 16, scene, false);
+    var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1000, 1000, 16, scene, false);  //2048, 2048, 16, scene, false);
     var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
     water.backFaceCulling = true;
-    water.bumpTexture = new BABYLON.Texture("water.png", scene);
+    water.bumpTexture = new BABYLON.Texture("13_DIFFUSE.png", scene);
     water.windForce = -10;
     water.waveHeight = 1.3;
     water.bumpHeight = 0.1;
@@ -118,6 +127,7 @@ if (BABYLON.Engine.isSupported()) {
     water.colorBlendFactor = 0.0;
     water.addToRenderList(skybox);
     waterMesh.material = water;
+
 
     /* var beforeRenderFunction = function () {
          // Camera
