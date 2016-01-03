@@ -72,8 +72,8 @@ if (BABYLON.Engine.isSupported()) {
     ground.position.y = 7;
     ground.material = groundMaterial;
 
-    var fountain = BABYLON.Mesh.CreateSphere("foutain", 1.0,1.0, scene);
-    fountain.position = new BABYLON.Vector3(0, -10, 0);
+    var fountain = BABYLON.Mesh.CreateSphere("foutain", 1,1, scene); // 15,15,
+    fountain.position = new BABYLON.Vector3(140, 20, -150);
     fountain.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
 
     // On cree une particule. Cette particule correspond a une goute d'eau de la fontaine.
@@ -84,19 +84,23 @@ if (BABYLON.Engine.isSupported()) {
 
     // On definit la source de la particule. L'emeteur est ici notre fontaine.
     particleSystem.emitter = fountain; // the starting object, the emitter
-    particleSystem.minEmitBox = new BABYLON.Vector3(0.1, 0, 0); // Starting all from
-    particleSystem.maxEmitBox = new BABYLON.Vector3(0.1, 0, -1); // To...
+    particleSystem.minEmitBox = new BABYLON.Vector3(10, 0, 0); // Starting all from
+    particleSystem.maxEmitBox = new BABYLON.Vector3(-10, 0, -1); // To...
 
     // On definit les couleurs de particules. On definit un spectre de 3 couleurs.
-    particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
+    /*particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
     particleSystem.color2 = new BABYLON.Color4(0, 0.4, 1, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.7, 0.0);
+    */
+    particleSystem.color1 = new BABYLON.Color4(0.7, 0, 0, 1.0);
+    particleSystem.color2 = new BABYLON.Color4(1, 0, 0, 1.0);
+    particleSystem.colorDead = new BABYLON.Color4(0.9, 0.3, 0.2, 0.0);
 
     // On definit la taille d'une particule. On donne deux valeurs qui sont la taille minimum
     // et la taille minimum de nos particules. Ensuite un random est fait entre ces deux valeurs
     // lors de la creation du particule
-    particleSystem.minSize = 0.1; //0.1;
-    particleSystem.maxSize = 0.5; //0.5;
+    particleSystem.minSize = 1; //0.1;
+    particleSystem.maxSize = 1.5; //0.5;
 
     // On définit la durée de vie d'une particule. Comme pour sa taille, on donne deux valeurs min/max
     //et on randomise ensuite la durée de vie d'une particule emise
@@ -104,7 +108,7 @@ if (BABYLON.Engine.isSupported()) {
     particleSystem.maxLifeTime = 1.5;
 
     // On definit le taux d'émission des particules
-    particleSystem.emitRate = 1500;
+    particleSystem.emitRate = 150000;
 
     // On initialise ensuite le blend mode du system de particule à BLENDMODE_ONEONE (ou BLENDMODE_STANDARD)
     particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
