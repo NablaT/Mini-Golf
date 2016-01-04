@@ -127,9 +127,9 @@ function initialisationSkyBox(scene){
  * @param scene
  */
 function  initialisationGround(scene){
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMap2.png", 500, 500, 100, 0, 10, scene, false);
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 500, 500, 100, 0, 10, scene, false);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
-    groundMaterial.diffuseTexture = new BABYLON.Texture("grass.png", scene);
+    groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
     groundMaterial.diffuseTexture.uScale = 6;
     groundMaterial.diffuseTexture.vScale = 6;
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -256,7 +256,7 @@ function initialisationWater(scene){
     var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1000, 1000, 16, scene, false);  //2048, 2048, 16, scene, false);
     var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
     water.backFaceCulling = true;
-    water.bumpTexture = new BABYLON.Texture("13_DIFFUSE.png", scene); //13_DIFFUSE
+    water.bumpTexture = new BABYLON.Texture("textures/13_DIFFUSE.png", scene); //13_DIFFUSE
     water.windForce = -10;
     water.waveHeight = 0.5;
     water.bumpHeight = 0.1;
