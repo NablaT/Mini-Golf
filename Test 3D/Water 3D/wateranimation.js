@@ -1,4 +1,12 @@
 if (BABYLON.Engine.isSupported()) {
+    createScene();
+}
+
+/**
+ * Function createScene. This function create the complete game view (the scene).
+ * @returns {BABYLON.Scene}
+ */
+function createScene(){
     //Initialisation canvas
     var canvas = document.getElementById("renderCanvas");
     var engine = new BABYLON.Engine(canvas, true);
@@ -12,6 +20,49 @@ if (BABYLON.Engine.isSupported()) {
 
     camera.setPosition(new BABYLON.Vector3(-40, 40, 0));
 
+    //Lights initialization
+    initialisationLights(scene);
+
+    //Create the skybox
+    skybox = initialisationSkyBox(scene);
+
+    initialisationGround(scene);
+
+
+    //La source d'eau
+    var fountain = initialisationFountain(scene);
+
+    //On crée les particules et leurs comportements.
+    var particleSystem = initialisationParticles(scene, fountain);
+
+    particleSystem.start();
+
+    //On initialise l'animation
+    var animation = initialisationAnimation();
+
+    fountain.animations.push(animation);
+
+    //on lance l'animation
+    scene.beginAnimation(fountain, 0, 100, true);
+
+    initialisationWater(scene);
+
+    camera.attachControl(canvas);
+
+    // scene.registerBeforeRender(beforeRenderFunction);
+
+    engine.runRenderLoop(function () {
+        scene.render();
+    });
+}
+
+
+/**
+ * Function getLights. This function initializes three lights in the scene (in the game)
+ * @param scene
+ */
+
+function initialisationLights(scene){
     //Lumiere 1
     var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, 250),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
@@ -52,6 +103,13 @@ if (BABYLON.Engine.isSupported()) {
     light4.material = new BABYLON.StandardMaterial("light", scene);
     light4.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
+}
+
+/**
+ * Function initialisationSkyBox. This function initializes the skybox (game box).
+ * @param scene
+ */
+function initialisationSkyBox(scene){
     // Skybox
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -61,8 +119,14 @@ if (BABYLON.Engine.isSupported()) {
     skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     skybox.material = skyboxMaterial;
+    return skybox;
+}
 
-
+/**
+ * Function initialisationGround. This function initializes the ground (game floor).
+ * @param scene
+ */
+function  initialisationGround(scene){
     var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMap2.png", 500, 500, 100, 0, 10, scene, false);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
     groundMaterial.diffuseTexture = new BABYLON.Texture("grass.png", scene);
@@ -71,10 +135,31 @@ if (BABYLON.Engine.isSupported()) {
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     ground.position.y = 7;
     ground.material = groundMaterial;
+}
 
+
+/**
+ * Function initialisationFountain. This function initializes the fountain. The fountain is the source of water.
+ * @param scene
+ * @returns {*}
+ */
+function initialisationFountain(scene){
+    // On crée ensuite l'objet fountain. Cet objet est une sphere et va servir de "source visuelle"
+    // a la fontaine.
     var fountain = BABYLON.Mesh.CreateSphere("foutain", 1,1, scene); // 15,15,
     fountain.position = new BABYLON.Vector3(170, 17, -150);
     fountain.rotation = new BABYLON.Vector3(Math.PI/2 , Math.PI, 2*(Math.PI));
+    return fountain;
+}
+
+/**
+ * Function initliasationParticles. This function initializes particles behavior.
+ * @param scene
+ * @param fountain
+ * @returns {BABYLON.ParticleSystem}
+ */
+
+function initialisationParticles(scene, fountain){
 
     // On cree une particule. Cette particule correspond a une goute d'eau de la fontaine.
     var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
@@ -89,9 +174,9 @@ if (BABYLON.Engine.isSupported()) {
 
     // On definit les couleurs de particules. On definit un spectre de 3 couleurs.
     /*particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
-    particleSystem.color2 = new BABYLON.Color4(0, 0.4, 1, 1.0);
-    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.7, 0.0);
-    */
+     particleSystem.color2 = new BABYLON.Color4(0, 0.4, 1, 1.0);
+     particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.7, 0.0);
+     */
     particleSystem.color1 = new BABYLON.Color4(0.7, 0, 0, 1.0);
     particleSystem.color2 = new BABYLON.Color4(1, 0, 0, 1.0);
     particleSystem.colorDead = new BABYLON.Color4(0.9, 0.3, 0.2, 0.0);
@@ -130,9 +215,15 @@ if (BABYLON.Engine.isSupported()) {
     particleSystem.updateSpeed = 0.005;
 
 
-    particleSystem.start();
+    return particleSystem;
+}
 
+/**
+ * Function initialisationAnimation. This function initializes all fountain's animation.
+ * @returns {*}
+ */
 
+function initialisationAnimation(){
     var keys = [];
 
     //On initialise la variable animation
@@ -150,63 +241,17 @@ if (BABYLON.Engine.isSupported()) {
         value: (Math.PI)/2
     });
 
-    // At the animation key 100, the value of scaling is "1"
-    /*keys.push({
-     frame: 100,
-     value: 0
-     });*/
-
     // Launch animation
     animation.setKeys(keys);
 
+    return animation;
+}
 
-    fountain.animations.push(animation);
-
-    //on lance l'animation
-    scene.beginAnimation(fountain, 0, 100, true);
-    /*(function() {
-        WaterMaterial = function (name, scene, light) {
-            this.name = name;
-            this.id = name;
-            this.light = light;
-
-            this._scene = scene;
-            scene.materials.push(this);
-        };
-
-
-        WaterMaterial.prototype = Object.create(BABYLON.Material.prototype);
-
-        WaterMaterial.bumpTexture = new BABYLON.Texture("water.png", scene);
-        // Properties
-        WaterMaterial.prototype.needAlphaBlending = function () {
-            return false;
-        };
-
-        WaterMaterial.prototype.needAlphaTesting = function () {
-            return false;
-        };
-
-        // Methods
-        WaterMaterial.prototype.isReady = function (mesh) {
-            return true;
-        };
-
-        WaterMaterial.prototype.bind = function (world, mesh) {
-        };
-
-        WaterMaterial.prototype.dispose = function () {
-            this.baseDispose();
-        };
-        WaterMaterial.windForce = 45; // Represents the wind force applied on the water surface
-        WaterMaterial.waveHeight = 1.3; // Represents the height of the waves
-        WaterMaterial.bumpHeight = 0.3; // According to the bump map, represents the pertubation of reflection and refraction
-        WaterMaterial.windDirection = new BABYLON.Vector2(1.0, 1.0); // The wind direction on the water surface (on width and height)
-        WaterMaterial.waterColor = new BABYLON.Color3(0.1, 0.1, 0.6); // Represents the water color mixed with the reflected and refracted world
-        WaterMaterial.colorBlendFactor = 2.0; // Factor to determine how the water color is blended with the reflected and refracted world
-        WaterMaterial.waveLength = 0.1; // The lenght of waves. With smaller values, more waves are generated
-    })();
-    */
+/**
+ * Function initialisationWater. This function initializes the water.
+ * @param scene
+ */
+function initialisationWater(scene){
     //var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
     var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1000, 1000, 16, scene, false);  //2048, 2048, 16, scene, false);
     var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
@@ -220,27 +265,4 @@ if (BABYLON.Engine.isSupported()) {
     water.colorBlendFactor = 0.0;
     water.addToRenderList(skybox);
     waterMesh.material = water;
-
-
-    /* var beforeRenderFunction = function () {
-         // Camera
-         if (camera.beta < 0.1)
-             camera.beta = 0.1;
-         else if (camera.beta > (Math.PI / 2) * 0.9)
-             camera.beta = (Math.PI / 2) * 0.9;
-
-         if (camera.radius > 50)
-             camera.radius = 50;
-
-         if (camera.radius < 5)
-             camera.radius = 5;
-     };*/
-
-    camera.attachControl(canvas);
-
-   // scene.registerBeforeRender(beforeRenderFunction);
-
-    engine.runRenderLoop(function () {
-        scene.render();
-    });
 }

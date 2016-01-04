@@ -56,7 +56,7 @@ function createAndGetScene() {
 
 
 /**
- * Function getLights. This function initializes three lights in the scene (in the game)
+ * Function initialisationLights. This function initializes three lights in the scene (in the game)
  * @param scene
  */
 
