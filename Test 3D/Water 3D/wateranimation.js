@@ -29,6 +29,8 @@ function createScene(){
     initialisationGround(scene);
 
 
+    createGolfHole(scene);
+
     //La source d'eau
     var fountain = initialisationFountain(scene);
 
@@ -94,6 +96,19 @@ function initialisationLights(scene){
     lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
 
+}
+
+/**
+ * Function createGolfHole. THis function initializes the golf hole.
+ * @param scene
+ * @returns {*}
+ */
+function createGolfHole(scene){
+    var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 10, 10, 6, 1, scene, false);// 15,15,
+    hole.position = new BABYLON.Vector3(-180, 6, -180);
+    hole.rotation = new BABYLON.Vector3(0 , Math.PI/2, 0);
+    hole.diffuseColor = new BABYLON.Color3(0, 1, 0);
+    return hole;
 }
 
 /**
