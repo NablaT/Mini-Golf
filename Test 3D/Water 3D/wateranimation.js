@@ -64,7 +64,7 @@ function createScene(){
 
 function initialisationLights(scene){
     //Lumiere 1
-    var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, 250),
+    var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, -32),
         new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
     light.intensity = 108;
 
@@ -93,15 +93,6 @@ function initialisationLights(scene){
     lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
     lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
-    // Lumiere 4
-    var light4 = new BABYLON.SpotLight("spot04", new BABYLON.Vector3(50, 50, 70),
-        new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-    light4.intensity = 100;
-
-    var light4 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
-    light4.position = light2.position;
-    light4.material = new BABYLON.StandardMaterial("light", scene);
-    light4.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
 }
 
