@@ -6,6 +6,7 @@ var app = require('./core/core.js').app;
 
 var ecranRouter = require('./webAPI/ecran.js');
 var smartphoneRouter = require('./webAPI/smartphone.js');
+var kinectRouter = require('./webAPI/kinect.js');
 
 require('./sockets/sphero.js');
 
@@ -29,6 +30,7 @@ app.use(function(req, res, next) {
 
 app.use('/ecran', ecranRouter);
 app.use('/smartphone', smartphoneRouter);
+app.use('/kinect', kinectRouter);
 
 /**
  * Permet de créer un serveur qui écoute sur le port 3000.
