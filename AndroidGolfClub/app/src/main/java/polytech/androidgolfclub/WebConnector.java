@@ -21,7 +21,12 @@ import java.net.URL;
  */
 public class WebConnector {
 
+<<<<<<< Updated upstream
     //private static final String server_addr = "http://192.168.1.8:3000";
+=======
+    private static final String server_addr = "http://192.168.1.3:3000";
+
+>>>>>>> Stashed changes
 
     public static void sendShoot(String movement){
 
