@@ -5,4 +5,9 @@
     <color name="colorAccent">#b53f00</color>
 
     <color name="black_overlay">#66000000</color>
+
+    <color name="x_points">#273ed4</color>
+    <color name="y_points">#3fb547</color>
+    <color name="z_points">#e21d1d</color>
+
 </resources>

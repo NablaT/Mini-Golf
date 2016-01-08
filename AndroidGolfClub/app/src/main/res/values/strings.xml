@@ -7,5 +7,11 @@
     <string name="dummy_content_after">Tir effectué !</string>
     <string name="dummy_content_fail">Mauvais tir !</string>
 
+    <string name="title_activity_display_results">Analyse du dernier tir</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_menu">Menu</string>
+    <string name="configip">Configurer l\'adresse ip du serveur</string>
+
 
 </resources>

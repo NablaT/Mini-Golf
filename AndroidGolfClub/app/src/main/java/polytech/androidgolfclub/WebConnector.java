@@ -1,6 +1,7 @@
 package polytech.androidgolfclub;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +21,11 @@ import java.net.URL;
  */
 public class WebConnector {
 
-    private static final String server_addr = "http://192.168.1.8:3000";
-
+    //private static final String server_addr = "http://192.168.1.8:3000";
 
     public static void sendShoot(String movement){
+
+        String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
         JSONObject json = new JSONObject();
 
@@ -69,11 +71,17 @@ public class WebConnector {
             connection.disconnect();
 
             if (connection.getResponseCode() == 200){
+
                 // no error in the servor
                 Log.i("GOLF", "Received by the server");
+               // Toast.makeText(, "Changement enregitrés ! ", Toast.LENGTH_SHORT).show();
+
             } else if (connection.getResponseCode() == 500) {
+
                 Log.i("GOLF", "Server internal error");
+
             } else {
+
                 Log.i("GOLF", "Not accepted by the server");
             }
 
