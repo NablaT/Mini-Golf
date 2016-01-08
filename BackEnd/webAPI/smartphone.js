@@ -6,7 +6,12 @@ var router = require('../core/core.js').express.Router();
  * Cette route permet de définir la map que l'on veut.
  */
 router.put('/club', function(req,res){
+
     console.log(req.body);
+    console.log(req.body.length);
+
+    
+
     res.send('ok');
     //sphero.emit('hello', {pouet: 'pouet'});
     /*console.log(req.body);

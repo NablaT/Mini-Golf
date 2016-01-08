@@ -12,6 +12,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
+/**
+ *
+ * This activity is used to display the datas of the last shoot
+ *
+ * Created by Romain Guillot on 18/12/15
+ *
+ */
 public class DisplayResultsActivity extends AppCompatActivity {
 
     @Override
@@ -22,53 +30,45 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
-        /* X points */
         ArrayList<DataPoint> pointsX = new ArrayList<>();
-        LinkedHashMap<Long, Float> resX =  Results.getInstance().getxValues();
-        for (Map.Entry<Long,Float> e : resX.entrySet()){
-            pointsX.add(new DataPoint(e.getKey(), e.getValue()));
+        ArrayList<DataPoint> pointsY = new ArrayList<>();
+        ArrayList<DataPoint> pointsZ = new ArrayList<>();
 
+        // get values
+        LinkedHashMap<Long, Float[]> points = Results.getInstance().getValues();
+        for (Map.Entry<Long,Float[]> e : points.entrySet()){
+            Float[] vals = e.getValue();
+            pointsX.add(new DataPoint(e.getKey(), vals[0]));
+            pointsY.add(new DataPoint(e.getKey(), vals[1]));
+            pointsZ.add(new DataPoint(e.getKey(), vals[2]));
         }
-        DataPoint[] datapointsX = new DataPoint[pointsX.size()];
-        pointsX.toArray(datapointsX);
-        LineGraphSeries<DataPoint> seriesX = new LineGraphSeries<DataPoint>(datapointsX);
 
+        DataPoint[] datapointsX = new DataPoint[points.size()];
+        DataPoint[] datapointsY = new DataPoint[points.size()];
+        DataPoint[] datapointsZ = new DataPoint[points.size()];
+        pointsX.toArray(datapointsX);
+        pointsY.toArray(datapointsY);
+        pointsZ.toArray(datapointsZ);
+
+        // create series to display
+        LineGraphSeries<DataPoint> seriesX = new LineGraphSeries<DataPoint>(datapointsX);
+        LineGraphSeries<DataPoint> seriesY = new LineGraphSeries<DataPoint>(datapointsY);
+        LineGraphSeries<DataPoint> seriesZ = new LineGraphSeries<DataPoint>(datapointsZ);
+
+        // set graphical information
         seriesX.setTitle("X");
         seriesX.setColor(getResources().getColor(R.color.x_points));
         seriesX.setThickness(5);
-        graph.addSeries(seriesX);
-
-        /* Y points */
-        ArrayList<DataPoint> pointsY = new ArrayList<>();
-        LinkedHashMap<Long, Float> resY =  Results.getInstance().getyValues();
-        for (Map.Entry<Long,Float> e : resY.entrySet()){
-            System.out.println(e.getKey() + " : " + e.getValue());
-
-            pointsY.add(new DataPoint(e.getKey(), e.getValue()));
-
-        }
-        DataPoint[] datapointsY = new DataPoint[pointsY.size()];
-        pointsY.toArray(datapointsY);
-        LineGraphSeries<DataPoint> seriesY = new LineGraphSeries<DataPoint>(datapointsY);
-
         seriesY.setTitle("Y");
         seriesY.setColor(getResources().getColor(R.color.y_points));
         seriesY.setThickness(5);
-        graph.addSeries(seriesY);
-
-        /* Z points */
-        ArrayList<DataPoint> pointsZ = new ArrayList<>();
-        LinkedHashMap<Long, Float> resZ =  Results.getInstance().getzValues();
-        for (Map.Entry<Long,Float> e : resZ.entrySet()){
-            pointsZ.add(new DataPoint(e.getKey(), e.getValue()));
-        }
-        DataPoint[] datapointsZ = new DataPoint[pointsZ.size()];
-        pointsZ.toArray(datapointsZ);
-        LineGraphSeries<DataPoint> seriesZ = new LineGraphSeries<DataPoint>(datapointsZ);
-
         seriesZ.setTitle("Z");
         seriesZ.setColor(getResources().getColor(R.color.z_points));
         seriesZ.setThickness(5);
+
+        // add series to the graph
+        graph.addSeries(seriesX);
+        graph.addSeries(seriesY);
         graph.addSeries(seriesZ);
 
         graph.getLegendRenderer().setVisible(true);

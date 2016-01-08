@@ -1,8 +1,11 @@
 package polytech.androidgolfclub;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,32 +17,42 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
- * Created by Romain Guillot on 18/12/15
+ * This class is used to send datas to the web server
  *
+ * Created by Romain Guillot on 18/12/15
  */
 public class WebConnector {
+    
 
-<<<<<<< Updated upstream
-    //private static final String server_addr = "http://192.168.1.8:3000";
-=======
-    private static final String server_addr = "http://192.168.1.3:3000";
-
->>>>>>> Stashed changes
-
-    public static void sendShoot(String movement){
+    public static boolean sendShoot(){
 
         String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
-        JSONObject json = new JSONObject();
+        // the object with the datas of the shoot to send
+        JSONArray json = new JSONArray();
 
-        try {
-            json.put("x", 11);
-            json.put("y", 0);
-            json.put("z", -8);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        LinkedHashMap<Long, Float[]> values = Results.getInstance().getValues();
+
+        for (Map.Entry<Long, Float[]> entry : values.entrySet()) {
+
+            try{
+
+                JSONObject object = new JSONObject();
+                Float[] vals = entry.getValue();
+
+                object.put("t", entry.getKey());
+                object.put("x", vals[0]);
+                object.put("y", vals[1]);
+                object.put("z", vals[2]);
+
+                json.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         URL url_to = null;
@@ -57,6 +70,8 @@ public class WebConnector {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(2000); //set timeout to 2 seconds
+
 
             OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
 
@@ -79,7 +94,7 @@ public class WebConnector {
 
                 // no error in the servor
                 Log.i("GOLF", "Received by the server");
-               // Toast.makeText(, "Changement enregitrés ! ", Toast.LENGTH_SHORT).show();
+                return true;
 
             } else if (connection.getResponseCode() == 500) {
 
@@ -90,11 +105,15 @@ public class WebConnector {
                 Log.i("GOLF", "Not accepted by the server");
             }
 
+        } catch (java.net.SocketTimeoutException e) {
+            Log.e("GOLF", e.getMessage());
         } catch (MalformedURLException e){
             Log.e("GOLF", e.getMessage());
         } catch (IOException e) {
             Log.e("GOLF", e.getMessage());
         }
+
+        return false;
 
     }
 
@@ -110,6 +129,5 @@ public class WebConnector {
         return result;
 
     }
-
 
 }

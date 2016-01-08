@@ -3,6 +3,8 @@ package polytech.androidgolfclub;
 import java.util.LinkedHashMap;
 
 /**
+ * this class is used to save the results of the shoot
+ *
  * Created by Romain Guillot on 28/12/15.
  */
 public class Results {
@@ -18,12 +20,16 @@ public class Results {
     private LinkedHashMap<Long, Float> zValues;
     private Long start, end;
 
+    private LinkedHashMap<Long, Float[]> values;
+
     private Results() {
         zValues = new LinkedHashMap<>();
         xValues = new LinkedHashMap<>();
         yValues = new LinkedHashMap<>();
         start = 0l;
         end = 0l;
+
+        values = new LinkedHashMap<>();
     }
 
     public synchronized LinkedHashMap<Long, Float> getzValues(){
@@ -60,7 +66,6 @@ public class Results {
         yValues.put(time, value);
     }
 
-
     public synchronized void clearZ(){
         zValues.clear();
     }
@@ -69,6 +74,22 @@ public class Results {
     }
     public synchronized void clearY(){
         yValues.clear();
+    }
+
+    public synchronized void addValue(Long time, Float vx, Float vy, Float vz){
+        Float[] val = new Float[3];
+        val[0] = vx;
+        val[1] = vy;
+        val[2] = vz;
+        values.put(time, val);
+    }
+
+    public synchronized LinkedHashMap<Long, Float[]> getValues(){
+        return values;
+    }
+
+    public synchronized void clearValues(){
+        values.clear();
     }
 
 }
