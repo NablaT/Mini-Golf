@@ -26,7 +26,7 @@ import java.util.Map;
  * Created by Romain Guillot on 18/12/15
  */
 public class WebConnector {
-
+    
 
     public static boolean sendShoot(){
 

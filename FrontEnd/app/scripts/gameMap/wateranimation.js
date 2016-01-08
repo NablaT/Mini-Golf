@@ -34,7 +34,7 @@ function createScene(){
     //La source d'eau
     var fountain = initialisationFountain(scene);
 
-    //On crée les particules et leurs comportements.
+    //On crÃ©e les particules et leurs comportements.
     var particleSystem = initialisationParticles(scene, fountain);
 
     particleSystem.start();
@@ -133,7 +133,7 @@ function initialisationSkyBox(scene){
  * @param scene
  */
 function  initialisationGround(scene){
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 500, 1000, 100, 0, 10, scene, false);
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 800, 1200, 100, 0, 10, scene, false);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
     groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
     groundMaterial.diffuseTexture.uScale = 6;
@@ -150,7 +150,7 @@ function  initialisationGround(scene){
  * @returns {*}
  */
 function initialisationFountain(scene){
-    // On crée ensuite l'objet fountain. Cet objet est une sphere et va servir de "source visuelle"
+    // On crÃ©e ensuite l'objet fountain. Cet objet est une sphere et va servir de "source visuelle"
     // a la fontaine.
     var fountain = BABYLON.Mesh.CreateSphere("foutain", 1,1, scene); // 15,15,
     fountain.position = new BABYLON.Vector3(170, 17, -150);
@@ -193,29 +193,29 @@ function initialisationParticles(scene, fountain){
     particleSystem.minSize = 1; //0.1;
     particleSystem.maxSize = 1.5; //0.5;
 
-    // On définit la durée de vie d'une particule. Comme pour sa taille, on donne deux valeurs min/max
-    //et on randomise ensuite la durée de vie d'une particule emise
+    // On dÃ©finit la durÃ©e de vie d'une particule. Comme pour sa taille, on donne deux valeurs min/max
+    //et on randomise ensuite la durÃ©e de vie d'une particule emise
     particleSystem.minLifeTime = 0.3;
     particleSystem.maxLifeTime = 1.5;
 
-    // On definit le taux d'émission des particules
+    // On definit le taux d'Ã©mission des particules
     particleSystem.emitRate = 150000;
 
-    // On initialise ensuite le blend mode du system de particule à BLENDMODE_ONEONE (ou BLENDMODE_STANDARD)
+    // On initialise ensuite le blend mode du system de particule Ã  BLENDMODE_ONEONE (ou BLENDMODE_STANDARD)
     particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-    // On définit la gravité des particules
+    // On dÃ©finit la gravitÃ© des particules
     particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
 
-    // On définit la direction de propagation des particules
+    // On dÃ©finit la direction de propagation des particules
     particleSystem.direction1 = new BABYLON.Vector3(-4, 8, 3);
     particleSystem.direction2 = new BABYLON.Vector3(4, 8, -3);
 
-    // On définit l'angle des particules (aleatoirement entre le max et le min)
+    // On dÃ©finit l'angle des particules (aleatoirement entre le max et le min)
     particleSystem.minAngularSpeed = 0;
     particleSystem.maxAngularSpeed = Math.PI;
 
-    // On définit la vitesse de propagation (min et max) et la vitesse de mise a jour
+    // On dÃ©finit la vitesse de propagation (min et max) et la vitesse de mise a jour
     particleSystem.minEmitPower = 1;
     particleSystem.maxEmitPower = 3;
     particleSystem.updateSpeed = 0.005;
