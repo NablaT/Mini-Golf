@@ -34,6 +34,11 @@ angular
         controller: 'ScoresCtrl',
         controllerAs: 'scores'
       })
+      .when('/configuration',{
+        templateUrl: 'views/scores.html',
+        controller: 'ScoresCtrl',
+        controllerAs: 'scores'
+      })
       .otherwise({
         redirectTo: '/'
       });

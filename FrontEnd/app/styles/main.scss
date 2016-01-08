@@ -49,11 +49,18 @@ body {
 .jumbotron {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
-
+  overflow-y: hidden;
+  transition-property: all;
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(0,1,0.5,1);
   .btn {
     font-size: 21px;
     padding: 14px 24px;
   }
+}
+
+.jumbotron.closed{
+  max-height:0;
 }
 
 /* Supporting marketing content */
@@ -68,7 +75,7 @@ body {
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
-    max-width: 730px;
+    max-width: 900px;
   }
 
   /* Remove the padding we set earlier */
