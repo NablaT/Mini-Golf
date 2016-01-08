@@ -9,6 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ *
+ * This activity is used to set the ip and the port of the server
+ *
+ * Created by Romain Guillot on 18/12/15
+ *
+ */
 public class IpSettingsActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";

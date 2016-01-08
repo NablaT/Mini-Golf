@@ -17,10 +17,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 /**
+ *
+ * This activity is used to detect the shoot and save the datas
+ *
  * Created by Romain Guillot on 18/12/15
  *
  */
@@ -81,11 +85,6 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
         resultShoot = Results.getInstance();
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-//        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
-
         senSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -101,9 +100,11 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
                         if (!hasJustShoot) {
 
-                            resultShoot.clearZ();
+                           /* resultShoot.clearZ();
                             resultShoot.clearX();
-                            resultShoot.clearY();
+                            resultShoot.clearY(); */
+
+                            resultShoot.clearValues();
 
                             shooting = true;
 
@@ -164,15 +165,6 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
                                 Log.i("GOLF", "Data size : " + resultShoot.getzValues().size());
 
-                              /* // change text for the next shoot
-                                mHideHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mtextContentView.setText(getResources().getText(R.string.dummy_content_before));
-                                        hasJustShoot = false;
-                                    }
-                                }, TIME_BEFORE_NEXT_SHOOT); */
-
                             }
 
                         }
@@ -194,10 +186,22 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
         protected Boolean doInBackground(String... urls) {
 
             // Send datas to server
-            WebConnector.sendShoot("coucou");
-            return true;
+            return WebConnector.sendShoot();
         }
 
+        @Override
+        protected void onPostExecute(Boolean sentOK) {
+
+            if (sentOK){
+
+                Toast.makeText(getApplicationContext(), "Tir envoyé au serveur", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                Toast.makeText(getApplicationContext(), "Erreur lors de l'envoi du tir au serveur", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 
 
@@ -217,11 +221,13 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (shooting){
+
             Long time = Calendar.getInstance().getTimeInMillis()-timeStartShoot;
-            resultShoot.addX(time, event.values[0]);
+          /*  resultShoot.addX(time, event.values[0]);
             resultShoot.addY(time, event.values[1]);
-            resultShoot.addZ(time, event.values[2]);
-            //Log.d("SENSOR", "x = [" + Float.toString(event.values[0]) + "], y = ["+ Float.toString(event.values[1]) + "], z = ["+ Float.toString(event.values[2]) + "]");
+            resultShoot.addZ(time, event.values[2]); */
+
+            resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
         }
     }
 
