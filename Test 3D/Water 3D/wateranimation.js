@@ -117,7 +117,7 @@ function createGolfHole(scene){
  */
 function initialisationSkyBox(scene){
     // Skybox
-    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, scene);
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1600.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/TropicalSunnyDay", scene);
@@ -133,7 +133,7 @@ function initialisationSkyBox(scene){
  * @param scene
  */
 function  initialisationGround(scene){
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 500, 500, 100, 0, 10, scene, false);
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 500, 1000, 100, 0, 10, scene, false);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
     groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
     groundMaterial.diffuseTexture.uScale = 6;
@@ -259,7 +259,7 @@ function initialisationAnimation(){
  */
 function initialisationWater(scene){
     //var water = BABYLON.Mesh.CreateGround("water", 1000, 1000, 1, scene, false);
-    var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1000, 1000, 16, scene, false);  //2048, 2048, 16, scene, false);
+    var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 1600, 1600, 16, scene, false);  //2048, 2048, 16, scene, false);
     var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
     water.backFaceCulling = true;
     water.bumpTexture = new BABYLON.Texture("textures/13_DIFFUSE.png", scene); //13_DIFFUSE
