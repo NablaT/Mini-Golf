@@ -34,10 +34,10 @@ angular
         controller: 'ScoresCtrl',
         controllerAs: 'scores'
       })
-      .when('/configuration',{
-        templateUrl: 'views/scores.html',
-        controller: 'ScoresCtrl',
-        controllerAs: 'scores'
+      .when('/gameConfiguration',{
+        templateUrl: 'views/gameConfiguration.html',
+        controller: 'ConfigurationGameCtrl',
+        controllerAs: 'gameConfiguration'
       })
       .otherwise({
         redirectTo: '/'

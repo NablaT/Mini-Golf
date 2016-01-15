@@ -7,5 +7,10 @@ sphero.on('connection', function (socket) {
     console.log('yo someone');
 });
 
+var testSphero = function(distance, angle){
+    sphero.emit('test', {"dist":distance, "angle":angle});
+};
 
-module.exports = sphero;
+module.exports = {
+    sphero:sphero, testSphero:testSphero
+};
