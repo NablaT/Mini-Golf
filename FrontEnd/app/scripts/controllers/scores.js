@@ -12,6 +12,7 @@ angular.module('frontEndApp')
 
     $scope.nbOfPlayer = player.getNbPlayer();
     $scope.players;
+    $scope.gameIsRunning=false;
 
 
     /**
@@ -71,6 +72,14 @@ angular.module('frontEndApp')
      */
       $scope.init = function () {
         $scope.playerListInitialisation();
+        if($scope.players.length==0){
+          console.log("PAF");
+          angular.element("loading").show();
+          angular.element("notloading").hide();
+        }
+        else{
+          $scope.gameIsRunning=true;
+        }
       }
 
     $scope.init();
