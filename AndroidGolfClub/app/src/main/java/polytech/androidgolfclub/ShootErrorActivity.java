@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 public class ShootErrorActivity extends AppCompatActivity {
 
-    private Button menuBtn, retryBtn;
     private TextView reasonText;
 
     @Override
@@ -17,9 +16,6 @@ public class ShootErrorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoot_error);
-
-        menuBtn = (Button) findViewById(R.id.btnGoMenu);
-        retryBtn = (Button) findViewById(R.id.btnRetry);
 
         reasonText = (TextView) findViewById(R.id.textViewReason);
 

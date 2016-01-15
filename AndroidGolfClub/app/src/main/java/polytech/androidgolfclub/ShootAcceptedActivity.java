@@ -11,7 +11,6 @@ import java.text.DecimalFormat;
 
 public class ShootAcceptedActivity extends AppCompatActivity {
 
-    private Button menuBtn, displayResultsBtn;
     private TextView forceText;
 
     public ShootAcceptedActivity(){}
@@ -21,9 +20,6 @@ public class ShootAcceptedActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoot_accepted);
-
-        menuBtn = (Button) findViewById(R.id.btnGoMenu);
-        displayResultsBtn = (Button) findViewById(R.id.btnDisplayResults);
 
         forceText = (TextView) findViewById(R.id.textViewForce);
 
@@ -42,6 +38,12 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     public void goDisplayResults(View v){
 
         Intent i = new Intent(this, DisplayResultsActivity.class);
+        startActivity(i);
+    }
+
+    public void goShoot(View v){
+
+        Intent i = new Intent(this, ShootActivity.class);
         startActivity(i);
     }
 }
