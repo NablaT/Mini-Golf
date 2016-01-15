@@ -10,14 +10,14 @@
 angular.module('frontEndApp')
   .controller('ConfigurationGameCtrl', ['$scope', 'services', 'player',  function ($scope, services, player) {
 
-    $scope.nbOfPlayer=0;
+    $scope.nbOfPlayer=1;
 
     $scope.increment = function (numberOfPlayer) {
       $scope.nbOfPlayer++;
     },
 
     $scope.decrement = function (numberOfPlayer) {
-      if($scope.nbOfPlayer>0){
+      if($scope.nbOfPlayer>1){
        $scope.nbOfPlayer--;
       }
     },

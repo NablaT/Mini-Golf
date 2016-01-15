@@ -10,7 +10,6 @@
 <br/>
 <br/>
 -->
-
 <h2> SCORES </h2>
 
 <button ng-click="getbackScore()"> Get score ! </button>
@@ -18,6 +17,9 @@
 <button ng-click="getbackPlayer()"> Get number of player ! </button>
 
 <h2> number of player: {{nbOfPlayer}}</h2>
+<br/>
+
+<br/>
 <table class="table table-hover">
   <thead>
   <tr>
@@ -28,17 +30,11 @@
   </tr>
   </thead>
   <tbody>
-  <tr>
-    <td>Doe</td>
-    <td>5</td>
-    <td>6</td>
-    <td>11</td>
-  </tr>
-  <tr>
-    <td>John</td>
-    <td>4</td>
-    <td>2</td>
-    <td>6</td>
+  <tr ng-repeat="player in players">
+    <td>{{player}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   </tbody>
 </table>
