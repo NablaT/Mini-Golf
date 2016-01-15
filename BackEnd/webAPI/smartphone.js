@@ -1,6 +1,6 @@
 var router = require('../core/core.js').express.Router();
 
-var sphero = require('../sockets/sphero.js');
+var calculation = require('../golf_calculation.js');
 
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur
@@ -10,6 +10,7 @@ router.put('/club', function(req,res){
     var CLUB_MASS = 0.460; // 460 grammes
     var MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
     var MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
+    var IS_DROITIER = true;
 
     var datas = req.body;
     var data_size = req.body.length;
@@ -20,7 +21,6 @@ router.put('/club', function(req,res){
     var x, y, z, t;
 
     for (var i=0; i<data_size; i++){
-
 
         t = datas[i].t;
         x = datas[i].x;
@@ -59,9 +59,15 @@ router.put('/club', function(req,res){
     result.strike_force = Math.abs(strike_force);
 
     res.contentType('application/json');
+
     var response = JSON.stringify(result);
 
-    res.send(response);
+    res.send(response); // send response to mobile app
+
+    if (valid){
+        // calculate with the server
+        calculation.calculate(strike_force, IS_DROITIER);
+    }
 
 });
 
