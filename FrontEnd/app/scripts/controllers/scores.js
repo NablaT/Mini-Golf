@@ -74,7 +74,6 @@ angular.module('frontEndApp')
         $scope.playerListInitialisation();
         var isrunning = services.getGameIsRunning();
         if($scope.players.length==0){
-          console.log("PAF");
           angular.element("loading").show();
           angular.element("notloading").hide();
         }
