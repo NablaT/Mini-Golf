@@ -15,32 +15,21 @@ public class Results {
         return ourInstance;
     }
 
-    private LinkedHashMap<Long, Float> xValues;
-    private LinkedHashMap<Long, Float> yValues;
-    private LinkedHashMap<Long, Float> zValues;
     private Long start, end;
 
     private LinkedHashMap<Long, Float[]> values;
 
+    private double force;
+
     private Results() {
-        zValues = new LinkedHashMap<>();
-        xValues = new LinkedHashMap<>();
-        yValues = new LinkedHashMap<>();
+
         start = 0l;
         end = 0l;
+        force = -1;
 
         values = new LinkedHashMap<>();
     }
 
-    public synchronized LinkedHashMap<Long, Float> getzValues(){
-        return (LinkedHashMap<Long, Float>) zValues.clone();
-    }
-    public synchronized LinkedHashMap<Long, Float> getxValues(){
-        return (LinkedHashMap<Long, Float>) xValues.clone();
-    }
-    public synchronized LinkedHashMap<Long, Float> getyValues(){
-        return (LinkedHashMap<Long, Float>) yValues.clone();
-    }
 
     public void setStart(Long l){
         start=l;
@@ -48,6 +37,7 @@ public class Results {
     public Long getStart(){
         return start;
     }
+    public void setForce(double f){force=f;}
 
     public void setEnd(Long l){
         end=l;
@@ -55,26 +45,8 @@ public class Results {
     public Long getEnd(){
         return end;
     }
+    public double getForce(){return force;}
 
-    public synchronized void addZ(Long time, Float value){
-        zValues.put(time, value);
-    }
-    public synchronized void addX(Long time, Float value){
-        xValues.put(time, value);
-    }
-    public synchronized void addY(Long time, Float value){
-        yValues.put(time, value);
-    }
-
-    public synchronized void clearZ(){
-        zValues.clear();
-    }
-    public synchronized void clearX(){
-        xValues.clear();
-    }
-    public synchronized void clearY(){
-        yValues.clear();
-    }
 
     public synchronized void addValue(Long time, Float vx, Float vy, Float vz){
         Float[] val = new Float[3];
