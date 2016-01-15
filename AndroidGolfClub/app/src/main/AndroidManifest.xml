@@ -60,6 +60,8 @@
         </activity>
         <activity android:name=".ShootAcceptedActivity" >
         </activity>
+        <activity android:name=".ShootErrorActivity" >
+        </activity>
     </application>
 
 </manifest>

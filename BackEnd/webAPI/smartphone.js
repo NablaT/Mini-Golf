@@ -8,6 +8,8 @@ var sphero = require('../sockets/sphero.js');
 router.put('/club', function(req,res){
 
     var CLUB_MASS = 0.460; // 460 grammes
+    var MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
+    var MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
     var datas = req.body;
     var data_size = req.body.length;
@@ -32,6 +34,26 @@ router.put('/club', function(req,res){
     var strike_force = zmin * CLUB_MASS; // force en Newton : F(Newton) = m(kg) * a(m.s-2)
 
     console.log('force de frappe ' + strike_force + 'N');
+
+    // filtrer le tir
+    if (datas[data_size-1].t < MINIMUM_SHOOT_TIME){ // shoot time too short
+
+        console.log("Shoot is too short");
+        valid = false;
+    }
+    else if (data_size < MINIMUM_NB_VALUES){ // not enough values
+
+        console.log("Your accelerometer is bad");
+        valid = false;
+    }
+    else if (strike_force==0){
+
+        console.log("The movement is not good");
+        valid = false;
+    } else {
+
+        console.log("Shoot is valid");
+    }
 
     result.valid = valid;
     result.strike_force = Math.abs(strike_force);
