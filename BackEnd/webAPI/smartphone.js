@@ -1,6 +1,6 @@
 var router = require('../core/core.js').express.Router();
 
-//var sphero = require('../sockets/sphero.js');
+var sphero = require('../sockets/sphero.js');
 
 /**
  * Cette route permet de définir la map que l'on veut.
@@ -8,7 +8,7 @@ var router = require('../core/core.js').express.Router();
 router.put('/club', function(req,res){
     console.log(req.body);
     res.send('ok');
-    //sphero.emit('hello', {pouet: 'pouet'});
+    sphero.emit('hello', {pouet: 'pouet'});
     /*console.log(req.body);
      var success = function () {
      var finalObject = 'success';
