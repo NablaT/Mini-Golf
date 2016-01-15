@@ -14,12 +14,25 @@ angular.module('frontEndApp')
 
     $scope.increment = function (numberOfPlayer) {
       $scope.nbOfPlayer++;
-    }
+    },
 
     $scope.decrement = function (numberOfPlayer) {
       if($scope.nbOfPlayer>0){
        $scope.nbOfPlayer--;
       }
+    },
+
+    $scope.sendNumberOfPlayer=function() {
+      console.log($scope.nbOfPlayer);
+      services.postNumberOfPlayer($scope.nbOfPlayer).then(
+        function (data) {
+          console.log(data);
+        },
+        function (msg) {
+          console.log(msg);
+        }
+      )
     }
+
   }]);
 
