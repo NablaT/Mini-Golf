@@ -6,16 +6,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="polytech.androidgolfclub.IpSettingsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@mipmap/golf_club">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Paramètres"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_weight="0.23"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold"
+        android:textSize="30sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Connectez-vous sur le même réseau local que le serveur et entrez son IP"
-        android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:layout_weight="0.28"
+        android:gravity="center_vertical"
+        android:textColor="#FFFFFF"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -27,12 +45,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="IP : "
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textColor="#FFFFFF"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/iptext" />
+            android:id="@+id/iptext"
+            android:minWidth="200dp"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 
@@ -46,23 +67,40 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="PORT : "
-            android:id="@+id/textView3"/>
+            android:id="@+id/textView3"
+            android:textColor="#FFFFFF"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/porttext" />
+            android:id="@+id/porttext"
+            android:minWidth="200dp"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/button4"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:onClick="okClick" />
+        android:onClick="okClick"
+        android:background="@drawable/btn_ball_texture"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:textColor="#FFFFFF"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:text="Retour au menu principal"
+        android:id="@+id/button5"
+        android:background="@drawable/btn_ball_texture"
+        android:onClick="backClick"
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:textColor="#FFFFFF"/>
 
 
 </LinearLayout>

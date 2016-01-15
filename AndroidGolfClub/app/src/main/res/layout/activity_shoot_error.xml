@@ -28,21 +28,21 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="Retenter ma chance !"
         android:id="@+id/btnRetry"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="103dp"
-        android:onClick="goRetry" />
+        android:onClick="goRetry"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Retour au menu principal"
         android:id="@+id/btnGoMenu"
+        android:onClick="goMainMenu"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="41dp"
-        android:onClick="goMainMenu" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

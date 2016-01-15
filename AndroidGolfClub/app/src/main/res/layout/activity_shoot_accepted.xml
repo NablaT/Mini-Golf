@@ -24,33 +24,37 @@
         android:id="@+id/textViewForce"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="46dp"
+        android:textSize="20sp"
+        android:textColor="#b71c1c" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Retour au menu principal"
         android:id="@+id/btnGoMenu"
+        android:onClick="goMainMenu"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="79dp"
-        android:onClick="goMainMenu" />
+        android:layout_alignEnd="@+id/btnDisplayResults"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="Afficher mon tir"
         android:id="@+id/btnDisplayResults"
         android:layout_above="@+id/btnGoMenu"
-        android:layout_centerHorizontal="true"
-        android:onClick="goDisplayResults" />
+        android:onClick="goDisplayResults"
+        android:layout_alignEnd="@+id/btnReshoot"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="Tirer à nouveau"
         android:id="@+id/btnReshoot"
         android:layout_above="@+id/btnDisplayResults"
-        android:layout_centerHorizontal="true"
-        android:onClick="goShoot" />
+        android:onClick="goShoot"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

@@ -15,7 +15,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:background="@color/colorBackground"
+        >
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -58,9 +60,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.MainActivity" />
         </activity>
-        <activity android:name=".ShootAcceptedActivity" >
+        <activity android:name=".ShootAcceptedActivity"
+            android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="polytech.androidgolfclub.MainActivity" />
         </activity>
-        <activity android:name=".ShootErrorActivity" >
+        <activity android:name=".ShootErrorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="polytech.androidgolfclub.ShootActivity" />
         </activity>
     </application>
 
