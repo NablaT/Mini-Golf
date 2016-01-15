@@ -82,7 +82,7 @@ angular.module('frontEndApp')
       return $http({
         method : 'POST',
         url: constants.backendUrl + 'ecran/nbofplayer',
-        data: {numeromap:data},
+        data: {numberofplayer:data},
         headers: {'Content-Type': 'application/json'}
       }).then(
         function (response) { // success de node js
@@ -94,11 +94,11 @@ angular.module('frontEndApp')
       );
     },
 
-      postGameIsRunning: function(data){
+      postGameIsRunning: function(){
         return $http({
           method : 'POST',
           url: constants.backendUrl + 'ecran/gameruns',
-          data: {numeromap:data},
+          data: {},
           headers: {'Content-Type': 'application/json'}
         }).then(
           function (response) { // success de node js
