@@ -117,7 +117,7 @@ function createGolfHole(scene){
  */
 function initialisationSkyBox(scene){
     // Skybox
-    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1600.0, scene);
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 1800.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
     skyboxMaterial.backFaceCulling = false;
     skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/TropicalSunnyDay", scene);

@@ -9,6 +9,7 @@ var io = require("../core/core.js").getIO();
 var socket = io.connect('http://localhost:3000/sphero');
 
 socket.on('hello', function (params) {
+    console.log('hello');
     orb.roll(100, 0);
 });
 
