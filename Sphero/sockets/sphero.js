@@ -6,68 +6,63 @@ var sphero = require("sphero");
 var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
 var io = require("../core/core.js").getIO();
 
-var keypress = require('keypress');
-
-var socket = io.connect('http://localhost:3000/sphero');
+var socket = io.connect('http://192.168.1.11:3000/sphero');
 
 socket.on('hello', function (params) {
     console.log('hello');
     orb.roll(100, 0);
 });
 
+socket.on('test', function (params) {
+   console.log(params);
+    test(params.dist, params.angle);
+});
 /**
  * Permet de se connecter à la sphero.
  */
 socket.on('Connexion', function (params) {
-    orb.connect(listen);
+    orb.connect();
 });
 
-function handle(ch, key) {
+function test (dist, angle){
+    orb.roll(dist, angle);
+}
+
+function handle(key, distance) {
 
     console.log('got "keypress"', key);
-    if (key && key.ctrl && key.name == 'c') {
-        process.stdin.pause();
+
+    if (key === "B") {
+        orb.color("blue");
     }
 
-    if (key.name === "b") {
+    if (key === "R") {
         orb.color("red");
     }
 
-    if (key.name === "s") {
-        orb.startCallibration();
+    if (key === "S") {
+        orb.startCalibration();
     }
 
-    if (key.name === "f") {
+    if (key === "F") {
         orb.finishCalibration();
     }
 
-    if (key.name === "up") {
-        orb.roll(0,60);
-    }
-
-    if (key.name === "down") {
-        orb.roll(0,180);
-    }
-
-    if (key.name === "left") {
-        orb.roll(270,60);
-    }
-
-    if (key.name === "right") {
-        orb.roll(90,60);
-    }
-
-    if (key.name === "space") {
+    if (key === "space") {
         orb.stop();
     }
 }
 
-function listen() {
-    keypress(process.stdin);
-    process.stdin.on('keypress', handle);
 
-    console.log("starting to listen for arrow key presses");
+var router = require('../core/core.js').express.Router();
 
-    process.stdin.setRawMode(true);
-    process.stdin.resume();
-}
+/**
+ * Cette route permet de récupérer les scores.
+ */
+router.post('/key', function(req, res, next) {
+    console.log(req.body.key);
+    handle(req.body.key, req.body.distance);
+    res.send('ok');
+});
+
+module.exports = router;
