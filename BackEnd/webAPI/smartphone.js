@@ -1,5 +1,6 @@
 var router = require('../core/core.js').express.Router();
 
+var sphero = require('../sockets/sphero.js');
 
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur
@@ -17,6 +18,7 @@ router.put('/club', function(req,res){
     var x, y, z, t;
 
     for (var i=0; i<data_size; i++){
+
 
         t = datas[i].t;
         x = datas[i].x;

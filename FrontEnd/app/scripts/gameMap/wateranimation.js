@@ -124,6 +124,7 @@ function createGolfHole(scene) {
  * Function initialisationSkyBox. This function initializes the skybox (game box).
  * @param scene
  */
+
 function initialisationSkyBox(scene) {
   // Skybox
   var skybox = BABYLON.Mesh.CreateBox("skyBox", 2000.0, scene);
