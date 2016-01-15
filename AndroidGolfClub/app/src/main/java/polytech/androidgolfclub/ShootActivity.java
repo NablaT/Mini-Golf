@@ -51,8 +51,6 @@ public class ShootActivity extends AppCompatActivity {
 
     private static final int TIME_BEFORE_NEXT_SHOOT = 10000;
 
-    private static final int MINIMUM_SHOOT_TIME = 1000;
-
     private static long[] PATTERN_VIBRATOR_ERROR = {0, 200, 200, 300, 200};
 
     private View mContentView;
@@ -130,30 +128,9 @@ public class ShootActivity extends AppCompatActivity {
                             long timeEndShoot = Calendar.getInstance().getTimeInMillis();
                             resultShoot.setEnd(timeEndShoot - timeStartShoot);
 
-                            if (timeEndShoot - timeStartShoot < MINIMUM_SHOOT_TIME) {
-
-                                // erreur de tir ou tir impossible car trop court
-                                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
-
-                                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
-
-                                // change text for the next shoot
-                                mHideHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mtextContentView.setText(getResources().getText(R.string.dummy_content_before));
-                                        hasJustShoot = false;
-                                    }
-                                }, TIME_BEFORE_NEXT_SHOOT);
-
-                            } else {
-
-                                // tir effectué et valide
-                                // send datas to server
-                                new SendDatasTask().execute();
-
-                            }
+                            // tir effectué
+                            // send datas to server
+                            new SendDatasTask().execute();
 
                         }
 
@@ -242,23 +219,26 @@ public class ShootActivity extends AppCompatActivity {
             } else {
 
 
+                // erreur de tir
+
                 if (force==-3){
 
                     // connectivity error
                     Log.i("GOLF", "CONNECTIVITY ERROR");
-
                 } else if (force == -2) {
 
                     // server error
                     Log.i("GOLF", "SERVER ERROR");
-
-
                 } else if (force == -1) {
 
                     // shoot not accepted by the server
                     Log.i("GOLF", "SHOOT ERROR");
-
                 }
+
+                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
+
+                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
 
                 Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
                 Bundle bundle = new Bundle();
