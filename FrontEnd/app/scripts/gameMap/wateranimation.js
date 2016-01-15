@@ -286,6 +286,7 @@ function initialisationWater(scene) {
  * @param scene
  */
 function initialisationTrack(scene) {
+
   var wall1 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
   var wallMaterial1 = new BABYLON.StandardMaterial("wall", scene);
   wall1.scaling.x = 70;
@@ -321,17 +322,17 @@ function initialisationTrack(scene) {
 
   var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
   var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
-  wall5.scaling.x = 37;
+  wall5.scaling.x = 41;
   wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall5.position = new BABYLON.Vector3(300, 15, -330);
+  wall5.position = new BABYLON.Vector3(300, 15, -350);
   wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall5.material = wallMaterial5;
 
   var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
   var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
-  wall5.scaling.x = 37;
+  wall5.scaling.x = 41;
   wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall5.position = new BABYLON.Vector3(-300, 15, -330);
+  wall5.position = new BABYLON.Vector3(-300, 15, -350);
   wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall5.material = wallMaterial5;
 
@@ -339,7 +340,7 @@ function initialisationTrack(scene) {
   var wallMaterial6 = new BABYLON.StandardMaterial("wall", scene);
   wall6.scaling.x = 60;
   wall6.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall6.position = new BABYLON.Vector3(0, 15, -510);
+  wall6.position = new BABYLON.Vector3(0, 15, -550);
   wallMaterial6.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall6.material = wallMaterial6;
 

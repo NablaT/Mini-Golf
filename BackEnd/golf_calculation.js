@@ -13,9 +13,7 @@ var calculate = function(force, isdroitier) {
         return;
     }
 
-    console.log("Tir : [force:" + force + "] - [direction:" + direction + "deg]");
-
-    var dist = Math.abs(force) * 15; // fake calcul, result en cm
+    var dist = Math.abs(force) * 50; // fake calcul, result en cm
 
     var angle = 0; // transformation de l'angle pour la sphero
     if (isdroitier) {
@@ -25,6 +23,9 @@ var calculate = function(force, isdroitier) {
         angle = direction +90; // tir à droite pour un gaucher
         if (angle > 360) angle-=360;
     }
+
+    console.log("Tir : [force:" + force + "] - [angle:" + angle + "deg]");
+
 
     require('./sockets/sphero.js').testSphero(dist, angle); // send info to the sphero server
     require('./map.js').deplace_ball(dist, angle); // send info to the frontend

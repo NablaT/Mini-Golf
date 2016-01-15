@@ -8,7 +8,7 @@
 var NB_ROW = 800;
 var NB_COL = 1200;
 
-var RAYON_HOLE = 5; // in px
+var RAYON_HOLE = 50; // in px
 
 var matrice = []; // lignes = Y, colonnes = X
 var pos_dep = [400, 100];
@@ -45,8 +45,10 @@ var deplace_ball = function (dist, angle){
     var posY = pos_ball[0];
 
     // calculate the deplacement
-    var deplacementX = (int) (Math.cos(Math.radians(angle)) * distInPixels); // A = cos a * hyp
-    var deplacementY = (int) (Math.sin(Math.radians(angle)) * distInPixels); // B = sin a * hyp
+    var deplacementX = Math.round(Math.cos(angle* Math.PI/180) * distInPixels); // A = cos a * hyp
+    var deplacementY = Math.round(Math.sin(angle* Math.PI/180) * distInPixels); // B = sin a * hyp
+
+    // le Y n'est pas bon
 
     // position final of the ball
     pos_ball = [posY + deplacementY, posX + deplacementX];
