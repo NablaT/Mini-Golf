@@ -1,34 +1,36 @@
 var router = require('../core/core.js').express.Router();
 
 /**
- * Cette route permet de récupérer les scores.
+ * This get function returns the scores.
  */
 router.get('/scores', function(req, res, next) {
-    console.log('cc');
     res.send('ok');
 });
 
 /**
- * Cette route permet de définir la map que l'on veut.
+ * This post function updates the number of players.
  */
-router.post('/map', function(req,res){
-    console.log('ccc');
+router.post('nbofplayer', function (req, res, next) {
+    // req.body = {numberofplayer:data}
+    // TODO register nbofplayer somewhere.
     res.send('ok');
-    /*console.log(req.body);
-    var success = function () {
-        var finalObject = 'success';
-        console.log(finalObject);
-        res.send(finalObject);
-    };
+});
 
-    var fail = function(){
-        res.sendStatus(500);
-    };
+// TODO create a boolean isGameRunning
+/**
+ * This get function returns true if the game is running, false either.
+ */
+router.get('gameruns', function (req, res, next) {
+    // TODO returns a boolean if the game is running or not.
+    res.send('ok');
+});
 
-    // Grab data from http request
-    var data = req.body;
-
-    database.shopsChosen(data, success, fail);*/
+/**
+ * This post funciton update the boolean isGameRunning.
+ */
+router.post('gameruns', function (req, res, next) {
+    //req.body = {}
+    res.send('ok');
 });
 
 module.exports = router;
