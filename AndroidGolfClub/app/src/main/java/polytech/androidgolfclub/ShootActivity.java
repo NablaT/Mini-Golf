@@ -3,6 +3,7 @@ package polytech.androidgolfclub;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -127,6 +128,7 @@ public class ShootActivity extends AppCompatActivity {
                             Log.d("TOUCH", "TOUCH UP");
 
                             long timeEndShoot = Calendar.getInstance().getTimeInMillis();
+                            resultShoot.setEnd(timeEndShoot - timeStartShoot);
 
                             if (timeEndShoot - timeStartShoot < MINIMUM_SHOOT_TIME) {
 
@@ -148,19 +150,8 @@ public class ShootActivity extends AppCompatActivity {
                             } else {
 
                                 // tir effectué et valide
-
                                 // send datas to server
                                 new SendDatasTask().execute();
-
-                                // vibration de confirmation
-                                vibrator.vibrate(500);
-
-                                resultShoot.setEnd(timeEndShoot - timeStartShoot);
-
-                                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                                mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
-
-                                Log.i("GOLF", "Data size : " + resultShoot.getValues().size());
 
                             }
 
@@ -233,29 +224,53 @@ public class ShootActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Double force) {
 
-            if (force==-3){
 
-                // connectivity error
-
-            } else if (force == -2) {
-
-                // server error
-
-            } else if (force == -1) {
-
-                // shoot not accepted by the server
-
-            } else {
+            if (force>0){
 
                 // shoot accepted
-                Results.getInstance().setForce(force);
-                
-            }
-            if (force>0){
-                Toast.makeText(getApplicationContext(), "Tir envoyé au serveur", Toast.LENGTH_SHORT).show();
+                // vibration de confirmation
+                vibrator.vibrate(500);
+
+                resultShoot.setForce(force);
+                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
+
+                Intent i = new Intent(ShootActivity.this, ShootAcceptedActivity.class);
+
+                startActivity(i);
+
             } else {
-                Toast.makeText(getApplicationContext(), "Erreur lors de l'envoi du tir au serveur", Toast.LENGTH_SHORT).show();
+
+
+                if (force==-3){
+
+                    // connectivity error
+                    Log.i("GOLF", "CONNECTIVITY ERROR");
+
+                } else if (force == -2) {
+
+                    // server error
+                    Log.i("GOLF", "SERVER ERROR");
+
+
+                } else if (force == -1) {
+
+                    // shoot not accepted by the server
+                    Log.i("GOLF", "SHOOT ERROR");
+
+                }
+
+                Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("reason", force);
+                i.putExtras(bundle);
+                startActivity(i);
+
             }
+
+
+
+
         }
     }
 }

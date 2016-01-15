@@ -33,6 +33,8 @@ router.put('/club', function(req,res){
 
     console.log('force de frappe ' + strike_force + 'N');
 
+    if (strike_force==0) valid = false; // bad shoot
+
     result.valid = valid;
     result.strike_force = Math.abs(strike_force);
 
