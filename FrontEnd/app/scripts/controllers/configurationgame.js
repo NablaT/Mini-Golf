@@ -35,6 +35,7 @@ angular.module('frontEndApp')
     $scope.sendNumberOfPlayer=function() {
       console.log("In ConfigurationGameCtrl: ",$scope.nbOfPlayer);
       player.setNbPlayer($scope.nbOfPlayer);
+      services.postGameIsRunning(true);
       services.postNumberOfPlayer($scope.nbOfPlayer).then(
         function (data) {
           console.log(data);

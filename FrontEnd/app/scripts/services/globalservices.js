@@ -94,6 +94,37 @@ angular.module('frontEndApp')
       );
     },
 
+      postGameIsRunning: function(data){
+        return $http({
+          method : 'POST',
+          url: constants.backendUrl + 'ecran/gameruns',
+          data: {numeromap:data},
+          headers: {'Content-Type': 'application/json'}
+        }).then(
+          function (response) { // success de node js
+            return response.data;
+          },
+          function (response) { // erreur de node js.
+            return response.status;
+          }
+        );
+      },
+
+      getGameIsRunning: function () {
+        return $http({
+          method : 'GET',
+          url : constants.backendUrl + 'ecran/gameruns',
+          headers: {'Content-Type': 'application/json'}
+        }).then(
+          function (response) { // success de node js
+            return response.data;
+          },
+          function (response) { // erreur de node js.
+            return response.status;
+          }
+        );
+      },
+
 
       /**
        * Cette fonction permet de poster un nouveau score du joueur courant en l'enregistrant en base de données.
