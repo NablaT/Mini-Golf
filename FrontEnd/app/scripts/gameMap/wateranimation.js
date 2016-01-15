@@ -379,12 +379,14 @@ function createBoxes(scene) {
  * @param scene
  */
 function initalisationStairs(scene){
-  var stairs = BABYLON.Mesh.CreatePlane("stairs", 150, scene);
+  var stairs = BABYLON.Mesh.CreatePlane("stairs", 45, scene);
   var stairsMaterial = new BABYLON.StandardMaterial("stairs", scene);
   stairsMaterial.diffuseTexture = new BABYLON.Texture("textures/stairs.png", scene);
-  stairsMaterial.diffuseTexture.uScale = 6;
-  stairsMaterial.diffuseTexture.vScale = 6;
+  /*stairsMaterial.diffuseTexture.uScale = 6;
+  stairsMaterial.diffuseTexture.vScale = 6;*/
   stairsMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-  stairs.position.y = 7;
+  //stairs.position.y = 7;
+  stairs.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  stairs.position =new BABYLON.Vector3(200, 25, -100)
   stairs.material = stairsMaterial;
 }
