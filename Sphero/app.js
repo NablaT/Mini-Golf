@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var http = require('./core/core.js').getHttp();
 var app = require('./core/core.js').app;
 
-require('./sockets/sphero.js');
+var router = require('./sockets/sphero.js');
 
 /**
  * Utilisation du logger en mode développement.
@@ -23,6 +23,8 @@ app.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS"); // Définit les méthodes qu'on a le droit d'utiliser.
     next();
 });
+
+app.use('/', router);
 
 /**
  * Permet de créer un serveur qui écoute sur le port 3000.

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onkeydown="keyEvent(event)">
+
+Nb directions: <input id="distance" type="text" name="distance"><br>
+
+<script>
+    function keyEvent(event) {
+        var x = document.getElementById("distance").value;
+        console.log(x);
+        var keychar = String.fromCharCode(event.keyCode);
+        console.log(keychar);
+        var myRequest = new XMLHttpRequest();
+        myRequest.open('POST', 'http://localhost:3001/key',true);
+        myRequest.setRequestHeader("Content-Type", "application/json");
+        myRequest.send(JSON.stringify({key: keychar, distance : x}));
+    }
+
+</script>
+
+</body>
+</html>

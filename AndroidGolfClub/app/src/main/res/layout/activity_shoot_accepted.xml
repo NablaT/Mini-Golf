@@ -44,4 +44,13 @@
         android:layout_above="@+id/btnGoMenu"
         android:layout_centerHorizontal="true"
         android:onClick="goDisplayResults" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tirer à nouveau"
+        android:id="@+id/btnReshoot"
+        android:layout_above="@+id/btnDisplayResults"
+        android:layout_centerHorizontal="true"
+        android:onClick="goShoot" />
 </RelativeLayout>

@@ -31,26 +31,6 @@ import java.util.Calendar;
  */
 public class ShootActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * Some older devices needs a small delay between UI widget updates
-     * and a change of the status and navigation bar.
-     */
-    private static final int UI_ANIMATION_DELAY = 300;
-
-    private static final int TIME_BEFORE_NEXT_SHOOT = 10000;
-
     private static long[] PATTERN_VIBRATOR_ERROR = {0, 200, 200, 300, 200};
 
     private View mContentView;
@@ -67,7 +47,6 @@ public class ShootActivity extends AppCompatActivity {
 
     private Results resultShoot;
     private final Handler mHideHandler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
