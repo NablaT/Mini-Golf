@@ -62,8 +62,6 @@
         </activity>
         <activity android:name=".ShootErrorActivity" >
         </activity>
-        <activity android:name=".ParametersActivity" >
-        </activity>
     </application>
 
 </manifest>
