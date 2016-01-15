@@ -9,11 +9,6 @@
  */
 angular.module('frontEndApp')
   .controller('MainCtrl', ['$scope','services', function ($scope, services) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
 
     $scope.closeElement=function(){
       angular.element("firstelement").hide();

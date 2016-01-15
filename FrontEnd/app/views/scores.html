@@ -1,16 +1,42 @@
 <link rel="stylesheet" href="styles/scores.css">
-<p> This is the scores frame with</p>
-
+<!---
 <select name="mapSelect" id="mapSelect" ng-model="selectValue" >
-  <option value="1">Map 1</option> <!-- not selected / blank option -->
-  <option value="2">Map 2</option> <!-- interpolation -->
+  <option value="1">Map 1</option> <!-- not selected / blank option
+  <option value="2">Map 2</option> <!-- interpolation
   <option value="3">Map 3</option>
 </select><br>
 
 <button ng-click="sendMap(selectValue)"> Validate </button>
 <br/>
 <br/>
+-->
+<h2> SCORES </h2>
 
-
+<div ng-show="gameIsRunning" id="scores">
 <button ng-click="getbackScore()"> Get score ! </button>
+
+<br/>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th>Player</th>
+    <th>Map 1</th>
+    <th>Map 2</th>
+    <th>Final Scores</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="player in players">
+    <td>{{player}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div ng-hide="gameIsRunning" id="loading">
+  this is the loading part
+</div>
 

@@ -28,6 +28,9 @@ function createScene() {
   //We initialize the ground
   initialisationGround(scene);
 
+  //We initialize the stairs
+  initalisationStairs(scene);
+
   //We initialize the track
   initialisationTrack(scene);
 
@@ -184,8 +187,8 @@ function initialisationParticles(scene, fountain) {
 
   // On definit la source de la particule. L'emetteur est ici notre fontaine.
   particleSystem.emitter = fountain; // the starting object, the emitter
-  particleSystem.minEmitBox = new BABYLON.Vector3(100, 0, 0); // Starting all from
-  particleSystem.maxEmitBox = new BABYLON.Vector3(-100, 0, -1); // To...
+  particleSystem.minEmitBox = new BABYLON.Vector3(50, 0, 0); // Starting all from
+  particleSystem.maxEmitBox = new BABYLON.Vector3(-50, 0, -1); // To...
 
   // On definit les couleurs de particules. On definit un spectre de 3 couleurs.
   /*particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1.0);
@@ -349,6 +352,11 @@ function initialisationTrack(scene) {
   wall7.material = wallMaterial7;
 }
 
+/**
+ * Function createBoxes. This function create boxes for the design of the page.
+ * @param scene
+ */
+
 function createBoxes(scene) {
   var box1 = BABYLON.Mesh.CreateBox("wall", 25.0, scene);
   var boxMaterial1 = new BABYLON.StandardMaterial("wall", scene);
@@ -365,4 +373,21 @@ function createBoxes(scene) {
   box1.material = boxMaterial1;
 
 
+}
+
+/**
+ * Function initialisationStairs. This function initializes the stairs in the game.
+ * @param scene
+ */
+function initalisationStairs(scene){
+  var stairs = BABYLON.Mesh.CreatePlane("stairs", 45, scene);
+  var stairsMaterial = new BABYLON.StandardMaterial("stairs", scene);
+  stairsMaterial.diffuseTexture = new BABYLON.Texture("textures/stairs.png", scene);
+  /*stairsMaterial.diffuseTexture.uScale = 6;
+  stairsMaterial.diffuseTexture.vScale = 6;*/
+  stairsMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+  //stairs.position.y = 7;
+  stairs.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  stairs.position =new BABYLON.Vector3(200, 25, -100)
+  stairs.material = stairsMaterial;
 }
