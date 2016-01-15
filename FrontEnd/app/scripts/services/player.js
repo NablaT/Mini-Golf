@@ -9,19 +9,23 @@
  */
 angular.module('frontEndApp')
   .factory('player', function () {
-    // Service logic
-    // ...
-
     var numberOfPlayer;
 
-    // Public API here
     return {
+
+      /**
+       * Function getNbPlayer. This functions returns the number of player for the game.
+       * @returns {*}
+       */
       getNbPlayer: function () {
         return numberOfPlayer;
       },
 
+      /**
+       * Function setNbPlayer. This function sets the number of player for the game.
+       * @param number
+       */
       setNbPlayer: function(number){
-        console.log("In service player: ",number);
         numberOfPlayer=number;
       }
     };
