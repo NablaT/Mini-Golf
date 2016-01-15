@@ -26,7 +26,8 @@ import java.util.Map;
  * Created by Romain Guillot on 18/12/15
  */
 public class WebConnector {
-    
+
+    private static final int TIMEOUT = 2000; //set timeout to 2 seconds
 
     public static boolean sendShoot(){
 
@@ -70,7 +71,7 @@ public class WebConnector {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setConnectTimeout(2000); //set timeout to 2 seconds
+            connection.setConnectTimeout(TIMEOUT);
 
 
             OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
