@@ -8,7 +8,9 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ScoresCtrl', ['$scope','services', function ($scope, services) {
+  .controller('ScoresCtrl', ['$scope','services', 'player', function ($scope, services, player) {
+
+    $scope.nbOfPlayer=player.getNbPlayer();
 
     $scope.getbackScore=function() {
       services.getScore().then(
@@ -31,5 +33,9 @@ angular.module('frontEndApp')
             console.log(msg);
           }
         )
-    }
+    },
+
+      $scope.getbackPlayer=function(){
+        $scope.nbOfPlayer=player.getNbPlayer();
+      }
   }]);

@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ConfigurationGameCtrl', ['$scope', 'services', function ($scope, services) {
+  .controller('ConfigurationGameCtrl', ['$scope', 'services', 'player',  function ($scope, services, player) {
 
     $scope.nbOfPlayer=0;
 
@@ -23,7 +23,8 @@ angular.module('frontEndApp')
     },
 
     $scope.sendNumberOfPlayer=function() {
-      console.log($scope.nbOfPlayer);
+      console.log("In ConfigurationGameCtrl: ",$scope.nbOfPlayer);
+      player.setNbPlayer($scope.nbOfPlayer);
       services.postNumberOfPlayer($scope.nbOfPlayer).then(
         function (data) {
           console.log(data);
