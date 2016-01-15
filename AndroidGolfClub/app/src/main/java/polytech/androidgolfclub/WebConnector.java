@@ -26,9 +26,14 @@ import java.util.Map;
  * Created by Romain Guillot on 18/12/15
  */
 public class WebConnector {
-    
 
-    public static boolean sendShoot(){
+    private static final int TIMEOUT = 2000; //set timeout to 2 seconds
+
+    /**
+     * Send the shoot datas to the server
+     * @return the force in Newton, -1 if bad shoot, -2 if server error, -3 connectivity error
+     */
+    public static double sendShoot(){
 
         String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
@@ -70,7 +75,7 @@ public class WebConnector {
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setConnectTimeout(2000); //set timeout to 2 seconds
+            connection.setConnectTimeout(TIMEOUT);
 
 
             OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
@@ -94,15 +99,44 @@ public class WebConnector {
 
                 // no error in the servor
                 Log.i("GOLF", "Received by the server");
-                return true;
+
+                try {
+
+                    // get the reponse of the server
+                    JSONObject obj = new JSONObject(ret);
+                    boolean valid = obj.getBoolean("valid");
+                    double force = obj.getDouble("strike_force");
+
+                    // test if the shoot is considered as valid by the server
+                    if (!valid){
+
+                        Log.i("GOLF", "Shoot not valid");
+                        return -1;
+                    } else {
+
+                        Log.i("GOLF", "Shoot valid F=" + force);
+                        return force;
+                    }
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                    // error in the json
+                    Log.i("GOLF", "JSON parse error");
+                    return -2;
+                }
+
 
             } else if (connection.getResponseCode() == 500) {
 
                 Log.i("GOLF", "Server internal error");
+                return -2;
 
             } else {
 
                 Log.i("GOLF", "Not accepted by the server");
+                return -2;
             }
 
         } catch (java.net.SocketTimeoutException e) {
@@ -113,7 +147,7 @@ public class WebConnector {
             Log.e("GOLF", e.getMessage());
         }
 
-        return false;
+        return -3;
 
     }
 

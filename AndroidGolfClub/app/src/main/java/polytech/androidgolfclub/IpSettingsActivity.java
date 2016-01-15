@@ -20,7 +20,7 @@ public class IpSettingsActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
 
-    public static final String default_ip = "192.168.1.8";
+    public static final String default_ip = "192.168.1.11";
     public static final String default_port = "3000";
 
     private EditText ip_view, port_view;
@@ -51,7 +51,10 @@ public class IpSettingsActivity extends AppCompatActivity {
 
         editor.commit();
 
-        Toast.makeText(this, "Changement enregitrés ! ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Changements enregitrés ! ", Toast.LENGTH_SHORT).show();
+
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
 }

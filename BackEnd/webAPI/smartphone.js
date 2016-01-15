@@ -1,34 +1,46 @@
 var router = require('../core/core.js').express.Router();
 
-//var sphero = require('../sockets/sphero.js');
+var sphero = require('../sockets/sphero.js');
 
 /**
- * Cette route permet de définir la map que l'on veut.
+ * Cette route permet de récupérer et d'analyser le mouvement du tireur
  */
 router.put('/club', function(req,res){
 
-    console.log(req.body);
-    console.log(req.body.length);
+    var CLUB_MASS = 0.460; // 460 grammes
 
-    
+    var datas = req.body;
+    var data_size = req.body.length;
+    var result = {};
+    var valid = true;
 
-    res.send('ok');
-    //sphero.emit('hello', {pouet: 'pouet'});
-    /*console.log(req.body);
-     var success = function () {
-     var finalObject = 'success';
-     console.log(finalObject);
-     res.send(finalObject);
-     };
+    var zmin = 0, zmax = 0;
+    var x, y, z, t;
 
-     var fail = function(){
-     res.sendStatus(500);
-     };
+    for (var i=0; i<data_size; i++){
 
-     // Grab data from http request
-     var data = req.body;
 
-     database.shopsChosen(data, success, fail);*/
+        t = datas[i].t;
+        x = datas[i].x;
+        y = datas[i].y;
+        z = datas[i].z;
+
+        if (z<zmin) zmin = z;
+        if (z>zmax) zmax = z;
+    }
+
+    var strike_force = zmin * CLUB_MASS; // force en Newton : F(Newton) = m(kg) * a(m.s-2)
+
+    console.log('force de frappe ' + strike_force + 'N');
+
+    result.valid = valid;
+    result.strike_force = Math.abs(strike_force);
+
+    res.contentType('application/json');
+    var response = JSON.stringify(result);
+
+    res.send(response);
+
 });
 
 router.get('/ready', function (req, res) {

@@ -28,7 +28,7 @@ import java.util.Calendar;
  * Created by Romain Guillot on 18/12/15
  *
  */
-public class ShootActivity extends AppCompatActivity implements SensorEventListener {
+public class ShootActivity extends AppCompatActivity {
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -56,8 +56,8 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
     private View mContentView;
     private TextView mtextContentView;
-    private boolean mVisible;
     private SensorManager senSensorManager;
+    private ShootSensorListener senListener;
     private Sensor senAccelerometer;
     private Vibrator vibrator;
 
@@ -72,11 +72,11 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_shoot);
 
-        mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
         mtextContentView = (TextView) findViewById(R.id.fullscreen_content);
 
@@ -85,8 +85,9 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
         resultShoot = Results.getInstance();
 
-        senSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        senSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        senListener = new ShootSensorListener();
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -99,10 +100,6 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
                     case MotionEvent.ACTION_DOWN: {
 
                         if (!hasJustShoot) {
-
-                           /* resultShoot.clearZ();
-                            resultShoot.clearX();
-                            resultShoot.clearY(); */
 
                             resultShoot.clearValues();
 
@@ -129,9 +126,9 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
                             Log.d("TOUCH", "TOUCH UP");
 
-                            long timeEndShoot =Calendar.getInstance().getTimeInMillis();
+                            long timeEndShoot = Calendar.getInstance().getTimeInMillis();
 
-                            if (timeEndShoot-timeStartShoot < MINIMUM_SHOOT_TIME){
+                            if (timeEndShoot - timeStartShoot < MINIMUM_SHOOT_TIME) {
 
                                 // erreur de tir ou tir impossible car trop court
                                 vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
@@ -158,12 +155,12 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
                                 // vibration de confirmation
                                 vibrator.vibrate(500);
 
-                                resultShoot.setEnd(timeEndShoot-timeStartShoot);
+                                resultShoot.setEnd(timeEndShoot - timeStartShoot);
 
                                 mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                                 mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
 
-                                Log.i("GOLF", "Data size : " + resultShoot.getzValues().size());
+                                Log.i("GOLF", "Data size : " + resultShoot.getValues().size());
 
                             }
 
@@ -179,60 +176,86 @@ public class ShootActivity extends AppCompatActivity implements SensorEventListe
 
     }
 
+    @Override
+    protected void onPause() {
 
-    class SendDatasTask extends AsyncTask<String, Void, Boolean> {
+        super.onPause();
+
+        Log.i("GOLF", "onPause");
+        senSensorManager.unregisterListener(senListener);
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        Log.i("GOLF", "onResume");
+        senSensorManager.registerListener(senListener, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+    }
 
 
-        protected Boolean doInBackground(String... urls) {
+    /**
+     * Accelerometer listener
+     * Save the datas of the movement
+     */
+    private class ShootSensorListener implements SensorEventListener {
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+
+            if (shooting){
+                Long time = Calendar.getInstance().getTimeInMillis()-timeStartShoot;
+                resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+        }
+
+    }
+
+    /**
+     * Send datas to server task
+     * It also receive the response
+     */
+    private class SendDatasTask extends AsyncTask<String, Void, Double> {
+
+
+        protected Double doInBackground(String... urls) {
 
             // Send datas to server
             return WebConnector.sendShoot();
         }
 
         @Override
-        protected void onPostExecute(Boolean sentOK) {
+        protected void onPostExecute(Double force) {
 
-            if (sentOK){
+            if (force==-3){
 
-                Toast.makeText(getApplicationContext(), "Tir envoyé au serveur", Toast.LENGTH_SHORT).show();
+                // connectivity error
+
+            } else if (force == -2) {
+
+                // server error
+
+            } else if (force == -1) {
+
+                // shoot not accepted by the server
 
             } else {
 
+                // shoot accepted
+                Results.getInstance().setForce(force);
+                
+            }
+            if (force>0){
+                Toast.makeText(getApplicationContext(), "Tir envoyé au serveur", Toast.LENGTH_SHORT).show();
+            } else {
                 Toast.makeText(getApplicationContext(), "Erreur lors de l'envoi du tir au serveur", Toast.LENGTH_SHORT).show();
-
             }
         }
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        senSensorManager.unregisterListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_FASTEST);
-    }
-
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (shooting){
-
-            Long time = Calendar.getInstance().getTimeInMillis()-timeStartShoot;
-          /*  resultShoot.addX(time, event.values[0]);
-            resultShoot.addY(time, event.values[1]);
-            resultShoot.addZ(time, event.values[2]); */
-
-            resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.d("SENSOR", "Accuracy changed");
     }
 }
