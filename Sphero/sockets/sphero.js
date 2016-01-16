@@ -6,7 +6,7 @@ var sphero = require("sphero");
 var orb = sphero("/dev/tty.Sphero-BPW-AMP-SPP");
 var io = require("../core/core.js").getIO();
 
-var socket = io.connect('http://192.168.1.11:3000/sphero');
+var socket = io.connect('http://localhost:3000/sphero');
 
 socket.on('hello', function (params) {
     console.log('hello');
@@ -14,14 +14,15 @@ socket.on('hello', function (params) {
 });
 
 socket.on('test', function (params) {
-   console.log(params);
     test(params.dist, params.angle);
 });
 /**
  * Permet de se connecter à la sphero.
  */
-socket.on('Connexion', function (params) {
-    orb.connect();
+socket.on('connectSphero', function (params) {
+    orb.connect(function () {
+
+    });
 });
 
 function test (dist, angle){

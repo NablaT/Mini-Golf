@@ -1,16 +1,30 @@
 var io = require("../core/core.js").getIO();
 
-var sphero = io.of('/sphero');
+// Route for the sphero socket.
+var spheroSocket = io.of('/sphero');
 
-sphero.on('connection', function (socket) {
-    sphero.emit('Connexion', {});
-    console.log('yo someone');
+/**
+ * Event listener.
+ * Every time a client socket try to connect to the serveur at the /sphero route,
+ * this event 'connection' is triggered.
+ */
+spheroSocket.on('connection', function (socket) {
+    // If the connection succeed, the 'connectSphero' event is emitted.
+    socket.emit('connectSphero', {});
 });
 
-var testSphero = function(distance, angle){
-    sphero.emit('test', {"dist":distance, "angle":angle});
+// TODO it should be the velocity and not the distance.
+// TODO it seems that the velocity is beetween 0 et 255. Check the units and if it's right.
+// TODO change the event name. In the sphero server too.
+/**
+ * This function broadcast the 'test' event.
+ * @param {int} distance - The distance.
+ * @param {int} angle - An angle beetween 0 et 359 degrees.
+ */
+var testSphero = function (distance, angle) {
+    spheroSocket.emit('test', {"dist": distance, "angle": angle});
 };
 
 module.exports = {
-    sphero:sphero, testSphero:testSphero
+    sphero: spheroSocket, testSphero: testSphero
 };
