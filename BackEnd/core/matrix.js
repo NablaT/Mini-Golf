@@ -4,11 +4,14 @@
  * Created by guillaume on 15/01/2016.
  */
 
+/**
+ * This class represents a matrix.
+ */
 class Matrix {
 
     // TODO row and column params should be strictly positives.
     /**
-     * This class represents a matrix.
+     * The constrctor of a matrix.
      * @param {int} row - The row number of the matrix.
      * @param {int} column - The column number of the matrix.
      * @param {*} value - The default value for every element in the matrix.
