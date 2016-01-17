@@ -40,5 +40,8 @@ var finishCalibration = function () {
 };
 
 module.exports = {
-    sphero: spheroSocket, testSphero: testSphero
+    sphero           : spheroSocket,
+    testSphero       : testSphero,
+    startCalibration : startCalibration,
+    finishCalibration: finishCalibration
 };

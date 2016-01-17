@@ -14,6 +14,8 @@ var sphero = require("sphero"),
  */
 var isInCalibrationPhase = false;
 
+/////////////////////////////////               Event listener Socket                  /////////////////////////////////
+
 // TODO maybe to delete.
 socket.on('test', function (params) {
     roll(params.dist, params.angle);
@@ -43,15 +45,7 @@ socket.on('connectSphero', function (params) {
     connect();
 });
 
-/**
- * Event error listener.
- * This event is triggered when the computer can't connect to the sphero.
- */
-orb.on('error', function () {
-    console.error('Sphero encountered a problem during the connection.');
-    console.info('Trying again to connect ...');
-    connect();
-});
+/////////////////////////////////                    API Sphero                        /////////////////////////////////
 
 /**
  * This function connect the computer to the sphero.
@@ -59,6 +53,16 @@ orb.on('error', function () {
 function connect () {
     orb.connect(function () {
         console.info('Sphero successfully connected');
+    });
+
+    /**
+     * Event error listener.
+     * This event is triggered when the computer can't connect to the sphero.
+     */
+    orb.on('error', function () {
+        console.error('Sphero encountered a problem during the connection.');
+        console.info('Trying again to connect ...');
+        connect();
     });
 }
 
@@ -88,6 +92,9 @@ function startCalibration () {
 function finishCalibration () {
     orb.finishCalibration();
 }
+
+/////////////////////////////////           TODO DELETE THIS PART LATER                /////////////////////////////////
+/////////////////////////////////                      DEV PART                        /////////////////////////////////
 
 // TODO delete this later.
 /**
