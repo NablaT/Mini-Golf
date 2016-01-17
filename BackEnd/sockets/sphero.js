@@ -25,6 +25,13 @@ var testSphero = function (distance, angle) {
     spheroSocket.emit('test', {"dist": distance, "angle": angle});
 };
 
+/**
+ * This function broadcast the 'startCalibration' event.
+ */
+var startCalibration = function () {
+    spheroSocket.emit('startCalibration', {});
+};
+
 module.exports = {
     sphero: spheroSocket, testSphero: testSphero
 };

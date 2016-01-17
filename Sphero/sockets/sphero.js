@@ -14,10 +14,14 @@ var sphero = require("sphero"),
  */
 var isInCalibrationPhase = false;
 
+// TODO maybe to delete.
 socket.on('test', function (params) {
     roll(params.dist, params.angle);
 });
 
+socket.on('startCalibration', function (params) {
+    startCalibration();
+});
 
 /**
  * Event listener.
