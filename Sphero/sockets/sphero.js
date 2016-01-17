@@ -19,8 +19,20 @@ socket.on('test', function (params) {
     roll(params.dist, params.angle);
 });
 
+/**
+ * Event listener.
+ * This event aims to start the calibration of the sphero.
+ */
 socket.on('startCalibration', function (params) {
     startCalibration();
+});
+
+/**
+ * Event listener.
+ * This event aims to finish the calibration of the sphero.
+ */
+socket.on('finishCalibration', function (params) {
+    finishCalibration();
 });
 
 /**

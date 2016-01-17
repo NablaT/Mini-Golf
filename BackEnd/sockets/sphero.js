@@ -17,7 +17,7 @@ spheroSocket.on('connection', function (socket) {
 // TODO it seems that the velocity is beetween 0 et 255. Check the units and if it's right.
 // TODO change the event name. In the sphero server too.
 /**
- * This function broadcast the 'test' event.
+ * This function broadcasts the 'test' event.
  * @param {int} distance - The distance.
  * @param {int} angle - An angle beetween 0 et 359 degrees.
  */
@@ -26,10 +26,17 @@ var testSphero = function (distance, angle) {
 };
 
 /**
- * This function broadcast the 'startCalibration' event.
+ * This function broadcasts the 'startCalibration' event.
  */
 var startCalibration = function () {
     spheroSocket.emit('startCalibration', {});
+};
+
+/**
+ * This function broadcasts the 'finishCalibration' event.
+ */
+var finishCalibration = function () {
+    spheroSocket.emit('finishCalibration', {});
 };
 
 module.exports = {
