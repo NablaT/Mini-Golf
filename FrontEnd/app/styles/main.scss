@@ -94,4 +94,36 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+
+
+  /* Home page style */
+  .menu-element{
+    margin-top:30px;
+    background-color:white;
+    z-index: 4;
+    height:90px;
+    width:350px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    text-align:center;
+  }
+
+  h4 {
+    font-size: 18px;
+    margin-top: 30px;
+  }
+
+  .menu{
+    position:absolute;
+  }
+
+  .globalcontainer{
+    width:1000px;
+    height:500px;
+  }
+
+  .loading{
+
+  }
 }

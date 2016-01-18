@@ -39,6 +39,16 @@ angular
         controller: 'ConfigurationGameCtrl',
         controllerAs: 'gameConfiguration'
       })
+      .when('/loading',{
+        templateUrl: 'views/loading.html',
+        controller: 'LoadingCtrl',
+        controllerAs: 'loading'
+      })
+      .when('/homepage',{
+        templateUrl: 'views/homepage.html',
+        controller: 'HomepageCtrl',
+        controllerAs: 'homepage'
+      })
       .otherwise({
         redirectTo: '/'
       });

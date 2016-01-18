@@ -73,7 +73,7 @@ function initialisationBackground(scene){
   //Plane
   var background = BABYLON.Mesh.CreatePlane("background", 45, scene);
   var backgroundMaterial = new BABYLON.StandardMaterial("backgroundMaterial", scene);
-  backgroundMaterial.diffuseTexture = new BABYLON.Texture("textures/black.png", scene);
+  backgroundMaterial.diffuseTexture = new BABYLON.Texture("textures/black.png", scene); //scripts/gameMap/textures/black.png
   /*stairsMaterial.diffuseTexture.uScale = 6;
    stairsMaterial.diffuseTexture.vScale = 6;*/
   backgroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);

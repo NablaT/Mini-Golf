@@ -7,6 +7,7 @@ if (BABYLON.Engine.isSupported()) {
  * @returns {BABYLON.Scene}
  */
 function createScene() {
+
   //Initialisation canvas
   var canvas = document.getElementById("renderCanvas");
   var engine = new BABYLON.Engine(canvas, true);
