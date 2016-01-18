@@ -77,6 +77,7 @@ body {
 @media screen and (min-width: 768px) {
   .container {
     max-width: 900px;
+    margin:0px; /////TODO TO CHANGE
   }
 
   /* Remove the padding we set earlier */
@@ -114,8 +115,10 @@ body {
     margin-top: 30px;
   }
 
-  .menu{
-    position:absolute;
+  .menu {
+    position: absolute;
+    margin-left: 40%;
+    margin-top: 10%;
   }
 
   .globalcontainer{
@@ -124,6 +127,6 @@ body {
   }
 
   .loading{
-
+    width:1870px;
   }
 }
