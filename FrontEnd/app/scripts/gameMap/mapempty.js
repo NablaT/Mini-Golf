@@ -26,9 +26,10 @@ function createScene() {
   //Create the skybox
   skybox = initialisationSkyBox(scene);
 
+  //We initialize the ground
   initialisationGround(scene);
 
-
+  //Create the golf hole
   createGolfHole(scene);
 
   initialisationWater(scene);
@@ -60,8 +61,8 @@ function initialisationLights(scene) {
   lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
   // Lumiere 2
-  var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(-80, 250, -80),
-    new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+  var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(-150, 250, 150),
+    new BABYLON.Vector3(1, -1, -4), 1.1, 16, scene);
   light2.intensity = 100;
 
   var lightSphere2 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
@@ -70,16 +71,14 @@ function initialisationLights(scene) {
   lightSphere2.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
   // Lumiere 3
-  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(350, 250, 350),
-    new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
+  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(-30, 50, 630),
+    new BABYLON.Vector3(1, -1, -10), 1.1, 16, scene);
   light3.intensity = 100.4;
 
   var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
   lightSphere3.position = light3.position;
   lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
   lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
-
-
 }
 
 /**
@@ -88,10 +87,15 @@ function initialisationLights(scene) {
  * @returns {*}
  */
 function createGolfHole(scene) {
-  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 10, 10, 6, 1, scene, false);// 15,15,
-  hole.position = new BABYLON.Vector3(-180, 6, -180);
+  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 30, 10, 6, 1, scene, false);// 15,15,
+  var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
+  hole.position = new BABYLON.Vector3(0, 6, -350);
   hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  hole.diffuseColor = new BABYLON.Color3(0, 1, 0);
+  hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
   return hole;
 }
 
@@ -117,7 +121,7 @@ function initialisationSkyBox(scene) {
  * @param scene
  */
 function initialisationGround(scene) {
-  var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 500, 1000, 100, 0, 10, scene, false);
+  var ground = BABYLON.Mesh.CreateGround("ground", 800, 1200, 100, scene);
   var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
   groundMaterial.diffuseTexture.uScale = 6;
