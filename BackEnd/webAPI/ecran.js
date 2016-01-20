@@ -3,7 +3,7 @@ var router = require('../core/core.js').express.Router();
 /**
  * This get function returns the scores.
  */
-router.get('/scores', function(req, res, next) {
+router.get('/scores', function (req, res, next) {
     res.send('ok');
 });
 
