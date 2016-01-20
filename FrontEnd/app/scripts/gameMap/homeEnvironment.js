@@ -19,7 +19,7 @@ function createScene() {
 
   var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
-  camera.setPosition(new BABYLON.Vector3(-40, 40, 0));
+  camera.setPosition(new BABYLON.Vector3(-30, 60, -30));
 
   //Lights initialization
   initialisationLights(scene);
@@ -28,7 +28,7 @@ function createScene() {
   skybox = initialisationSkyBox(scene);
 
   //We initialize the ground
-  initialisationGround(scene);
+  var ground = initialisationGround(scene);
 
   //Create the golf hole
   createGolfHole(scene);
@@ -38,7 +38,15 @@ function createScene() {
   camera.attachControl(canvas);
 
   // scene.registerBeforeRender(beforeRenderFunction);
+  var alpha = 0;
+  scene.registerBeforeRender(function () {
+    //ground.rotation.x += 0.01;
+    ground.rotation.y += 0.01;
 
+    //ground.position = new BABYLON.Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
+    alpha += 0.01;
+
+  });
   engine.runRenderLoop(function () {
     scene.render();
   });
@@ -122,7 +130,9 @@ function initialisationSkyBox(scene) {
  * @param scene
  */
 function initialisationGround(scene) {
-  var ground = BABYLON.Mesh.CreateGround("ground", 800, 1200, 100, scene);
+  //var ground = BABYLON.Mesh.CreateGround("ground", 800, 1200, 100, scene);
+  var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap3.png", 90, 90, 90, 0, 10, scene, false);
+
   var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
   groundMaterial.diffuseTexture.uScale = 6;
@@ -130,6 +140,7 @@ function initialisationGround(scene) {
   groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   ground.position.y = 7;
   ground.material = groundMaterial;
+  return ground;
 }
 
 
