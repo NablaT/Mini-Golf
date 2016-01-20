@@ -12,10 +12,11 @@ class Golf {
     /**
      * The constructor of a golf game class.
      * @param {int} playerNumber - The number of players for the game. Must be a positive number.
+     * @param {Map} map - The golf map.
      */
-    constructor (playerNumber) {
+    constructor (playerNumber, map) {
         this._playerNumber = playerNumber;
-        this._map          = new Map();
+        this._map          = map;
     }
 
     /**

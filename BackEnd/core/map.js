@@ -23,6 +23,7 @@ class Map {
         this._startPosition = startPosition;
         this._holePosition  = holePosition;
         this._rayonHole     = rayonHole;
+        this._ballPosition  = startPosition;
     }
 
     /**
@@ -55,6 +56,22 @@ class Map {
      */
     get rayonHole () {
         return this._rayonHole;
+    }
+
+    /**
+     * Getter of the ball position.
+     * @returns {Position} The ball position.
+     */
+    get ballPosition () {
+        return this._ballPosition;
+    }
+
+    /**
+     * Setter of the ball position.
+     * @param {Position} newBallPosition - The new ball position.
+     */
+    set ballPosition (newBallPosition) {
+        this._ballPosition = newBallPosition;
     }
 
     // TODO Define this method
