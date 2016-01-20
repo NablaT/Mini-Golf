@@ -1,5 +1,6 @@
 // bower:scss
 @import "font-awesome/scss/font-awesome.scss";
+
 // endbower
 
 .browsehappy {
@@ -53,15 +54,15 @@ body {
   overflow-y: hidden;
   transition-property: all;
   transition-duration: .5s;
-  transition-timing-function: cubic-bezier(0,1,0.5,1);
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
   .btn {
     font-size: 21px;
     padding: 14px 24px;
   }
 }
 
-.jumbotron.closed{
-  max-height:0;
+.jumbotron.closed {
+  max-height: 0;
 }
 
 /* Supporting marketing content */
@@ -75,9 +76,11 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
-  .container {
-    max-width: 900px;
-    margin:0px; /////TODO TO CHANGE
+  .maincontainer, .globalcontainer{
+    /*max-width: 900px;*/
+    width: 1870px;
+    height: 800px;
+    margin: 0px; /////TODO TO CHANGE
   }
 
   /* Remove the padding we set earlier */
@@ -96,19 +99,15 @@ body {
     border-bottom: 0;
   }
 
-
   /* Home page style */
-  .menu-element{
-    position:absolute;
-    margin-top:30px;
-    background-color:white;
+  .menu-element {
+    position: absolute;
+    margin-top: 30px;
+    background-color: white;
     /*z-index: 4;*/
-    height:90px;
-    width:350px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-    text-align:center;
+    height: 90px;
+    width: 350px;
+    text-align: center;
   }
 
   h4 {
@@ -119,26 +118,29 @@ body {
   .menu {
     position: absolute;
     z-index: 4;
-    margin-top:20%;
+    margin-top: 5%;
     margin-left: 40%;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
+    height: 1000px;
+    width: 2000px;
   }
 
-  .loadingcontainer{
-    position:absolute;
-    z-index:2;
+  .loadingcontainer {
+    position: absolute;
+    z-index: 2;
 
   }
 
-  .globalcontainer{
-    width:1000px;
-    height:500px;
+  .globalcontainer {
+    width: 1000px;
+    height: 500px;
   }
 
-  .loading{
-    width:1870px;
-    height:800px;
+  .loading {
+    width: 1870px;
+    height: 800px;
+  }
+
+  .rowmenu{
+    margin-top:100px;
   }
 }
