@@ -99,9 +99,10 @@ body {
 
   /* Home page style */
   .menu-element{
+    position:absolute;
     margin-top:30px;
     background-color:white;
-    z-index: 4;
+    /*z-index: 4;*/
     height:90px;
     width:350px;
     border-style: solid;
@@ -117,8 +118,18 @@ body {
 
   .menu {
     position: absolute;
+    z-index: 4;
+    margin-top:20%;
     margin-left: 40%;
-    margin-top: 10%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+  }
+
+  .loadingcontainer{
+    position:absolute;
+    z-index:2;
+
   }
 
   .globalcontainer{
@@ -128,5 +139,6 @@ body {
 
   .loading{
     width:1870px;
+    height:800px;
   }
 }
