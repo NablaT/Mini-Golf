@@ -165,9 +165,28 @@ body {
     margin-top:100px;
   }
 
+  h2,
+  label{
+    color:white;
+  }
+
+  label{
+    font-size:40px;
+  }
+
+  .playerButton{
+    margin-top:3%;
+  }
+
   .gameConfiguration{
+    text-align:center;
     margin-top:10%;
     width: 500px;
+    background-color: rgba(0,0,0,0.7);
 
+  }
+
+  .rowPlayer{
+    margin-left:20%;
   }
 }
