@@ -41,10 +41,10 @@ function createScene() {
   var alpha = 0;
   scene.registerBeforeRender(function () {
     //ground.rotation.x += 0.01;
-    ground.rotation.y += 0.01;
+    ground.rotation.y += 0.001;
 
     //ground.position = new BABYLON.Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
-    alpha += 0.01;
+    alpha += 0.001;
 
   });
   engine.runRenderLoop(function () {
