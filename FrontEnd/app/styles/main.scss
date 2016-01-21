@@ -174,13 +174,19 @@ body {
     font-size:40px;
   }
 
-  .playerButton{
-    margin-top:3%;
+  .playerButton, .homeButton{
+    height:60px;
+    background-color: rgba(0,0,0,0.1);
+
+  }
+
+  .glyphicon{
+    color:white;
   }
 
   .gameConfiguration{
     text-align:center;
-    margin-top:10%;
+    margin-top:15%;
     width: 500px;
     background-color: rgba(0,0,0,0.7);
 
@@ -189,4 +195,16 @@ body {
   .rowPlayer{
     margin-left:20%;
   }
+
+  .glyphicon-home{
+    height:100px;
+  }
+
+  .homeButton{
+    background:transparent;
+    border:none;
+    width:60px;
+    height:60px;
+  }
+
 }

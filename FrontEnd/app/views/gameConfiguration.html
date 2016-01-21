@@ -4,21 +4,31 @@
   <md-button class="md-fab" aria-label="Eat cake">
     <md-icon md-svg-src="img/icons/cake.svg"></md-icon>
   </md-button>
-  <br/>
+  <br/><br/>
 
   <div class="row rowPlayer">
 
-    <button class="playerButton col-lg-2" ng-click="increment()">Plus</button>
+    <button class="playerButton col-lg-2" ng-click="increment()">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </button>
     <label class="col-lg-4" id="players"> {{nbOfPlayer}}</label>
 
-    <button class="playerButton col-lg-2"  ng-click="decrement()">Moins</button>
+    <button class="playerButton col-lg-2" ng-click="increment()">
+      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    </button>
     <br/>
   </div>
 
-  <a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>
+  </br> </br>
+  <!--<a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>-->
+  <button type="button" class="btn btn-default"  ng-click="sendNumberOfPlayer()" ng-href="#/scores">Validate</button>
+  <br/>
 
-  </br>
-  <a ng-click="updateHomePage('menu')"> Home Page </a>
+  <!--
+  <button class="homeButton" ng-click="updateHomePage('menu')">
+    <img src="../images/homeButton.png" class="img-responsive" >
+  </button>-->
+
   <br/>
   <br/>
 </div>
