@@ -1,6 +1,6 @@
 
 if (BABYLON.Engine.isSupported()) {
-  createScene();
+  //createScene();
 }
 
 /**

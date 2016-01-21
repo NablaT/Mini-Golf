@@ -8,14 +8,17 @@
 
 <h2> Select the number of player </h2>
 
-<button ng-click="increment(numberOfPlayer)">Plus</button> <br/><br/>
+<button ng-click="increment()">Plus</button> <br/><br/>
 
-<label id="players">{{nbOfPlayer}}</label> <br/>
+<label id="players"> {{nbOfPlayer}}</label> <br/>
 
-<button ng-click="decrement(numberOfPlayer)">Moins</button><br/>
+<button ng-click="decrement()">Moins</button><br/>
 
 
 <a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>
+
+</br>
+<a ng-click="updateHomePage('menu')"> Home Page </a>
 <br/>
 <br/>
 
