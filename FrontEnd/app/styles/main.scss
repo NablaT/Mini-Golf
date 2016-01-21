@@ -2,6 +2,7 @@
 @import "font-awesome/scss/font-awesome.scss";
 // endbower
 
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -96,8 +97,9 @@ body {
   .maincontainer, .globalcontainer{
     /*max-width: 900px;*/
     width: 1870px;
-    height: 800px;
+    height: 1000px;
     margin: 0px; /////TODO TO CHANGE
+    padding:0px;
   }
 
   /* Remove the padding we set earlier */
@@ -157,8 +159,10 @@ body {
   }
 
   .loading {
-    width: 1870px;
-    height: 1000px;
+    width: 2000px;
+    height: 1200px;
+    margin-left:0px;
+    padding:0px;
   }
 
   .rowmenu{
@@ -188,6 +192,7 @@ body {
     text-align:center;
     margin-top:15%;
     width: 500px;
+    height:250px;
     background-color: rgba(0,0,0,0.7);
 
   }
@@ -203,8 +208,14 @@ body {
   .homeButton{
     background:transparent;
     border:none;
-    width:60px;
-    height:60px;
+    width:70px;
+    height:70px;
+    //margin-bottom:350px;
+    //margin-right:80%;
+  }
+
+  .rowHomeValidation{
+
   }
 
 }

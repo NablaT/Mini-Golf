@@ -11,7 +11,7 @@ angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$scope', 'services', 'player', function ($scope, services, player) {
 
     // The id of the current page.
-    $scope.currentPage = "gameConfiguration"; //TODO: to change to menu
+    $scope.currentPage = "menu"; //TODO: to change to menu
 
     $scope.nbOfPlayer = 1;
 
