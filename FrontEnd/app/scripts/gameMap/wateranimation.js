@@ -7,6 +7,7 @@ if (BABYLON.Engine.isSupported()) {
  * @returns {BABYLON.Scene}
  */
 function createScene() {
+
   //Initialisation canvas
   var canvas = document.getElementById("renderCanvas");
   var engine = new BABYLON.Engine(canvas, true);
@@ -29,7 +30,7 @@ function createScene() {
   initialisationGround(scene);
 
   //We initialize the stairs
-  initalisationStairs(scene);
+  initialisationStairs(scene);
 
   //We initialize the track
   initialisationTrack(scene);
@@ -380,7 +381,7 @@ function createBoxes(scene) {
  * Function initialisationStairs. This function initializes the stairs in the game.
  * @param scene
  */
-function initalisationStairs(scene){
+function initialisationStairs(scene){
   var stairs = BABYLON.Mesh.CreatePlane("stairs", 45, scene);
   var stairsMaterial = new BABYLON.StandardMaterial("stairs", scene);
   stairsMaterial.diffuseTexture = new BABYLON.Texture("textures/stairs.png", scene);
