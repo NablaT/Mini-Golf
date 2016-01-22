@@ -32,9 +32,9 @@ angular.module('frontEndApp')
 
     /**
      * Function sendNumberOfPlayer. This function sends the number of player to the server and set the number of player in the service "player". It uses a function to post this number to the server.
-     */
+     **/
+
       $scope.sendNumberOfPlayer = function () {
-        console.log("In ConfigurationGameCtrl: ", $scope.nbOfPlayer);
         player.setNbPlayer($scope.nbOfPlayer);
         services.postGameIsRunning(true);
         services.postNumberOfPlayer($scope.nbOfPlayer).then(
