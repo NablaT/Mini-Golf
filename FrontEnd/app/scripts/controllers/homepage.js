@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('HomepageCtrl', ['$scope', 'services', 'player', function ($scope, services, player) {
+  .controller('HomepageCtrl', ['$scope', 'services', 'player', '$location', function ($scope, services, player, $location) {
 
     // The id of the current page.
     $scope.currentPage = "menu"; //TODO: to change to menu
@@ -59,4 +59,13 @@ angular.module('frontEndApp')
 
     //TODO END
 
+    $scope.verifyGameIsRunning = function () {
+      var isrunning= services.getGameIsRunning();
+      if(isrunning==true){
+        $scope.currentPage = 'scores';
+      }
+      else{
+        $location.path("/loadingContainer");
+      }
+    }
   }]);
