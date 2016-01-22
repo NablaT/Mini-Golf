@@ -58,7 +58,7 @@ var playerReady = function () {
  */
 var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
     var angle = 0; // transformation de l'angle pour la sphero
-    if (isDroitier) {
+    if (isRighty) {
         angle = kinectAngle - 90; // tir à gauche pour un droitier
         if (angle < 0) angle += 360;
     } else {
@@ -143,6 +143,7 @@ var go = function (strikeForce) {
     var velocity = distToVelocity(dist);
     console.log(velocity);
     sphero.goSphero(velocity);
+    golf.players[0].score += 1;
 };
 
 module.exports = {
