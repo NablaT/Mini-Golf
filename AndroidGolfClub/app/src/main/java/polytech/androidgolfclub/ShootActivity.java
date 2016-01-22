@@ -1,6 +1,5 @@
 package polytech.androidgolfclub;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Vibrator;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +16,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -80,10 +77,11 @@ public class ShootActivity extends AppCompatActivity {
                         if (!hasJustShoot) {
 
                             resultShoot.clearValues();
-
                             shooting = true;
 
                             Log.d("TOUCH", "TOUCH DOWN !");
+
+                            new SendReadyTask().execute();
 
                             vibrator.vibrate(50);
                             timeStartShoot = Calendar.getInstance().getTimeInMillis();
@@ -164,7 +162,39 @@ public class ShootActivity extends AppCompatActivity {
 
     }
 
+
     /**
+     * Send ready state to server
+     */
+    private class SendReadyTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            return WebConnector.ready();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isOK) {
+
+            if (!isOK){
+
+                Log.i("GOLF", "Position on kinect not set");
+
+                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
+
+                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
+
+                Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("reason", -4);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        }
+    }
+
+        /**
      * Send datas to server task
      * It also receive the response
      */
@@ -174,7 +204,7 @@ public class ShootActivity extends AppCompatActivity {
         protected Double doInBackground(String... urls) {
 
             // Send datas to server
-            return WebConnector.sendShoot();
+            return WebConnector.go();
         }
 
         @Override
@@ -226,9 +256,6 @@ public class ShootActivity extends AppCompatActivity {
                 startActivity(i);
 
             }
-
-
-
 
         }
     }

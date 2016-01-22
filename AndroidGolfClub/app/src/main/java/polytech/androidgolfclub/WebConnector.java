@@ -27,13 +27,13 @@ import java.util.Map;
  */
 public class WebConnector {
 
-    private static final int TIMEOUT = 2000; //set timeout to 2 seconds
+    private static final int TIMEOUT = 1000; //set timeout to 2 seconds
 
     /**
      * Send the shoot datas to the server
      * @return the force in Newton, -1 if bad shoot, -2 if server error, -3 connectivity error
      */
-    public static double sendShoot(){
+    public static double go(){
 
         String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
@@ -63,7 +63,7 @@ public class WebConnector {
         URL url_to = null;
 
         try {
-            url_to = new URL(server_addr + "/smartphone/club");
+            url_to = new URL(server_addr + "/smartphone/go");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -148,6 +148,78 @@ public class WebConnector {
         }
 
         return -3;
+    }
+
+
+    /**
+     * Reday state when touch the screen
+     */
+    public static boolean ready(){
+
+        String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
+
+        URL url_to = null;
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            url_to = new URL(server_addr + "/smartphone/ready");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            HttpURLConnection connection = (HttpURLConnection) url_to.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setConnectTimeout(TIMEOUT);
+
+            OutputStreamWriter osw = new OutputStreamWriter(connection.getOutputStream());
+
+            Log.d("GOLF", "READY");
+
+            osw.write(jsonObject.toString());
+            osw.flush();
+            osw.close();
+
+            Log.i("GOLF", connection.getResponseCode() + ":" + connection.getResponseMessage());
+
+            InputStream isr = connection.getInputStream();
+
+            String ret = convertInputStreamToString(isr);
+            isr.close();
+
+            connection.disconnect();
+
+            if (connection.getResponseCode() == 200){
+
+                if ("ok".equals(ret)){
+                    Log.i("GOLF", "Received ok");
+                    return true;
+                }
+                else {
+                    Log.i("GOLF", "Received bad");
+                    return false;
+                }
+
+            } else if (connection.getResponseCode() == 500) {
+                Log.i("GOLF", "Server internal error");
+            } else {
+                Log.i("GOLF", "Not accepted by the server");
+            }
+
+        } catch (java.net.SocketTimeoutException e) {
+            Log.e("GOLF", e.getMessage());
+        } catch (MalformedURLException e){
+            Log.e("GOLF", e.getMessage());
+        } catch (IOException e) {
+            Log.e("GOLF", e.getMessage());
+        }
+
+        return false;
 
     }
 
