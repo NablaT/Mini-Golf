@@ -49,6 +49,11 @@ angular
         controller: 'HomepageCtrl',
         controllerAs: 'homepage'
       })
+      .when('/loadingContainer',{
+        templateUrl: 'views/loadingContainer.html',
+        controller: 'LoadingcontainerCtrl',
+        controllerAs: 'loadingContainer'
+      })
       .otherwise({
         redirectTo: '/'
       });

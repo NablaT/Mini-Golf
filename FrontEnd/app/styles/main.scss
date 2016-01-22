@@ -1,7 +1,7 @@
 // bower:scss
 @import "font-awesome/scss/font-awesome.scss";
-// endbower
 
+// endbower
 
 .browsehappy {
   margin: 0.2em 0;
@@ -74,9 +74,10 @@ body {
   }
 }
 
-.navbar-brand > h3{
-  font-color:white;
+.navbar-brand > h3 {
+  font-color: white;
 }
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
 
@@ -88,18 +89,18 @@ body {
     text-align: center;
   }
 
-  .navbar-inverse{
-    background:none;
-    border:none;
-    margin-left:1%;
+  .navbar-inverse {
+    background: none;
+    border: none;
+    margin-left: 1%;
   }
 
-  .maincontainer, .globalcontainer{
+  .maincontainer, .globalcontainer {
     /*max-width: 900px;*/
     width: 1870px;
     height: 1000px;
     margin: 0px; /////TODO TO CHANGE
-    padding:0px;
+    padding: 0px;
   }
 
   /* Remove the padding we set earlier */
@@ -111,7 +112,7 @@ body {
   }
   /* Space out the masthead */
   .header {
-    background-color:none;
+    background-color: none;
     margin-bottom: 0px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
@@ -119,13 +120,12 @@ body {
     border-bottom: 0;
   }
 
-
   /* Home page style */
   .menu-element {
     position: absolute;
     margin-top: 30px;
-    font-color:white;
-    background-color: rgba(0,0,0,0.7);
+    font-color: white;
+    background-color: rgba(0, 0, 0, 0.7);
     /*z-index: 4;*/
     height: 90px;
     width: 350px;
@@ -135,7 +135,7 @@ body {
   h4 {
     font-size: 30px;
     margin-top: 30px;
-    font-color:white;
+    font-color: white;
   }
 
   .menu {
@@ -149,6 +149,7 @@ body {
 
   .loadingcontainer {
     position: absolute;
+    width:100%;
     z-index: 2;
 
   }
@@ -158,64 +159,113 @@ body {
     height: 500px;
   }
 
+
   .loading {
-    width: 2000px;
+    width: 100%;
     height: 1200px;
-    margin-left:0px;
-    padding:0px;
+    margin-left: 0px;
+    padding: 0px;
   }
 
-  .rowmenu{
-    margin-top:100px;
+  .rowmenu {
+    margin-top: 100px;
   }
 
   h2,
-  label{
-    color:white;
+  label {
+    color: white;
   }
 
-  label{
-    font-size:40px;
+  label {
+    font-size: 40px;
   }
 
-  .playerButton, .homeButton{
-    height:60px;
-    background-color: rgba(0,0,0,0.1);
+  .playerButton, .homeButton {
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.1);
 
   }
 
-  .glyphicon{
-    color:white;
+  .glyphicon {
+    color: white;
   }
 
-  .gameConfiguration{
-    text-align:center;
-    margin-top:15%;
+  .gameConfiguration {
+    text-align: center;
+    margin-top: 15%;
     width: 500px;
-    height:250px;
-    background-color: rgba(0,0,0,0.7);
+    height: 250px;
+    background-color: rgba(0, 0, 0, 0.7);
 
   }
 
-  .rowPlayer{
-    margin-left:20%;
+  .rowPlayer {
+    margin-left: 20%;
   }
 
-  .glyphicon-home{
-    height:100px;
+  .glyphicon-home {
+    height: 100px;
   }
 
-  .homeButton{
-    background:transparent;
-    border:none;
-    width:70px;
-    height:70px;
+  .homeButton {
+    background: transparent;
+    border: none;
+    width: 70px;
+    height: 70px;
     //margin-bottom:350px;
     //margin-right:80%;
   }
 
-  .rowHomeValidation{
 
+  /*
+
+  .loadingcontainer > * {
+    box-sizing: border-box;
+    position: absolute;
+    width: 900px;
+  }*/
+
+
+
+  .loadingpage > *{
+    position: absolute;
+    width: 900px;
   }
+
+  .loadingdiv{
+    width:100%;
+    height:100%;
+  }
+
+  .waiting{
+    position: absolute;
+    width: 900px;
+  }
+
+  .waitinglabel {
+    z-index:4;
+    font-size: 40px;
+    text-align:center;
+    margin-left: 55%;
+    width:900px;
+    margin-top: 700px;
+    position: absolute;
+    font-family: "Rockwell";
+  }
+
+  .homeButtonloading{
+    background-color: rgba(0, 0, 0, 0.1);
+    border:none;
+    height: 110px;
+    width: 100px;
+  }
+  /*
+  label {
+    font-size: 40px;
+    margin-left: 700px;
+    width: 900px;
+    margin-top: 700px;
+
+    */
 
 }

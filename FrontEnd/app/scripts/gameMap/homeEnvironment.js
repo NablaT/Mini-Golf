@@ -182,7 +182,6 @@ function getH(x, z){
 
 function getAlpha(z,h){
   var alpha=Math.acos(z/h);
-  console.log(alpha);
   return alpha;
 }
 
@@ -416,9 +415,6 @@ function initialisePiquet(scene){
   var results=[cylinder,wall1];
   return results;
 }
-
-
-
 
 /**
  * Function initialisationWater. This function initializes the water.
