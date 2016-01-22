@@ -5,7 +5,7 @@ var router = require('../core/core.js').express.Router(),
  * This get function returns the scores.
  */
 router.get('/scores', function (req, res, next) {
-    res.send('ok');
+    res.send(golf.getGolf().players);
 });
 
 /**
@@ -14,14 +14,14 @@ router.get('/scores', function (req, res, next) {
 router.post('/nbofplayer', function (req, res, next) {
     // req.body = {numberofplayer:data}
     golf.startGame(req.body.numberofplayer);
-    res.send('ok');
+    res.send(golf.getGolf().players);
 });
 
 /**
  * This get function returns true if the game is running, false either.
  */
 router.get('/gameruns', function (req, res, next) {
-    if (golf === null) {
+    if (golf.getGolf() === null) {
         res.send(false);
     }
     else {

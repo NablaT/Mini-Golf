@@ -9,7 +9,7 @@ var Map      = require('../core/map.js'),
     sphero   = require('../sockets/sphero.js');
 
 const DIST_TO_VELOCITY   = 0.534;
-var CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
+const CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
 
 var map = new Map(1200, 800, new Position(100, 400), new Position(1100, 400));
 
