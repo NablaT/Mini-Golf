@@ -52,4 +52,17 @@
         android:layout_marginTop="150dp"
 
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/calibration"
+        android:textColor="#FFFFFF"
+        android:id="@+id/button7"
+        android:onClick="calibrateClick"
+        android:background="@drawable/btn_ball_texture"
+        android:layout_alignBottom="@+id/button3"
+        android:layout_marginBottom="69dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

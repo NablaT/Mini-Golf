@@ -8,7 +8,7 @@ var Map      = require('../core/map.js'),
     kinect   = require('../webAPI/kinect.js'),
     sphero   = require('../sockets/sphero.js');
 
-const DIST_TO_VELOCITY = 0.534;
+const DIST_TO_VELOCITY   = 0.534;
 var CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
 
 var map = new Map(1200, 800, new Position(100, 400), new Position(1100, 400));
@@ -18,11 +18,16 @@ var golf = null;
 const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
+var getGolf = function () {
+    return golf;
+};
+
 /**
  * This function starts a new game.
+ * @param {int} numberPlayer - The number of players.
  */
-var startGame = function () {
-    golf = new Golf(map);
+var startGame = function (numberPlayer) {
+    golf = new Golf(numberPlayer, map);
 };
 
 /**
@@ -46,12 +51,12 @@ var playerReady = function () {
 };
 
 /**
- * // TODO doc
- * @param kinectAngle
- * @param isDroitier
- * @returns {number}
+ * This function converts the angle redeived from the kinect to a valid angle for the sphero.
+ * @param {int} kinectAngle - The angle sent from the kinect.
+ * @param {boolean} isRighty - A boolean to know if the user is righty.
+ * @returns {number} A valid angle for the sphero.
  */
-var convertKinectAngleToSpheroAngle = function (kinectAngle, isDroitier) {
+var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
     var angle = 0; // transformation de l'angle pour la sphero
     if (isDroitier) {
         angle = kinectAngle - 90; // tir à gauche pour un droitier
@@ -90,6 +95,12 @@ var calculateStrikeForce = function (datas, clubMass) {
     return zmin * clubMass; // force en Newton : F(Newton) = m(kg) * a(m.s-2)
 };
 
+/**
+ * This function looks if the shoot is valid.
+ * @param {Array} datas - The array of the accelerometer datas in 4 dimensions.
+ * @param {number} strikeForce - The force in Newton.
+ * @returns {boolean} True if the shoot is valid, false else.
+ */
 var isValidShoot = function (datas, strikeForce) {
 
     var datas_size = datas.length;
@@ -116,24 +127,31 @@ var isValidShoot = function (datas, strikeForce) {
 /**
  * Calculate the velocity for the sphero in function of the distance to parcourate
  * @param {number} dist : the distance to parcourate in centimeters
- * @returns {number} the velocity for the sphero
+ * @returns {number} The velocity for the sphero.
  */
 var distToVelocity = function (dist) {
-    return dist*DIST_TO_VELOCITY;
+    return dist * DIST_TO_VELOCITY;
 };
 
+/**
+ * This function moves the sphero.
+ * @param {number} strikeForce - The force in Newton.
+ */
 var go = function (strikeForce) {
-    var dist = Math.abs(strikeForce) * 50; // fake calcul, result en cm
+    var dist = Math.abs(strikeForce) * 30; // fake calcul, result en cm
+    console.log(dist);
     var velocity = distToVelocity(dist);
+    console.log(velocity);
     sphero.goSphero(velocity);
 };
 
 module.exports = {
-    golf                : golf,
+    getGolf             : getGolf,
     startGame           : startGame,
     endGame             : endGame,
     playerReady         : playerReady,
     calculateStrikeForce: calculateStrikeForce,
     isValidShoot        : isValidShoot,
-    distToVelocity      : distToVelocity
+    distToVelocity      : distToVelocity,
+    go                  : go
 };

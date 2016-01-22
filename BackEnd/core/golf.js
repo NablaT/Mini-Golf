@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Created by guillaume on 17/01/2016.
  */
@@ -11,10 +12,11 @@ class Golf {
 
     /**
      * The constructor of a golf game class.
+     * @param {int} playerNumber - The number of players.
      * @param {Map} map - The golf map.
      */
-    constructor (map) {
-        this._playerNumber = 0;
+    constructor (playerNumber, map) {
+        this._playerNumber = playerNumber;
         this._map          = map;
     }
 

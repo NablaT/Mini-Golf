@@ -24,9 +24,9 @@ public class ShootAcceptedActivity extends AppCompatActivity {
         forceText = (TextView) findViewById(R.id.textViewForce);
 
         DecimalFormat df = new java.text.DecimalFormat("0.##");
-        String fText =  df.format(Results.getInstance().getForce());
+        String fText =  df.format(Results.getInstance().getForce()*10);
 
-        forceText.setText(fText + " N");
+        forceText.setText(fText + "");
     }
 
     public void goMainMenu(View v){
