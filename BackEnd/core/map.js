@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Created by guillaume on 17/01/2016.
  */
@@ -18,7 +20,10 @@ class Map {
      * @param {Position} holePosition - The hole position.
      * @param {int} rayonHole - The rayon hole.
      */
-    constructor (width, height, startPosition, holePosition, rayonHole = 50) {
+    constructor (width, height, startPosition, holePosition, rayonHole) {
+        if (rayonHole == 'undefined'){
+            rayonHole = 50;
+        }
         this._matrix        = new Matrix(height, width);
         this._startPosition = startPosition;
         this._holePosition  = holePosition;
