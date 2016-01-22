@@ -14,6 +14,12 @@ var sphero = require("sphero"),
  */
 var isInCalibrationPhase = false;
 
+/**
+ * A variable to know the direction of the sphero.
+ * @type {int}
+ */
+var angle;
+
 /////////////////////////////////               Event listener Socket                  /////////////////////////////////
 
 // TODO maybe to delete.
@@ -35,6 +41,23 @@ socket.on('startCalibration', function (params) {
  */
 socket.on('finishCalibration', function (params) {
     finishCalibration();
+});
+
+/**
+ * Event listener.
+ * This event aims to orients the sphero.
+ */
+socket.on('ready', function (params) {
+    roll(0,params.angle);
+    angle = params.angle;
+});
+
+/**
+ * Event listener.
+ * This event aims to roll the sphero.
+ */
+socket.on('go', function (params) {
+   roll(params.velocity, angle);
 });
 
 /**
@@ -72,8 +95,10 @@ function connect () {
  * @param {int} angle - The direction in degrees of the sphero. Between 0 et 359.
  */
 function roll (velocity, angle) {
-    isInCalibrationPhase = false;
-    orb.roll(velocity, angle);
+    if (isInCalibrationPhase){
+        finishCalibration();
+    }
+    orb.roll(velocity,angle);
 }
 
 /**
@@ -90,7 +115,9 @@ function startCalibration () {
  * This function send the signal to finish the calibration to the sphero.
  */
 function finishCalibration () {
-    orb.finishCalibration();
+    orb.finishCalibration(function () {
+        isInCalibrationPhase = false;
+    });
 }
 
 /////////////////////////////////           TODO DELETE THIS PART LATER                /////////////////////////////////
@@ -122,10 +149,6 @@ function handle (key, velocity) {
         finishCalibration();
     }
 
-    if (key === "space") {
-        orb.stop();
-    }
-
     if (key === "&") {
         roll(velocity, 0);
     }
@@ -150,7 +173,7 @@ function handle (key, velocity) {
  */
 router.post('/key', function (req, res, next) {
     console.log(req.body.key);
-    handle(req.body.key, req.body.distance);
+    handle(req.body.key, req.body.velocity);
     res.send('ok');
 });
 
