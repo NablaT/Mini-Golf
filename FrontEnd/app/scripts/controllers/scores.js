@@ -12,7 +12,7 @@ angular.module('frontEndApp')
 
     $scope.nbOfPlayer = player.getNbPlayer();
     $scope.players;
-    $scope.gameIsRunning=false;
+    $scope.gameIsRunning=true;
 
 
     /**
