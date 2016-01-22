@@ -1,6 +1,7 @@
 var router = require('../core/core.js').express.Router();
 
 var game = require('../game/game.js');
+var sphero = require('../sockets/sphero.js');
 
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur
@@ -42,6 +43,22 @@ router.put('/ready', function (req, res) {
     } else {
         res.send('bad');
     }
+});
+
+/**
+ * This route lauch the calibration of the sphero
+ */
+router.put('/startcalibration', function (req, res) {
+    sphero.startCalibration();
+    res.send('ok');
+});
+
+/**
+ * This route stop the calibration of the sphero
+ */
+router.put('/stopcalibration', function (req, res) {
+    sphero.finishCalibration();
+    res.send('ok');
 });
 
 module.exports = router;
