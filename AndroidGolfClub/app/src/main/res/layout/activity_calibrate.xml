@@ -41,4 +41,14 @@
         android:visibility="gone"
         android:layout_marginBottom="66dp" />
 
+    <Button
+        android:layout_height="wrap_content"
+        android:text="Retour au menu principal"
+        android:id="@+id/button5"
+        android:background="@drawable/btn_ball_texture"
+        android:onClick="backClick"
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:textColor="#FFFFFF"/>
+
 </RelativeLayout>
