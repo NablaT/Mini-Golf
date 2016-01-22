@@ -41,28 +41,28 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/configip"
-        android:textColor="#FFFFFF"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:onClick="settingsClick"
-        android:background="@drawable/btn_ball_texture"
-        android:layout_marginTop="150dp"
-
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/calibration"
         android:textColor="#FFFFFF"
         android:id="@+id/button7"
         android:onClick="calibrateClick"
         android:background="@drawable/btn_ball_texture"
-        android:layout_alignBottom="@+id/button3"
-        android:layout_marginBottom="69dp"
+        android:layout_above="@+id/button3"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="5dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/configip"
+        android:textColor="#FFFFFF"
+        android:id="@+id/button3"
+        android:onClick="settingsClick"
+        android:background="@drawable/btn_ball_texture"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+
 </RelativeLayout>

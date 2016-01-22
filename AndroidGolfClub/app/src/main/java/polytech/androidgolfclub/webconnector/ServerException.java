@@ -17,11 +17,11 @@ public class ServerException extends Exception {
 
     private int errorCode;
 
-    public ServerException(ReturnServer message){
+    public ServerException(ReturnServer returnServer){
 
-        super("Server exception");
+        super("Server Exception");
+        returnError = returnServer;
 
-        returnError = message;
     }
 
     public ServerException(ReturnServer message, int errorCode){

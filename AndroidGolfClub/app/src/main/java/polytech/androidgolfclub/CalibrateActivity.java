@@ -1,5 +1,6 @@
 package polytech.androidgolfclub;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +53,11 @@ public class CalibrateActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void backClick(View view){
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
     private class StartCalibrationTask extends AsyncTask<Void, Void, Boolean> {
