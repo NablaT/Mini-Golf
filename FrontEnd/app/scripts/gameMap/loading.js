@@ -16,8 +16,11 @@ function createScene(){
   var scene = new BABYLON.Scene(engine);
 
   // Setup environment
-  var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 0, 1.5, 20, new BABYLON.Vector3(0, 0, 0), scene);
+  var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 0, 1.5, 20,
+    new BABYLON.Vector3(0, 0, 0), scene);
   camera.attachControl(canvas, true);
+
+  //camera.setPosition(new BABYLON.Vector3(25, -10, 0));
 
   var fountain = initialisationFountain(scene);
 
@@ -38,6 +41,7 @@ function createScene(){
 function initialisationFountain(scene){
   // Fountain object
   var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
+  fountain.position=new BABYLON.Vector3(0, 0, 0)
   var fountainMaterial = new BABYLON.StandardMaterial("fountain", scene);
   fountainMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/golf.png", scene);
   fountain.material = fountainMaterial;
