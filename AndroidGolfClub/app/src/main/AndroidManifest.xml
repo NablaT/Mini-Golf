@@ -63,7 +63,6 @@
         <activity android:name=".ShootAcceptedActivity"
             android:parentActivityName=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

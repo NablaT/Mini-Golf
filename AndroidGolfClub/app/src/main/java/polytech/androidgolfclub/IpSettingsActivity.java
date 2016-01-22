@@ -20,7 +20,7 @@ public class IpSettingsActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "MyPrefsFile";
 
-    public static final String default_ip = "192.168.1.11";
+    public static final String default_ip = "192.168.1.22";
     public static final String default_port = "3000";
 
     private EditText ip_view, port_view;
