@@ -22,11 +22,6 @@ var angle;
 
 /////////////////////////////////               Event listener Socket                  /////////////////////////////////
 
-// TODO maybe to delete.
-socket.on('test', function (params) {
-    roll(params.dist, params.angle);
-});
-
 /**
  * Event listener.
  * This event aims to start the calibration of the sphero.

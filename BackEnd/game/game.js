@@ -35,10 +35,28 @@ var endGame = function () {
 var playerReady = function () {
     var direction = kinect.getLastShootDirection();
     if (direction !== -1) {
-        sphero.ready(direction);
+        sphero.ready(convertKinectAngleToSpheroAngle(direction, true));
         return true;
     }
     return false;
+};
+
+/**
+ * // TODO doc
+ * @param kinectAngle
+ * @param isDroitier
+ * @returns {number}
+ */
+var convertKinectAngleToSpheroAngle = function (kinectAngle, isDroitier) {
+    var angle = 0; // transformation de l'angle pour la sphero
+    if (isDroitier) {
+        angle = kinectAngle-90; // tir à gauche pour un droitier
+        if (angle < 0) angle+=360;
+    } else {
+        angle = kinectAngle +90; // tir à droite pour un gaucher
+        if (angle > 360) angle-=360;
+    }
+    return angle;
 };
 
 module.exports = {
