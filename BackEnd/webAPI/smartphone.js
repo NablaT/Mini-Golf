@@ -1,7 +1,6 @@
 var router = require('../core/core.js').express.Router();
 
-var calculation = require('../golf_calculation.js'),
-    game        = require('../game/game.js');
+var game = require('../game/game.js');
 
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur

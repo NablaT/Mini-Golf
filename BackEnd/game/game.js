@@ -18,11 +18,16 @@ var golf = null;
 const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
+var getGolf = function () {
+    return golf;
+};
+
 /**
  * This function starts a new game.
+ * @param {int} numberPlayer - The number of players.
  */
-var startGame = function () {
-    golf = new Golf(map);
+var startGame = function (numberPlayer) {
+    golf = new Golf(numberPlayer, map);
 };
 
 /**
@@ -141,7 +146,7 @@ var go = function (strikeForce) {
 };
 
 module.exports = {
-    golf                : golf,
+    getGolf             : getGolf,
     startGame           : startGame,
     endGame             : endGame,
     playerReady         : playerReady,
