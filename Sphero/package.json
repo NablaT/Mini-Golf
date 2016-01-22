@@ -11,7 +11,7 @@
     "serialport": "^2.0.6",
     "socket.io": "^1.3.7",
     "socket.io-client": "^1.3.7",
-    "sphero": "^0.4.1"
+    "sphero": "git+https://github.com/GuillaumeRahbari/sphero.js.git"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

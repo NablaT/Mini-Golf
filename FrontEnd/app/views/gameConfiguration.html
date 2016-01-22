@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-</head>
-<body>
 
+<div class="gameConfiguration">
 <h2> Select the number of player </h2>
 
-<button ng-click="increment(numberOfPlayer)">Plus</button> <br/><br/>
+  <md-button class="md-fab" aria-label="Eat cake">
+    <md-icon md-svg-src="img/icons/cake.svg"></md-icon>
+  </md-button>
+  <br/>
+<button ng-click="increment()">Plus</button> <br/><br/>
 
-<label id="players">{{nbOfPlayer}}</label> <br/>
+<label id="players"> {{nbOfPlayer}}</label> <br/>
 
-<button ng-click="decrement(numberOfPlayer)">Moins</button><br/>
+<button ng-click="decrement()">Moins</button><br/>
 
 
 <a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>
-<br/>
-<br/>
 
-</body>
-</html>
+</br>
+<a ng-click="updateHomePage('menu')"> Home Page </a>
+<br/>
+<br/>
+</div>

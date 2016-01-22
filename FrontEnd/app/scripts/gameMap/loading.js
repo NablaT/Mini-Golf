@@ -1,30 +1,77 @@
 var canvas = document.getElementById("renderCanvas");
 var engine = new BABYLON.Engine(canvas, true);
 
-var createScene = function () {
+var scene =createScene();
+
+  engine.runRenderLoop(function () {
+  scene.render();
+});
+
+// Resize
+window.addEventListener("resize", function () {
+  engine.resize();
+});
+
+function createScene(){
   var scene = new BABYLON.Scene(engine);
 
   // Setup environment
+  var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 0, 1.5, 20, new BABYLON.Vector3(0, 0, 0), scene);
+  camera.attachControl(canvas, true);
+
+  var fountain = initialisationFountain(scene);
+
+  initialisationLights(scene,fountain);
+
+  initialisationBackground(scene);
+
+  initialisationParticles(scene,fountain);
+
+  var animation = initialisationAnimation(scene);
+
+  fountain.animations.push(animation);
+  scene.beginAnimation(fountain, 0, 250, true);
+
+  return scene;
+}
+
+function initialisationFountain(scene){
+  // Fountain object
+  var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
+  var fountainMaterial = new BABYLON.StandardMaterial("fountain", scene);
+  fountainMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/golf.png", scene);
+  fountain.material = fountainMaterial;
+
+  fountain.actionManager = new BABYLON.ActionManager(scene);
+  return fountain;
+}
+
+function  initialisationLights(scene, fountain){
   var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 8), scene);
 
   var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, -2, -8), scene);
   var light3 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(2, 2, 2), scene);
 
-  var light3 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(-5, -2, -2), scene);
-  var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 0, 1.5, 20, new BABYLON.Vector3(0, 0, 0), scene);
-  camera.attachControl(canvas, true);
+  var light4 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(-5, -2, -2), scene);
 
-  // Fountain object
-  var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
-  var foutainMaterial = new BABYLON.StandardMaterial("fountain", scene);
-  foutainMaterial.diffuseTexture = new BABYLON.Texture("textures/golf.png", scene);
-  fountain.material = foutainMaterial;
+  //window.setInterval(changeColor(light0, new BABYLON.Color3.Green(),fountain),5000);
+  //light0.diffuse= new BABYLON.Color3.Green();
+  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light0, "diffuse", BABYLON.Color3.Green(), 1000));
+  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light3, "diffuse", BABYLON.Color3.Yellow(), 1000));
+  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light1, "diffuse", BABYLON.Color3.FromInts(252,155,28), 1000));
 
+}
 
+function changeColor(light, color,fountain){
+  light.diffuse=color;
+  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light, "diffuse", color, 1000));
+}
+
+function initialisationBackground(scene){
   //Plane
   var background = BABYLON.Mesh.CreatePlane("background", 45, scene);
   var backgroundMaterial = new BABYLON.StandardMaterial("backgroundMaterial", scene);
-  backgroundMaterial.diffuseTexture = new BABYLON.Texture("textures/black.png", scene);
+  backgroundMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/black.png", scene); //scripts/gameMap/textures/black.png
   /*stairsMaterial.diffuseTexture.uScale = 6;
    stairsMaterial.diffuseTexture.vScale = 6;*/
   backgroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -32,14 +79,14 @@ var createScene = function () {
   background.rotation = new BABYLON.Vector3(0, 3*(Math.PI)/2 , 0);
   background.position =new BABYLON.Vector3(0,0,0)
   background.material = backgroundMaterial;
+}
 
-  // Ground
-
+function initialisationParticles(scene,fountain){
   // Create a particle system
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
   //Texture of each particle
-  particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
+  particleSystem.particleTexture = new BABYLON.Texture("../scripts/gameMap/textures/flare.png", scene);
 
   // Where the particles come from
   particleSystem.emitter = fountain; // the starting object, the emitter
@@ -52,7 +99,6 @@ var createScene = function () {
    particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);*/
 
   particleSystem.color1 = new BABYLON.Color4(0, 0.4, 0, 1.0);
-  //particleSystem.color1 = new BABYLON.Color4(0.1, 0.2, 0, 1.0);
   particleSystem.color2 = new BABYLON.Color4(0.1, 0.4, 0, 1.0);
   particleSystem.colorDead = new BABYLON.Color4(0, 0.9, 0.1, 0.0);
 
@@ -89,6 +135,9 @@ var createScene = function () {
   // Start the particle system
   particleSystem.start();
 
+}
+
+function initialisationAnimation(scene){
   // Fountain's animation
   var keys = [];
   var animation = new BABYLON.Animation("animation", "rotation.x", 50, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
@@ -110,23 +159,7 @@ var createScene = function () {
     frame: 100,
     value: 2*(Math.PI)
   });
-
   // Launch animation
   animation.setKeys(keys);
-  fountain.animations.push(animation);
-  scene.beginAnimation(fountain, 0, 250, true);
-
-  return scene;
+  return animation;
 }
-
-
-var scene = createScene();
-
-engine.runRenderLoop(function () {
-  scene.render();
-});
-
-// Resize
-window.addEventListener("resize", function () {
-  engine.resize();
-});

@@ -1,20 +1,19 @@
 /*
- * Notre core module
+ * Code module.
  */
 
-var io = null;
-var http = null;
-var express = require('express');
-var app = express();
+var io      = null,
+    http    = null,
+    express = require('express'),
+    app     = express();
 
 /**
- * Récupère la variable io pour socket.io
- * Si c null on la définit, sinon on la créée.
- * De cette manière on a un singleton.
- * @returns {*} Le singleton définissant io.
+ * Get the io socket variable.
+ * If null we define it, else we return the one created.
+ * @returns {*} The singleton io variable.
  */
-var getIO = function() {
-    if(io == null) {
+var getIO = function () {
+    if (io == null) {
         io = require('socket.io')(getHttp());
     }
 
@@ -22,16 +21,15 @@ var getIO = function() {
 };
 
 /**
- * Récupère la variable http pour le serveur.
- * Si c null on la définit, sinon on la créée.
- * De cette manière on a un singleton.
- * @returns {*} Le singleton définissant http.
+ * Get the http server variable.
+ * If null we define it, else we return the one created.
+ * @returns {*} The singleton http variable.
  */
-var getHttp = function() {
-    if(http == null) {
+var getHttp = function () {
+    if (http == null) {
         http = require('http').Server(app);
     }
     return http;
 };
 
-module.exports = {getIO : getIO, getHttp : getHttp, app: app, express : express};
+module.exports = {getIO: getIO, getHttp: getHttp, app: app, express: express};

@@ -2,17 +2,27 @@
 
 /**
  * @ngdoc function
- * @name frontEndApp.controller:ConfigurationgameCtrl
+ * @name frontEndApp.controller:HomepageCtrl
  * @description
- * # ConfigurationgameCtrl
+ * # HomepageCtrl
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ConfigurationGameCtrl', ['$scope', 'services', 'player', 'homepage', function ($scope, services, player, homepage) {
+  .controller('HomepageCtrl', ['$scope', 'services', 'player', function ($scope, services, player) {
 
-    // The number of player.
+    // The id of the current page.
+    $scope.currentPage = "menu"; //TODO: to change to menu
+
     $scope.nbOfPlayer = 1;
 
+    /**
+     * Function updateHomePage. This function updates the home page.
+     */
+    $scope.updateHomePage = function (id) {
+      $scope.currentPage = id;
+    }
+
+    //TODO To change ! It's a temporary solution
     /**
      * Function increment. This function increments the number of players.
      */
@@ -47,5 +57,6 @@ angular.module('frontEndApp')
         )
       }
 
-  }]);
+    //TODO END
 
+  }]);
