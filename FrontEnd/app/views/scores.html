@@ -1,43 +1,32 @@
 <link rel="stylesheet" href="styles/scores.css">
-<!---
-<select name="mapSelect" id="mapSelect" ng-model="selectValue" >
-  <option value="1">Map 1</option> <!-- not selected / blank option
-  <option value="2">Map 2</option> <!-- interpolation
-  <option value="3">Map 3</option>
-</select><br>
+<div class="thescore">
+  <button class="homeButton col-lg-2" ng-click="updateHomePage('menu','HomepageCtrl')">
+    <!-- ng-click="updateHomePage('menu')" -->
+    <img src="../images/homeButton.png" class="img-responsive">
+  </button>
 
-<button ng-click="sendMap(selectValue)"> Validate </button>
-<br/>
-<br/>
--->
-<h2> SCORES </h2>
+  <h2> SCORES </h2>
 
-<div ng-show="gameIsRunning" id="scores">
-<button ng-click="getbackScore()"> Get score ! </button>
+  <!--<button ng-click="getbackScore()"> Get score ! </button>-->
 
-<br/>
-<table class="table table-hover">
-  <thead>
-  <tr>
-    <th>Player</th>
-    <th>Map 1</th>
-    <th>Map 2</th>
-    <th>Final Scores</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-repeat="player in players">
-    <td>{{player}}</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  </tbody>
-</table>
-</div>
-
-<div ng-hide="gameIsRunning" id="loading">
-  <i class="fa fa-spinner fa-spin"></i>
-  this is the loading part
+  <br/>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Player</th>
+      <th>Map 1</th>
+      <th>Map 2</th>
+      <th class="finalScore">Final Scores</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="player in players">
+      <td>{{player._id}}</td>
+      <td>{{player._score}}</td>
+      <td></td>
+      <td class="finalScore"></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
