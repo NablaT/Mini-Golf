@@ -76,15 +76,29 @@ angular.module('frontEndApp')
 
     $scope.verifyGameIsRunning = function () {
       console.log("oui bha oui");
-      var isrunning= services.getGameIsRunning();
-      isrunning=true;
+      services.getGameIsRunning().then(
+        function(data){
+          if(data===true){
+            //$scope.currentPage = 'scores';
+            $location.path("/loadingContainer");
+          }
+          else{
+            $location.path("/loadingContainer");
+          }
+        },
+        function(error){
+          console.log("error in the game verification");
+        }
+      );
+      /*console.log("data back:",isrunning);
       if(isrunning==true){
         console.log("non");
         $scope.currentPage = 'scores';
       }
       else{
         $location.path("/loadingContainer");
-      }
+      }*/
+
     },
 
 

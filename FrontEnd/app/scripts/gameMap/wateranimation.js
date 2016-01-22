@@ -18,7 +18,7 @@ function createScene() {
 
   var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
-  camera.setPosition(new BABYLON.Vector3(-40, 40, 0));
+  camera.setPosition(new BABYLON.Vector3(-10, 900, 0));
 
   //Lights initialization
   initialisationLights(scene);
@@ -30,7 +30,7 @@ function createScene() {
   initialisationGround(scene);
 
   //We initialize the stairs
-  initialisationStairs(scene);
+  //initialisationStairs(scene);
 
   //We initialize the track
   initialisationTrack(scene);

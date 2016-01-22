@@ -111,6 +111,7 @@ angular.module('frontEndApp')
       },
 
       getGameIsRunning: function () {
+        console.log("oui getGameisrunning");
         return $http({
           method : 'GET',
           url : constants.backendUrl + 'ecran/gameruns',
