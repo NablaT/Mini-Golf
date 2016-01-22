@@ -6,51 +6,39 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@mipmap/golf_club"
-    tools:context="polytech.androidgolfclub.ShootErrorActivity">
+    tools:context="polytech.androidgolfclub.CalibrateActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Erreur lors du tir !"
-        android:id="@+id/textView5"
+        android:text="@string/calibratelongtext"
+        android:id="@+id/textView4"
         android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textViewReason"
-        android:textColor="#FFFFFF"
-        android:layout_below="@+id/textView5"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp" />
+        android:layout_marginTop="48dp" />
 
     <Button
         android:layout_width="wrap_content"
+        android:text="@string/btntocalibrate"
         android:layout_height="100dp"
-        android:text="Retenter ma chance !"
-        android:id="@+id/btnRetry"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/btncalibrate"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="103dp"
         android:background="@drawable/btn_ball_texture"
-        android:onClick="goRetry"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:onClick="calibrate" />
 
-    <Button
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retour au menu principal"
-        android:id="@+id/btnGoMenu"
-        android:textColor="#FFFFFF"
-        android:onClick="goMainMenu"
-        android:background="@drawable/btn_ball_texture"
+        android:id="@+id/progressBar"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/btnRetry"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_marginBottom="66dp" />
+
 </RelativeLayout>

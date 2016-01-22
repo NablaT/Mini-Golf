@@ -13,4 +13,10 @@
     <string name="title_activity_menu">Menu</string>
     <string name="configip">Configurer l\'IP du serveur</string>
 
+    <string name="calibratelongtext">Lancez la calibration puis dirigez le point bleu de la Sphero dans la direction opposée à la Kinect</string>
+    <string name="btntocalibrate">Lancer la calibration</string>
+    <string name="btniscalibrating">Arrêter la calibration</string>
+    <string name="calibration">Calibrer la Sphero</string>
+
+
 </resources>

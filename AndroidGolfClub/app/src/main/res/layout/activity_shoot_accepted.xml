@@ -14,6 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Tir réussi !"
         android:id="@+id/textView4"
+        android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp" />
@@ -26,8 +27,8 @@
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="46dp"
-        android:textSize="20sp"
-        android:textColor="#b71c1c" />
+        android:textSize="50sp"
+        android:textColor="#f49393" />
 
     <Button
         android:layout_width="wrap_content"
