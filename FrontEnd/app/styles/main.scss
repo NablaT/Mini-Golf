@@ -2,6 +2,7 @@
 @import "font-awesome/scss/font-awesome.scss";
 // endbower
 
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -96,8 +97,9 @@ body {
   .maincontainer, .globalcontainer{
     /*max-width: 900px;*/
     width: 1870px;
-    height: 800px;
+    height: 1000px;
     margin: 0px; /////TODO TO CHANGE
+    padding:0px;
   }
 
   /* Remove the padding we set earlier */
@@ -157,17 +159,63 @@ body {
   }
 
   .loading {
-    width: 1870px;
-    height: 1000px;
+    width: 2000px;
+    height: 1200px;
+    margin-left:0px;
+    padding:0px;
   }
 
   .rowmenu{
     margin-top:100px;
   }
 
-  .gameConfiguration{
-    margin-top:10%;
-    width: 500px;
+  h2,
+  label{
+    color:white;
+  }
+
+  label{
+    font-size:40px;
+  }
+
+  .playerButton, .homeButton{
+    height:60px;
+    background-color: rgba(0,0,0,0.1);
 
   }
+
+  .glyphicon{
+    color:white;
+  }
+
+  .gameConfiguration{
+    text-align:center;
+    margin-top:15%;
+    width: 500px;
+    height:250px;
+    background-color: rgba(0,0,0,0.7);
+
+  }
+
+  .rowPlayer{
+    margin-left:20%;
+  }
+
+  .glyphicon-home{
+    height:100px;
+  }
+
+  .homeButton{
+    background:transparent;
+    border:none;
+    width:70px;
+    height:70px;
+    //margin-bottom:350px;
+    //margin-right:80%;
+  }
+
+  .rowHomeValidation{
+
+  }
+
 }

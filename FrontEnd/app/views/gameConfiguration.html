@@ -1,22 +1,44 @@
-
 <div class="gameConfiguration">
-<h2> Select the number of player </h2>
+  <h2> Select the number of player </h2>
 
   <md-button class="md-fab" aria-label="Eat cake">
     <md-icon md-svg-src="img/icons/cake.svg"></md-icon>
   </md-button>
+  <br/><br/>
+
+  <div class="row rowPlayer">
+
+    <button class="playerButton col-lg-2" ng-click="increment()">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </button>
+    <label class="col-lg-4" id="players"> {{nbOfPlayer}}</label>
+
+    <button class="playerButton col-lg-2" ng-click="decrement()">
+      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    </button>
+    <br/>
+  </div>
+
+  </br> </br>
+  <!--<a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>-->
+
+  <div class="row rowHomeValidation">
+    <button class="homeButton col-lg-2" ng-click="updateHomePage('menu')">
+      <!-- ng-click="updateHomePage('menu')" -->
+      <img src="../images/homeButton.png" class="img-responsive">
+    </button>
+    <div class="col-lg-3"></div>
+    <button type="button" class="btn btn-default col-lg-3" ng-click="sendNumberOfPlayer()" ng-href="#/scores">Validate
+    </button>
+    <div class="col-lg-3"></div>
+
+
+  </div>
+  <!--
+  <button class="homeButton" ng-click="updateHomePage('menu')">
+    <img src="../images/homeButton.png" class="img-responsive" >
+  </button>-->
+
   <br/>
-<button ng-click="increment()">Plus</button> <br/><br/>
-
-<label id="players"> {{nbOfPlayer}}</label> <br/>
-
-<button ng-click="decrement()">Moins</button><br/>
-
-
-<a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>
-
-</br>
-<a ng-click="updateHomePage('menu')"> Home Page </a>
-<br/>
-<br/>
+  <br/>
 </div>
