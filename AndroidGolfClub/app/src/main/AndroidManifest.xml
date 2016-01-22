@@ -11,13 +11,12 @@
 
     <application
         android:allowBackup="true"
+        android:background="@color/colorBackground"
         android:exported="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:background="@color/colorBackground"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -60,21 +59,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.MainActivity" />
         </activity>
-        <activity android:name=".ShootAcceptedActivity"
-            android:parentActivityName=".MainActivity"
+        <activity
+            android:name=".ShootAcceptedActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.MainActivity" />
         </activity>
-        <activity android:name=".ShootErrorActivity"
+        <activity
+            android:name=".ShootErrorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.ShootActivity" />
+        </activity>
+        <activity android:name=".CalibrateActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="polytech.androidgolfclub.MainActivity" />
         </activity>
     </application>
 

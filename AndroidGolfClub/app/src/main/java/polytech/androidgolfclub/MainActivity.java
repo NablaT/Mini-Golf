@@ -41,4 +41,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, IpSettingsActivity.class);
         startActivity(intent);
     }
-}
+
+    public void calibrateClick(View view){
+        Intent intent = new Intent(this, CalibrateActivity.class);
+        startActivity(intent);
+    }}

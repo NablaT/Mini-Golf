@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
+import polytech.androidgolfclub.webconnector.WebConnector;
+import polytech.androidgolfclub.webconnector.WebMinigolf;
+
 /**
  *
  * This activity is used to detect the shoot and save the datas
@@ -39,6 +42,7 @@ public class ShootActivity extends AppCompatActivity {
 
     private boolean shooting;
     private boolean hasJustShoot;
+    private boolean shootCanceled = false;
 
     private long timeStartShoot;
 
@@ -107,7 +111,9 @@ public class ShootActivity extends AppCompatActivity {
 
                             // tir effectué
                             // send datas to server
-                            new SendDatasTask().execute();
+                            if (!shootCanceled){ // check if the shoot has been canceled
+                                new SendDatasTask().execute();
+                            }
 
                         }
 
@@ -170,13 +176,15 @@ public class ShootActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return WebConnector.ready();
+            return WebMinigolf.ready();
         }
 
         @Override
         protected void onPostExecute(Boolean isOK) {
 
             if (!isOK){
+
+                shootCanceled = true;
 
                 Log.i("GOLF", "Position on kinect not set");
 
@@ -190,6 +198,9 @@ public class ShootActivity extends AppCompatActivity {
                 bundle.putDouble("reason", -4);
                 i.putExtras(bundle);
                 startActivity(i);
+
+            } else {
+                shootCanceled = false;
             }
         }
     }
@@ -204,7 +215,7 @@ public class ShootActivity extends AppCompatActivity {
         protected Double doInBackground(String... urls) {
 
             // Send datas to server
-            return WebConnector.go();
+            return WebMinigolf.go();
         }
 
         @Override
