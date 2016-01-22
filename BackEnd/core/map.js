@@ -21,7 +21,7 @@ class Map {
      * @param {int} rayonHole - The rayon hole.
      */
     constructor (width, height, startPosition, holePosition, rayonHole) {
-        if (rayonHole == 'undefined'){
+        if (rayonHole == 'undefined') {
             rayonHole = 50;
         }
         this._matrix        = new Matrix(height, width);
