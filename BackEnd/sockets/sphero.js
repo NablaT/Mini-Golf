@@ -39,9 +39,18 @@ var finishCalibration = function () {
     spheroSocket.emit('finishCalibration', {});
 };
 
+/**
+ * This function broadcasts the 'ready' event.
+ * @param {int} angle - The direction for the sphero.
+ */
+var ready = function (angle) {
+    spheroSocket.emit('ready', {angle: angle});
+};
+
 module.exports = {
     sphero           : spheroSocket,
     testSphero       : testSphero,
     startCalibration : startCalibration,
-    finishCalibration: finishCalibration
+    finishCalibration: finishCalibration,
+    ready            : ready
 };
