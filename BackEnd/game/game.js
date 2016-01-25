@@ -6,7 +6,8 @@ var Map      = require('../core/map.js'),
     Position = require('../core/position.js'),
     Golf     = require('../core/golf.js'),
     kinect   = require('../webAPI/kinect.js'),
-    sphero   = require('../sockets/sphero.js');
+    sphero   = require('../sockets/sphero.js'),
+    ecran    = require('../sockets/ecran.js');
 
 const DIST_TO_VELOCITY     = 0.534;
 const CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
@@ -47,7 +48,9 @@ var addPlayer = function (playerName) {
         return -2;
     }
     else {
-        return getGolf().addPlayer(playerName);
+        var tmp = getGolf().addPlayer(playerName);
+        ecran.emit('players', getGolf().players);
+        return tmp;
     }
 };
 

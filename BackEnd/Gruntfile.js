@@ -25,7 +25,7 @@ module.exports = function (grunt) {
       server: {
         files: [
           'app.js',
-          'routes/**/*.js'
+          '**/*.js'
         ],
         tasks: ['develop', 'delayed-livereload']
       }
