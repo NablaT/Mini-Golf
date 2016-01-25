@@ -17,6 +17,8 @@
     <string name="btntocalibrate">Lancer la calibration</string>
     <string name="btniscalibrating">Arrêter la calibration</string>
     <string name="calibration">Calibrer la Sphero</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_join_game">JoinGameActivity</string>
 
 
 </resources>

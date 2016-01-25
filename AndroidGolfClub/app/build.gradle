@@ -26,4 +26,6 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.jjoe64:graphview:4.0.1'
     compile 'com.android.support:design:22.2.1'
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
+
 }

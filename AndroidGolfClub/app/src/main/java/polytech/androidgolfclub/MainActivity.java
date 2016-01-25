@@ -1,16 +1,26 @@
 package polytech.androidgolfclub;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import polytech.androidgolfclub.webconnector.SocketGolf;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String PREFS_NAME = "MyPrefsFile";
-    public static final String default_ip = "192.168.1.8";
-    public static final String default_port = "3000";
+    private Socket socket;
+    private Button newShoot, seeShoot, calibrateSpehro;
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,13 +28,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // get the ip and port from settings
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String ip = settings.getString("ip", default_ip);
-        String port = settings.getString("port", default_port);
+        newShoot = (Button) findViewById(R.id.btnNewShoot);
+        seeShoot = (Button) findViewById(R.id.btnSeeShoot);
+        calibrateSpehro = (Button) findViewById(R.id.btnCalibrate);
+        text = (TextView) findViewById(R.id.text);
 
-        ServerIp.getInstance().setIp(ip);
-        ServerIp.getInstance().setPort(port);
+        newShoot.setEnabled(false);
+        calibrateSpehro.setEnabled(false);
+
+        socket = SocketGolf.getInstance().getSocket();
+        socket.on("play", play);
     }
 
     public void newShootClick(View view){
@@ -45,4 +58,65 @@ public class MainActivity extends AppCompatActivity {
     public void calibrateClick(View view){
         Intent intent = new Intent(this, CalibrateActivity.class);
         startActivity(intent);
-    }}
+    }
+
+    private void update() {
+
+        DataKeeper dk = DataKeeper.getInstance();
+        String me = dk.getPlayerName();
+        String current = dk.getCurrentPlayer();
+
+        if (me != null){
+
+            if (me.equals(current)){
+
+                Log.i("MAIN", "It's my turn");
+                newShoot.setEnabled(true);
+                calibrateSpehro.setEnabled(true);
+                text.setText(me + ", c'est à toi de jouer");
+
+            } else {
+
+                Log.i("MAIN", "It's " + current + " turn");
+                newShoot.setEnabled(false);
+                calibrateSpehro.setEnabled(false);
+                text.setText(me + ", c'est à " + current + " de jouer");
+            }
+
+        }
+
+    }
+
+    private Emitter.Listener play = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : play");
+
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
+                    } catch (JSONException e) {
+                        return;
+                    }
+
+                    update();
+
+                }
+
+            }).start();
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+    }
+
+}

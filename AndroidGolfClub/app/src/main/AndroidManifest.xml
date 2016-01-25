@@ -18,16 +18,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
+            android:name=".IpSettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Lancement d'une partie"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".JoinGameActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Rejoindre une partie"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".WaitingStartActivity"
+            android:label="En attente"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".DisplayResultsActivity"
@@ -43,16 +59,6 @@
             android:name=".ShootActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="polytech.androidgolfclub.MainActivity" />
-        </activity>
-        <activity
-            android:name=".IpSettingsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="IP du serveur"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
@@ -76,7 +82,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.ShootActivity" />
         </activity>
-        <activity android:name=".CalibrateActivity"
+        <activity
+            android:name=".CalibrateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" >
