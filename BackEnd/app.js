@@ -37,8 +37,14 @@ app.use('/kinect', kinectRouter);
 
 
 // crée la map
-require('./map.js')
-    .create();
+//require('./map.js')
+//    .create();
+
+var MapDeform = require('./core/mapDeform.js');
+
+var m = new MapDeform();
+
+m.toString();
 
 /**
  * Server on port 3000.
