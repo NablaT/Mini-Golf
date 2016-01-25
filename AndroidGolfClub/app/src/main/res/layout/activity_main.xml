@@ -8,19 +8,32 @@
     android:background="@mipmap/golf_club"
     tools:context="polytech.androidgolfclub.MainActivity">
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Lancement en cours"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_weight="0.23"
+        android:gravity="center_vertical|center_horizontal"
+        android:textStyle="bold"
+        android:textSize="30sp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:text="Effectuer un nouveau tir"
         android:textColor="#FFFFFF"
-        android:id="@+id/button"
+        android:id="@+id/btnNewShoot"
         android:onClick="newShootClick"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/button2"
+        android:layout_above="@+id/btnSeeShoot"
         android:background="@drawable/btn_ball_texture"
         android:layout_marginBottom="10dp"
-
         />
 
     <Button
@@ -28,40 +41,25 @@
         android:layout_height="100dp"
         android:text="Voir mon dernier tir"
         android:textColor="#FFFFFF"
-        android:id="@+id/button2"
-        android:layout_centerVertical="true"
-        android:layout_alignStart="@+id/button"
-        android:layout_alignEnd="@+id/button"
+        android:id="@+id/btnSeeShoot"
         android:onClick="statsClick"
         android:background="@drawable/btn_ball_texture"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="92dp"
 
-        />
+        android:layout_above="@+id/btnCalibrate"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/calibration"
         android:textColor="#FFFFFF"
-        android:id="@+id/button7"
+        android:id="@+id/btnCalibrate"
         android:onClick="calibrateClick"
         android:background="@drawable/btn_ball_texture"
-        android:layout_above="@+id/button3"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="5dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/configip"
-        android:textColor="#FFFFFF"
-        android:id="@+id/button3"
-        android:onClick="settingsClick"
-        android:background="@drawable/btn_ball_texture"
-
-        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
 
