@@ -39,8 +39,12 @@ angular.module('frontEndApp')
           }
         });
         return deferred.promise;
+      },
+
+      listenDeconnection:function(){
+        socket.on('disconnect', function(){
+          console.log("I am disconnected from the server");
+        });
       }
-
-
     };
   }]);
