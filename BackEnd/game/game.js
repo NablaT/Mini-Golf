@@ -2,12 +2,11 @@
  * Created by guillaume on 20/01/2016.
  */
 
-var Map        = require('../core/map.js'),
-    Position   = require('../core/position.js'),
-    Golf       = require('../core/golf.js'),
-    kinect     = require('../webAPI/kinect.js'),
-    sphero     = require('../sockets/sphero.js'),
-    smartphone = require('../sockets/smartphone.js');
+var Map      = require('../core/map.js'),
+    Position = require('../core/position.js'),
+    Golf     = require('../core/golf.js'),
+    kinect   = require('../webAPI/kinect.js'),
+    sphero   = require('../sockets/sphero.js');
 
 const DIST_TO_VELOCITY     = 0.534;
 const CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
@@ -41,16 +40,17 @@ var endGame = function () {
 /**
  * This function adds a player to the game.
  * @param {String} playerName - The player's name.
+ * @param {function} callback - The callback function.
  * @returns {int} Returns 0 if the player could joing the game, 1 if there is no room anymore, 2 if the game is not started.
  */
-var addPlayer = function (playerName) {
+var addPlayer = function (playerName, callback) {
     if (getGolf() === null) {
         return 2;
     }
     else {
         var tmp = getGolf().addPlayer(playerName);
         if (tmp === 0) {
-            isAllPlayersJoined();
+            isAllPlayersJoined(callback);
         }
         return tmp;
     }
@@ -59,10 +59,11 @@ var addPlayer = function (playerName) {
 /**
  * This function looks if all players have joined the game.
  * If everyone has joined the game it broadcast the 'gameStart' event.
+ * @param {function} callback - The callback function to be triggered when all players have joined the game.
  */
-var isAllPlayersJoined = function () {
+var isAllPlayersJoined = function (callback) {
     if (getGolf().isAllPlayersJoined()) {
-        smartphone.emit('gameStart', {})
+        callback();
     }
 };
 
