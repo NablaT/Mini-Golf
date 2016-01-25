@@ -76,29 +76,31 @@ smartphoneSocket.on('connect', function (socket) {
      */
     function joinGame (params) {
         console.log('Somebody is trying to join the game');
-        switch (game.addPlayer(params.name, gameStart)) {
-            case 0 :
+        switch (game.addPlayer(params.name)) {
+            case true :
+                socket.emit('waitingToStart', {});
+                console.info('Player ' + params.name + ' joined the game');
+                setTimeout(function () {
+                    smartphoneSocket.emit('gameStart', {});
+                    console.info('We can start the game');
+
+                }, 2000);
+                break;
+            case false:
                 socket.emit('waitingToStart', {});
                 console.info('Player ' + params.name + ' joined the game');
                 break;
-            case 1 :
+            case -1 :
                 socket.emit('noPlaceAvailable', {});
                 console.error('There is no place anymore to join the game');
                 break;
-            case 2 :
+            case -2 :
                 socket.emit('gameNotStarted', {});
                 console.error('The game is not started yet');
                 break;
             default:
                 console.error('This case is not supposed to happen');
         }
-    }
-
-    /**
-     * This function emits the event 'gameStart'.
-     */
-    function gameStart () {
-        smartphone.emit('gameStart', {})
     }
 
 });
