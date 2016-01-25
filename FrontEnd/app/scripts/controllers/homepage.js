@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', function ($scope, services, player, $location, $controller, $timeout) {
+  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'socket', function ($scope, services, player, $location, $controller, $timeout, socket) {
 
 
     //console.log("controller: ",$controller("HomepageCtrl"));
@@ -18,6 +18,9 @@ angular.module('frontEndApp')
     //$scope.controllerPage=$controller('ConfigurationGameCtrl');
     $scope.nbOfPlayer = 1;
     $scope.players;
+
+    socket.connect();
+    socket.listenPlayers();
 
     /**
      * Function updateHomePage. This function updates the home page.
@@ -98,7 +101,17 @@ angular.module('frontEndApp')
      * Function getBackScore. This function gets back the score from the server. It calls the function getScore() in the service "services" (globalservices.js)
      */
       $scope.getbackScore = function () {
-        console.log("jerentre");
+        console.log("jerentre dans getBackScore");
+        socket.getScores().then(
+          function(data){
+            console.log("data getscore: ",data);
+            $scope.players=data;
+          },
+          function (msg){
+            console.log("error getbackscore homepage",msg);
+          }
+        );
+        /*
         services.getScore().then(
           function (data) {
             $scope.players = data;
@@ -108,7 +121,8 @@ angular.module('frontEndApp')
           function (msg) {
             console.log(msg);
           }
-        );
+        );*/
       }
+
 
   }]);
