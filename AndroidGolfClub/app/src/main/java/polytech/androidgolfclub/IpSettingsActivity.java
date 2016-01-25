@@ -50,6 +50,16 @@ public class IpSettingsActivity extends AppCompatActivity {
         ip_view.setText(ServerIp.getInstance().getIp());
         port_view.setText(ServerIp.getInstance().getPort());
 
+        if (DataKeeper.getInstance().getPlayerName() != null &&
+                SocketGolf.getInstance().getSocket() != null &&
+                SocketGolf.getInstance().getSocket().connected()){
+
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+
+            finish();
+        }
+
     }
 
     public void okClick(View view){
