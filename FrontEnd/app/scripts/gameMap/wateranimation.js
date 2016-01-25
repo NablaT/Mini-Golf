@@ -18,7 +18,7 @@ function createScene() {
 
   var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
-  camera.setPosition(new BABYLON.Vector3(-10, 900, 0));
+  camera.setPosition(new BABYLON.Vector3(-10, 1000, 0));
 
   //Lights initialization
   initialisationLights(scene);
@@ -34,6 +34,9 @@ function createScene() {
 
   //We initialize the track
   initialisationTrack(scene);
+
+  //We create the starting point
+  initialisationStartingPoint(scene);
 
   //Create the golf hole
   createGolfHole(scene);
@@ -75,35 +78,16 @@ function createScene() {
  */
 
 function initialisationLights(scene) {
-  //Lumiere 1
-  var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, -32),
-    new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-  light.intensity = 108;
-
-  var lightSphere1 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
-  lightSphere1.position = light.position;
-  lightSphere1.material = new BABYLON.StandardMaterial("light", scene);
-  lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
-
-  // Lumiere 2
-  var light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(-150, 250, 150),
-    new BABYLON.Vector3(1, -1, -4), 1.1, 16, scene);
-  light2.intensity = 100;
-
-  var lightSphere2 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
-  lightSphere2.position = light2.position;
-  lightSphere2.material = new BABYLON.StandardMaterial("light", scene);
-  lightSphere2.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
-
   // Lumiere 3
-  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(-30, 50, 630),
-    new BABYLON.Vector3(1, -1, -10), 1.1, 16, scene);
+  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(-400, 50, 630),
+    new BABYLON.Vector3(8, -1, -10), 1.1, 16, scene);
   light3.intensity = 100.4;
-
+  light3.rotation = new BABYLON.Vector3(0, Math.PI , 0);
   var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
   lightSphere3.position = light3.position;
   lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
   lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+  lightSphere3.rotation=new BABYLON.Vector3(0, Math.PI , 0);
 }
 
 /**
@@ -114,7 +98,7 @@ function initialisationLights(scene) {
 function createGolfHole(scene) {
   var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 30, 10, 6, 1, scene, false);// 15,15,
   var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  hole.position = new BABYLON.Vector3(0, 6, -350);
+  hole.position = new BABYLON.Vector3(180, 6, -350);
   hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
 
@@ -263,6 +247,25 @@ function initialisationAnimation() {
 }
 
 /**
+ * Function initialisationStartingPoint. This function initializes the starting point
+ */
+
+function initialisationStartingPoint(scene) {
+  var ground = BABYLON.Mesh.CreateGround("ground", 50, 50, 100, scene);
+
+  var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
+  groundMaterial.diffuseTexture = new BABYLON.Texture("textures/sand3.png", scene);
+  groundMaterial.diffuseTexture.uScale = 6;
+  groundMaterial.diffuseTexture.vScale = 6;
+  groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+  ground.rotation = new BABYLON.Vector3(0, Math.PI / 5.2, 0);
+  ground.position.z = 450;
+  ground.position.x = -290;
+  ground.position.y = 7.5;
+  ground.material = groundMaterial;
+}
+
+/**
  * Function initialisationWater. This function initializes the water.
  * @param scene
  */
@@ -288,55 +291,55 @@ function initialisationWater(scene) {
  */
 function initialisationTrack(scene) {
 
-  var wall1 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial1 = new BABYLON.StandardMaterial("wall", scene);
-  wall1.scaling.x = 70;
-  wall1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall1.position = new BABYLON.Vector3(150, 15, 200);
-  wallMaterial1.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall1.material = wallMaterial1;
+  /*var wall1 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial1 = new BABYLON.StandardMaterial("wall", scene);
+   wall1.scaling.x = 70;
+   wall1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+   wall1.position = new BABYLON.Vector3(150, 15, 200);
+   wallMaterial1.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall1.material = wallMaterial1;
 
-  var wall2 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial2 = new BABYLON.StandardMaterial("wall", scene);
-  wall2.scaling.x = 70;
-  wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall2.position = new BABYLON.Vector3(-150, 15, 200);
-  wallMaterial2.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall2.material = wallMaterial2;
+   var wall2 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial2 = new BABYLON.StandardMaterial("wall", scene);
+   wall2.scaling.x = 70;
+   wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+   wall2.position = new BABYLON.Vector3(-150, 15, 200);
+   wallMaterial2.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall2.material = wallMaterial2;
 
-  var wall3 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial3 = new BABYLON.StandardMaterial("wall", scene);
-  wall3.scaling.x = 15;
-  wall3.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall3.position = new BABYLON.Vector3(-220, 15, -150);
-  wallMaterial3.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall3.material = wallMaterial3;
+   var wall3 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial3 = new BABYLON.StandardMaterial("wall", scene);
+   wall3.scaling.x = 15;
+   wall3.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+   wall3.position = new BABYLON.Vector3(-220, 15, -150);
+   wallMaterial3.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall3.material = wallMaterial3;
 
-  var wall4 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial4 = new BABYLON.StandardMaterial("wall", scene);
-  wall4.scaling.x = 37;
-  wall4.scaling.x = 15;
-  wall4.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall4.position = new BABYLON.Vector3(220, 15, -150);
-  wallMaterial4.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall4.material = wallMaterial4;
+   var wall4 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial4 = new BABYLON.StandardMaterial("wall", scene);
+   wall4.scaling.x = 37;
+   wall4.scaling.x = 15;
+   wall4.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+   wall4.position = new BABYLON.Vector3(220, 15, -150);
+   wallMaterial4.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall4.material = wallMaterial4;
 
-  var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
-  wall5.scaling.x = 41;
-  wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall5.position = new BABYLON.Vector3(300, 15, -350);
-  wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall5.material = wallMaterial5;
+   var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
+   wall5.scaling.x = 41;
+   wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+   wall5.position = new BABYLON.Vector3(300, 15, -350);
+   wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall5.material = wallMaterial5;
 
-  var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
-  var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
-  wall5.scaling.x = 41;
-  wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall5.position = new BABYLON.Vector3(-300, 15, -350);
-  wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall5.material = wallMaterial5;
-
+   var wall5 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
+   var wallMaterial5 = new BABYLON.StandardMaterial("wall", scene);
+   wall5.scaling.x = 41;
+   wall5.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+   wall5.position = new BABYLON.Vector3(-300, 15, -350);
+   wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
+   wall5.material = wallMaterial5;
+   */
   var wall6 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
   var wallMaterial6 = new BABYLON.StandardMaterial("wall", scene);
   wall6.scaling.x = 60;
@@ -381,15 +384,15 @@ function createBoxes(scene) {
  * Function initialisationStairs. This function initializes the stairs in the game.
  * @param scene
  */
-function initialisationStairs(scene){
+function initialisationStairs(scene) {
   var stairs = BABYLON.Mesh.CreatePlane("stairs", 45, scene);
   var stairsMaterial = new BABYLON.StandardMaterial("stairs", scene);
   stairsMaterial.diffuseTexture = new BABYLON.Texture("textures/stairs.png", scene);
   /*stairsMaterial.diffuseTexture.uScale = 6;
-  stairsMaterial.diffuseTexture.vScale = 6;*/
+   stairsMaterial.diffuseTexture.vScale = 6;*/
   stairsMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   //stairs.position.y = 7;
   stairs.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  stairs.position =new BABYLON.Vector3(200, 25, -100)
+  stairs.position = new BABYLON.Vector3(200, 25, -100)
   stairs.material = stairsMaterial;
 }

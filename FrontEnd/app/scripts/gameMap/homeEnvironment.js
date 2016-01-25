@@ -318,7 +318,7 @@ function initialisationGround3(scene){
 }
 
 /**
- * Function initialisationGround3. This function initializes one mountain.
+ * Function initialisationTrack. This game initializes the track
  */
 function initialisationTrack(scene){
   //var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap4.png", 80, 30, 5, 0, 10, scene, false);
