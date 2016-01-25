@@ -17,6 +17,9 @@ class MapDeform {
         var row = 230;
         var column = 190;
         var value = 0;
+        // position ball
+        this._x = 27;
+        this._y = 20;
 
         this._mapD = new Array(row);
 
@@ -29,11 +32,11 @@ class MapDeform {
                 column++;
             }
         }
-        // tru
+        // trou
         // 148 row
         // 98 y
-        for (var i = 144; i < 154; i++) {
-            for (var j = 190; j < 200; j++) {
+        for (var i = 220; i < 230; i++) {
+            for (var j = 140; j < 150; j++) {
                 this._mapD[i][j] = 2;
             }
         }
@@ -48,9 +51,9 @@ class MapDeform {
         this._mapD[27][21] = 4;
 
         //position ball start game
-        this.setXball(27);
-        this.setYball(20);
-        this._mapD[27][20] = 1;
+        this.setXball(this._x);
+        this.setYball(this._y);
+        this._mapD[this._x][this._y] = 1;
 
 
     }
@@ -67,39 +70,47 @@ class MapDeform {
 
         var x = parseInt(this.getnewXball(h, alpha));
         var y = parseInt(this.getnewYball(h, alpha));
-        console.log(x);
-        console.log(y);
+      //  console.log("1 x = ",x);
+      //  console.log("1 y = ",y);
+
         this._mapD[x][y] = 1;
         return this.check(x, y);
     }
 
     getnewXball(h, alpha) {
-        var x = this.getXball() + Math.cos(alpha) * h;
-        console.log(Math.cos(alpha) * h);
+        var x = this.getXball() + (Math.sin(this.toRadians(alpha)) * h);
+       // console.log("1 x = ",x);
+        this.setXball(x);
         return x;
     }
 
     getnewYball(h, alpha) {
-        var y = this.getYball() + Math.sin(alpha) * h;
-        console.log(Math.sin(alpha) * h);
-
+        var y = this.getYball() + (Math.cos(this.toRadians(alpha)) * h);
+     //   console.log("Y = ",Math.cos(this.toRadians(alpha)) * h);
+     //   console.log(this.getYball());
+        this.setYball(y);
         return y;
     }
 
+    toRadians (angle) {
+       // console.log("angles = ",angle * (Math.PI / 180));
+    return angle * (Math.PI / 180);
+}
+
     getXball() {
-        return this.x;
+        return this._x;
     }
 
     getYball() {
-        return this.y;
+        return this._y;
     }
 
     setXball(x) {
-        this.x = x;
+        this._x = x;
     }
 
     setYball(y) {
-        this.y = y;
+        this._y = y;
     }
 
 
@@ -121,7 +132,7 @@ class MapDeform {
 
     check(x, y) {
 
-        if ((144 < x && 154 > x ) && (190 < y && 200 > y)) {
+        if ((220 < x && 230 > x ) && (140 < y && 150 > y)) {
             return true;
         } else {
             return false;
