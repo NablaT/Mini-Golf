@@ -33,19 +33,20 @@ angular.module('frontEndApp')
        * we return the new value.
        */
       listenPlayers: function () {
-        console.log("in listenPlayers");
-        socket.on('playerAddition', function (params) {
-          console.log("listenPLayers: ", params.name);
+        return socket.on('players', function (params) {
+          console.log("params: ",params);
+          console.log("liste of PLayers: ", params[0]._playerName);
+          return params;
         })
       },
 
       /**
-       * Function getScores. This function get back the score from the server.
+       * Function getPlayers. This function get back the score from the server.
        * @returns {*}
        */
-      getScores: function () {
+      getPlayers: function () {
         var deferred = $q.defer();
-        socket.on('scores', function (params) {
+        socket.on('players', function (params) {
           if (params !== {}) {
             console.log("getscore socket: ", params);
             deferred.resolve(params);

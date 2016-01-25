@@ -20,7 +20,7 @@ angular.module('frontEndApp')
     $scope.players;
 
     socket.connect();
-    socket.listenPlayers();
+    //socket.listenPlayers();
     socket.listenDisconnection();
 
     /**
@@ -101,7 +101,7 @@ angular.module('frontEndApp')
      */
       $scope.getbackScore = function () {
         console.log("jerentre dans getBackScore");
-        socket.getScores().then(
+        socket.getPlayers().then(
           function(data){
             console.log("data getscore: ",data);
             $scope.players=data;
