@@ -45,7 +45,11 @@ class MapDeform {
         this._mapD[26][20] = 4;
         this._mapD[27][19] = 4;
         this._mapD[28][20] = 4;
+        this._mapD[27][21] = 4;
+
         //position ball start game
+        this.setXball(27);
+        this.setYball(20);
         this._mapD[27][20] = 1;
 
 
@@ -56,22 +60,48 @@ class MapDeform {
      * @returns {int} The row number.
      */
     get row() {
-        return this.row;
+        return this._row;
     }
 
-    getXball(h, alpha) {
+    setPositionBall(h, alpha) {
+
+        var x = parseInt(this.getnewXball(h, alpha));
+        var y = parseInt(this.getnewYball(h, alpha));
+        console.log(x);
+        console.log(y);
+        this._mapD[x][y] = 1;
+        return this.check(x, y);
+    }
+
+    getnewXball(h, alpha) {
+        var x = this.getXball() + Math.cos(alpha) * h;
         console.log(Math.cos(alpha) * h);
-        return Math.cos(alpha) * h;
+        return x;
     }
 
-    getYball(h, alpha) {
+    getnewYball(h, alpha) {
+        var y = this.getYball() + Math.sin(alpha) * h;
         console.log(Math.sin(alpha) * h);
-        return Math.sin(alpha) * h;
+
+        return y;
     }
 
-    setPositionBall(x, y) {
-        return this._mapD[x][y] = 1;
+    getXball() {
+        return this.x;
     }
+
+    getYball() {
+        return this.y;
+    }
+
+    setXball(x) {
+        this.x = x;
+    }
+
+    setYball(y) {
+        this.y = y;
+    }
+
 
     /**
      * Getter of the column number of the matrix.
@@ -89,24 +119,15 @@ class MapDeform {
         return this._mapD;
     }
 
-    /*var checkIsInHole = function (h, alpha) {
+    check(x, y) {
 
-
-        for (var i = 144; i < 154; i++) {
-            for (var j = 190; j < 200; j++) {
-                if (this._mapD[i][j] === setPositionBall(getXball(h, alpha), getYball(h, alpha))) {
-                    return true;
-                }
-            }
-            if (i % 3 === 0) {
-                column++;
-            }
+        if ((144 < x && 154 > x ) && (190 < y && 200 > y)) {
+            return true;
+        } else {
             return false;
-
         }
-
     };
-    */
+
 
     /**
      * Getter of an element of the matrix.
@@ -147,9 +168,9 @@ class MapDeform {
         for (var i = 0; i < row; i++) {
             string += "{ ";
             for (var j = 0; j < column; j++) {
-                if (j % 2 === 0) {
+               // if (j % 2 === 0) {
                     string += this._mapD[i][j];
-                }
+               // }
             }
             if (i % 3 === 0) {
                 column++;

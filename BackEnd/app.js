@@ -46,6 +46,13 @@ var m = new MapDeform();
 
 m.toString();
 
+if(m.setPositionBall(1,0)){
+    console.log("YOU WIN !");
+}else{
+    m.toString();
+    console.log("NOP !");
+}
+
 /**
  * Server on port 3000.
  */
