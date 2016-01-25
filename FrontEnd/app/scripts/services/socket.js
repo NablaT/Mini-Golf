@@ -10,10 +10,9 @@
 angular.module('frontEndApp')
   .factory('socket', ['constants', '$q', function (constants, $q) {
 
-
+    //We make variable declaration here to be able to use socket in all of our functions.
     var socket;
 
-    // Public API here
     return {
 
       /**
@@ -21,7 +20,9 @@ angular.module('frontEndApp')
        * process.
        */
       connect: function () {
-        socket = io.connect(constants.backendUrlEcran);
+        socket = io.connect(constants.backendUrlEcran, function(){
+          console.log("Connection success");
+        });
         socket.io.on('connect_error', function (err) {
           console.log('Error connecting to server');
         });
@@ -64,7 +65,5 @@ angular.module('frontEndApp')
           console.log("I am disconnected from the server");
         });
       },
-
-
     };
   }]);

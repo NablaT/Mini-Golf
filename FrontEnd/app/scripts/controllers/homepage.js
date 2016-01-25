@@ -76,8 +76,6 @@ angular.module('frontEndApp')
 
 
       }
-
-
     //TODO END
 
     $scope.verifyGameIsRunning = function () {
