@@ -48,12 +48,16 @@
             android:id="@+id/textView2"
             android:textColor="#FFFFFF"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/iptext"
-            android:minWidth="200dp"
-            android:textColor="#FFFFFF"/>
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/iptext"
+                android:layout_width="match_parent" android:inputType="textCapSentences"
+                android:layout_height="wrap_content" android:maxLines="1"
+                android:singleLine="true" android:textColor="#FFFFFF" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
@@ -70,14 +74,20 @@
             android:id="@+id/textView3"
             android:textColor="#FFFFFF"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/porttext"
-            android:minWidth="200dp"
-            android:textColor="#FFFFFF"/>
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/porttext"
+                android:layout_width="match_parent" android:inputType="textCapSentences"
+                android:layout_height="wrap_content" android:maxLines="1"
+                android:singleLine="true" android:textColor="#FFFFFF" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
+
+
 
     <Button
         android:layout_height="wrap_content"
