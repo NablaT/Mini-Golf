@@ -65,3 +65,5 @@ ecranSocket.on('connect', function (socket) {
 
 
 });
+
+module.exports = ecranSocket;
