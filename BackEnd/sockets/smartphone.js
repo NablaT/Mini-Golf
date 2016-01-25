@@ -76,8 +76,7 @@ smartphoneSocket.on('connect', function (socket) {
      */
     function joinGame (params) {
         console.log('Somebody is trying to join the game');
-        var tmp = game.addPlayer(params.name, gameStart);
-        switch (tmp) {
+        switch (game.addPlayer(params.name, gameStart)) {
             case 0 :
                 socket.emit('waitingToStart', {});
                 console.info('Player ' + params.name + ' joined the game');
