@@ -57,7 +57,7 @@ angular.module('frontEndApp')
       $scope.sendNumberOfPlayer = function () {
         player.setNbPlayer($scope.nbOfPlayer);
         //services.postGameIsRunning(true);
-        $scope.currentPage = "scores";
+        $scope.currentPage = "waitingFrame";
         services.postNumberOfPlayer($scope.nbOfPlayer).then(
           function (data) {
             console.log(data);
