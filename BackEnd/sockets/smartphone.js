@@ -9,7 +9,7 @@ var io   = require('../core/core.js').getIO(),
 var smartphoneSocket = io.of('/smartphone');
 
 smartphoneSocket.on('connect', function (socket) {
-    console.log('connected');
+    console.log('connected smartphone');
 
     /////////////////////////////////            Base Socket Events                    /////////////////////////////////
 
@@ -72,11 +72,12 @@ smartphoneSocket.on('connect', function (socket) {
      *     <li>If there is no place anymore for the player it emits the 'noPlaceAvailable' event.</li>
      *     <li>If there is place for the player it emits the 'waitingToStart' event.</li>
      * </ul>
-     * @param {Object} params
+     * @param {Object} params - The json object containing the parameters.
      */
     function joinGame (params) {
         console.log('Somebody is trying to join the game');
-        switch (game.addPlayer(params.name)) {
+        var tmp = game.addPlayer(params.name, gameStart);
+        switch (tmp) {
             case 0 :
                 socket.emit('waitingToStart', {});
                 console.info('Player ' + params.name + ' joined the game');
@@ -86,12 +87,19 @@ smartphoneSocket.on('connect', function (socket) {
                 console.error('There is no place anymore to join the game');
                 break;
             case 2 :
-                socket.emit('gameNotSarted', {});
+                socket.emit('gameNotStarted', {});
                 console.error('The game is not started yet');
                 break;
             default:
                 console.error('This case is not supposed to happen');
         }
+    }
+
+    /**
+     * This function emits the event 'gameStart'.
+     */
+    function gameStart () {
+        smartphone.emit('gameStart', {})
     }
 
 });

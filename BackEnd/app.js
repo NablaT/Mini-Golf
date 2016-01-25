@@ -12,8 +12,10 @@ var ecranRouter      = require('./webAPI/ecran.js'),
     smartphoneRouter = require('./webAPI/smartphone.js'),
     kinectRouter     = require('./webAPI/kinect.js').router;
 
-/////////////////////////////////                      Sphero                          /////////////////////////////////
+/////////////////////////////////                     Sockets                          /////////////////////////////////
 require('./sockets/sphero.js');
+require('./sockets/ecran.js');
+require('./sockets/smartphone.js');
 
 /////////////////////////////////                 Logger and parsing                   /////////////////////////////////
 app.use(logger('dev')); // Logger in dev mode.
