@@ -21,7 +21,7 @@ angular.module('frontEndApp')
 
     socket.connect();
     socket.listenPlayers();
-    socket.listenDeconnection();
+    socket.listenDisconnection();
 
     /**
      * Function updateHomePage. This function updates the home page.
