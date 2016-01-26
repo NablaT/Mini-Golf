@@ -84,7 +84,7 @@ var playerReady = function () {
 };
 
 /**
- * This function converts the angle redeived from the kinect to a valid angle for the sphero.
+ * This function converts the angle received from the kinect to a valid angle for the sphero.
  * @param {int} kinectAngle - The angle sent from the kinect.
  * @param {boolean} isRighty - A boolean to know if the user is righty.
  * @returns {number} A valid angle for the sphero.
