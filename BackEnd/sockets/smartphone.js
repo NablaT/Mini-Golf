@@ -35,6 +35,8 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('ready', ready);
 
+    socket.on('startCalibration', startCalibration);
+
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
@@ -142,6 +144,14 @@ smartphoneSocket.on('connect', function (socket) {
             response = 'bad';
         }
         socket.emit('readyResponse', {response: response});
+    }
+
+    /**
+     * This function aimed to start the calibration of the sphero.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function startCalibration (params){
+        game.startCalibration();
     }
 
     /////////////////////////////////          Smartphone utilities function           /////////////////////////////////

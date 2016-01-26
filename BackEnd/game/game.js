@@ -84,6 +84,13 @@ var playerReady = function () {
 };
 
 /**
+ * This function aimed to start the calibration of the sphero.
+ */
+var startCalibration = function () {
+    sphero.startCalibration();
+};
+
+/**
  * This function converts the angle received from the kinect to a valid angle for the sphero.
  * @param {int} kinectAngle - The angle sent from the kinect.
  * @param {boolean} isRighty - A boolean to know if the user is righty.
@@ -194,6 +201,7 @@ module.exports = {
     addPlayer           : addPlayer,
     getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
+    startCalibration    : startCalibration,
     calculateStrikeForce: calculateStrikeForce,
     isValidShoot        : isValidShoot,
     distToVelocity      : distToVelocity,

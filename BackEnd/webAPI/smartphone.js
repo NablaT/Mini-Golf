@@ -47,6 +47,7 @@ router.put('/ready', function (req, res) {
     }
 });
 
+// TODO DELETE this function
 /**
  * This route lauch the calibration of the sphero
  */
