@@ -141,7 +141,7 @@ function handle (key, velocity) {
     }
 
     if (key === "F") {
-        finishCalibration();
+        stopCalibration();
     }
 
     if (key === "&") {
