@@ -35,6 +35,7 @@ router.put('/go', function (req, res) {
 
 });
 
+// TODO DELETE this function
 /**
  * This route prepares the sphero to roll.
  */

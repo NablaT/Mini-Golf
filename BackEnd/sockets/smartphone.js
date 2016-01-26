@@ -33,6 +33,8 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('go', go);
 
+    socket.on('ready', ready);
+
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
@@ -125,6 +127,21 @@ smartphoneSocket.on('connect', function (socket) {
             // calculate with the server
             game.go(result.strike_force);
         }
+    }
+
+    /**
+     * This function aimed to prepare the sphero to roll.
+     * It emits the response 'ok' or 'bad' to the smartphone.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function ready (params) {
+        var response;
+        if (game.playerReady()) {
+            response = 'ok';
+        } else {
+            response = 'bad';
+        }
+        socket.emit('readyResponse', {response: response});
     }
 
     /////////////////////////////////          Smartphone utilities function           /////////////////////////////////
