@@ -41,7 +41,7 @@ angular.module('frontEndApp')
       },
 
       /**
-       * Function getPlayers. This function get back the score from the server.
+       * Function getPlayers. This function gets back the score from the server.
        * @returns {*}
        */
       getPlayers: function () {
