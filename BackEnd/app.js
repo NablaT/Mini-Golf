@@ -44,19 +44,8 @@ var MapDeform = require('./core/mapDeform.js');
 
 var m = new MapDeform();
 
-//m.toString();
 
-if(m.setPositionBall(231,0)){
-    console.log("YOU WIN !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-}else{
-   // m.toString();
-    console.log("NOP !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-
-}if(m.setPositionBall(131,90)){
+if(m.setPositionBall(210,325)){
     console.log("YOU WIN !");
     console.log("X ball = ",m.getXball());
     console.log("Y ball = ",m.getYball());
@@ -67,7 +56,19 @@ if(m.setPositionBall(231,0)){
     console.log("Y ball = ",m.getYball());
 
 }
+/*if(m.setPositionBall(175,0)){
+    console.log("YOU WIN !");
+    console.log("X ball = ",m.getXball());
+    console.log("Y ball = ",m.getYball());
+}else{
+    // m.toString();
+    console.log("NOP !");
+    console.log("X ball = ",m.getXball());
+    console.log("Y ball = ",m.getYball());
 
+}*/
+
+m.toString();
 
 
 

@@ -14,30 +14,37 @@ class MapDeform {
      * @param {*} value - The default value for every element in the matrix.
      */
     constructor() {
-        var row = 230;
-        var column = 190;
-        var value = 0;
+        var row = 226;
+        var column = 270;
+        var value = "-";
         // position ball
-        this._x = 27;
-        this._y = 20;
+        this._x = 203;
+        this._y = 53;
+        var angle = 10;
 
         this._mapD = new Array(row);
 
         for (var i = 0; i < row; i++) {
             this._mapD[i] = new Array(column);
             for (var j = 0; j < column; j++) {
-                this._mapD[i][j] = value;
+                var dist = Math.tan(this.toRadians(angle)) * i;
+                if (dist > j) {
+                    this._mapD[i][j] = " ";
+                }
+                else if ((270 - dist) < j) {
+                    this._mapD[i][j] = " ";
+                } else {
+                    this._mapD[i][j] = value;
+                }
             }
-            if (i % 3 === 0) {
-                column++;
-            }
+
         }
         // trou
-        // 148 row
-        // 98 y
-        for (var i = 220; i < 230; i++) {
-            for (var j = 140; j < 150; j++) {
-                this._mapD[i][j] = 2;
+        // 82 row
+        // 230 col
+        for (var i = 75; i < 85; i++) {
+            for (var j = 220; j < 230; j++) {
+                this._mapD[i][j] = " ";
             }
         }
 
@@ -45,16 +52,21 @@ class MapDeform {
         // 27 row
         // 20 column
         // TODO
-        this._mapD[26][20] = 4;
+        for (var i = 200; i < 206; i++) {
+            for (var j = 50; j < 56; j++) {
+                this._mapD[i][j] = " " ;
+            }
+        }
+        /*this._mapD[26][20] = 4;
         this._mapD[27][19] = 4;
         this._mapD[28][20] = 4;
         this._mapD[27][21] = 4;
-
+         */
         //position ball start game
         this.setXball(this._x);
         this.setYball(this._y);
-        this._mapD[this._x][this._y] = 1;
-
+       // this._mapD[this._x][this._y] = 1;
+        this.printball(this._x,this._y);
 
     }
 
@@ -70,32 +82,32 @@ class MapDeform {
 
         var x = parseInt(this.getnewXball(h, alpha));
         var y = parseInt(this.getnewYball(h, alpha));
-      //  console.log("1 x = ",x);
-      //  console.log("1 y = ",y);
+        //  console.log("1 x = ",x);
+        //  console.log("1 y = ",y);
 
-        this._mapD[x][y] = 1;
+        this.printball(x,y);
         return this.check(x, y);
     }
 
     getnewXball(h, alpha) {
         var x = this.getXball() + (Math.sin(this.toRadians(alpha)) * h);
-       // console.log("1 x = ",x);
+        // console.log("1 x = ",x);
         this.setXball(x);
         return x;
     }
 
     getnewYball(h, alpha) {
         var y = this.getYball() + (Math.cos(this.toRadians(alpha)) * h);
-     //   console.log("Y = ",Math.cos(this.toRadians(alpha)) * h);
-     //   console.log(this.getYball());
+        //   console.log("Y = ",Math.cos(this.toRadians(alpha)) * h);
+        //   console.log(this.getYball());
         this.setYball(y);
         return y;
     }
 
-    toRadians (angle) {
-       // console.log("angles = ",angle * (Math.PI / 180));
-    return angle * (Math.PI / 180);
-}
+    toRadians(angle) {
+        // console.log("angles = ",angle * (Math.PI / 180));
+        return angle * (Math.PI / 180);
+    }
 
     getXball() {
         return this._x;
@@ -132,7 +144,7 @@ class MapDeform {
 
     check(x, y) {
 
-        if ((220 < x && 230 > x ) && (140 < y && 150 > y)) {
+        if ((75 < x && 85 > x ) && (220 < y && 230 > y)) {
             return true;
         } else {
             return false;
@@ -171,23 +183,24 @@ class MapDeform {
         }
     }
 
-    toString() {
+    printball(x,y){
+        for (var i = x-2; i < x+2; i++) {
+            for (var j = y-2; j < y+2; j++) {
+                this._mapD[i][j] = "#" ;
+            }
+        }
+    }
 
-        var row = 230;
-        var column = 190;
+    toString() {
+        var row = 226;
+        var column = 270;
         var string = "";
         for (var i = 0; i < row; i++) {
             string += "{ ";
             for (var j = 0; j < column; j++) {
-               // if (j % 2 === 0) {
-                    string += this._mapD[i][j];
-               // }
-            }
-            if (i % 3 === 0) {
-                column++;
+                string += this._mapD[i][j];
             }
             string += "}\n";
-
         }
         console.log(string);
     }
