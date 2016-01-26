@@ -31,8 +31,8 @@ var startCalibration = function () {
 /**
  * This function broadcasts the 'finishCalibration' event.
  */
-var finishCalibration = function () {
-    spheroSocket.emit('finishCalibration', {});
+var stopCalibration = function () {
+    spheroSocket.emit('stopCalibration', {});
 };
 
 /**
@@ -44,9 +44,9 @@ var ready = function (angle) {
 };
 
 module.exports = {
-    sphero           : spheroSocket,
-    goSphero         : goSphero,
-    startCalibration : startCalibration,
-    finishCalibration: finishCalibration,
-    ready            : ready
+    sphero          : spheroSocket,
+    goSphero        : goSphero,
+    startCalibration: startCalibration,
+    stopCalibration : stopCalibration,
+    ready           : ready
 };

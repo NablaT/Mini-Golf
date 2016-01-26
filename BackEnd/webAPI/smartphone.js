@@ -1,3 +1,4 @@
+// TODO DELETE this file.
 var router = require('../core/core.js').express.Router();
 
 var game = require('../game/game.js');
@@ -56,6 +57,7 @@ router.put('/startcalibration', function (req, res) {
     res.send('ok');
 });
 
+// TODO DELETE this function
 /**
  * This route stop the calibration of the sphero
  */

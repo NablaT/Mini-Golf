@@ -91,6 +91,13 @@ var startCalibration = function () {
 };
 
 /**
+ * This function aimed to stop the calibration of the sphero.
+ */
+var stopCalibration = function () {
+    sphero.stopCalibration();
+};
+
+/**
  * This function converts the angle received from the kinect to a valid angle for the sphero.
  * @param {int} kinectAngle - The angle sent from the kinect.
  * @param {boolean} isRighty - A boolean to know if the user is righty.
@@ -202,6 +209,7 @@ module.exports = {
     getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
     startCalibration    : startCalibration,
+    stopCalibration     : stopCalibration,
     calculateStrikeForce: calculateStrikeForce,
     isValidShoot        : isValidShoot,
     distToVelocity      : distToVelocity,
