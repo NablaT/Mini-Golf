@@ -24,10 +24,10 @@ var getGolf = function () {
 };
 
 /**
- * This function starts a new game.
+ * This function initiates a new game.
  * @param {int} numberPlayer - The number of players.
  */
-var startGame = function (numberPlayer) {
+var initGame = function (numberPlayer) {
     golf = new Golf(numberPlayer, map);
 };
 
@@ -41,17 +41,33 @@ var endGame = function () {
 /**
  * This function adds a player to the game.
  * @param {String} playerName - The player's name.
- * @returns {int} Returns true if the player could join the game and he's the last one, false if the player could join the game and he's not the last one, -1 if there is no room anymore, -2 if the game is not started.
+ * @returns {int} Returns :
+ * <ul>
+ *     <li>True if the player could join the game and he's the last one.</li>
+ *     <li>False if the player could join the game and he's not the last one.</li>
+ *     <li>-1 if there is no room anymore.</li>
+ *     <li>-2 if the game is not started.</li>
+ * </ul>
  */
 var addPlayer = function (playerName) {
     if (getGolf() === null) {
         return -2;
     }
     else {
-        var tmp = getGolf().addPlayer(playerName);
-        ecran.emit('players', getGolf().players);
-        return tmp;
+        return getGolf().addPlayer(playerName, function () {
+            ecran.emit('players', getGolf().players);
+        });
     }
+};
+
+/**
+ * This function finds the player who is supposed to play and executes the callback function with the player's name in
+ * parameter.
+ * @param {function} callback - The callback function to execute.
+ */
+var getPlayerToPlay = function (callback) {
+    // TODO find the real player who is supposed to play.
+    callback(getGolf().players[0]);
 };
 
 /**
@@ -77,10 +93,14 @@ var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
     var angle = 0; // transformation de l'angle pour la sphero
     if (isRighty) {
         angle = kinectAngle - 90; // tir à gauche pour un droitier
-        if (angle < 0) angle += 360;
+        if (angle < 0) {
+            angle += 360;
+        }
     } else {
         angle = kinectAngle + 90; // tir à droite pour un gaucher
-        if (angle > 360) angle -= 360;
+        if (angle > 360) {
+            angle -= 360;
+        }
     }
     return angle;
 };
@@ -105,8 +125,12 @@ var calculateStrikeForce = function (datas, clubMass) {
         y = datas[i].y;
         z = datas[i].z;
 
-        if (z < zmin) zmin = z;
-        if (z > zmax) zmax = z;
+        if (z < zmin) {
+            zmin = z;
+        }
+        if (z > zmax) {
+            zmax = z;
+        }
     }
 
     return zmin * clubMass; // force en Newton : F(Newton) = m(kg) * a(m.s-2)
@@ -165,9 +189,10 @@ var go = function (strikeForce) {
 
 module.exports = {
     getGolf             : getGolf,
-    startGame           : startGame,
+    initGame            : initGame,
     endGame             : endGame,
     addPlayer           : addPlayer,
+    getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
     calculateStrikeForce: calculateStrikeForce,
     isValidShoot        : isValidShoot,

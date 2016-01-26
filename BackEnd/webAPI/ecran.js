@@ -1,6 +1,7 @@
 var router = require('../core/core.js').express.Router(),
     game   = require('../game/game.js');
 
+// TODO this function seems to not be use anymore.
 /**
  * This get function returns the scores.
  */
@@ -13,7 +14,7 @@ router.get('/scores', function (req, res, next) {
  */
 router.post('/nbofplayer', function (req, res, next) {
     // req.body = {numberofplayer:data}
-    game.startGame(req.body.numberofplayer);
+    game.initGame(req.body.numberofplayer);
     res.send(game.getGolf().players);
 });
 

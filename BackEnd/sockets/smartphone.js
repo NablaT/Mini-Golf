@@ -27,7 +27,7 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('reconnect_failed', reconnectFailed);
 
-    /////////////////////////////////           Mini Golf Socket Events                /////////////////////////////////
+    /////////////////////////////////           Smartphone Socket Events               /////////////////////////////////
 
     socket.on('joinGame', joinGame);
 
@@ -63,14 +63,15 @@ smartphoneSocket.on('connect', function (socket) {
         console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
     }
 
-    /////////////////////////////////       Callback Mini-Golf Socket Events           /////////////////////////////////
+    /////////////////////////////////       Callback Smartphone Socket Events          /////////////////////////////////
 
     /**
      * This function aimed to allow a player to join the game.
      * <ul>
      *     <li>If the game is not started it emits the 'gameNoStarted' event.</li>
      *     <li>If there is no place anymore for the player it emits the 'noPlaceAvailable' event.</li>
-     *     <li>If there is place for the player it emits the 'waitingToStart' event.</li>
+     *     <li>If there is place for the player (and he's not the last one) it emits the 'waitingToStart' event.</li>
+     *     <li>If there is place for the player (and he's the last one) it emits the 'gameStart' event.</li>
      * </ul>
      * @param {Object} params - The json object containing the parameters.
      */
@@ -78,13 +79,7 @@ smartphoneSocket.on('connect', function (socket) {
         console.log('Somebody is trying to join the game');
         switch (game.addPlayer(params.name)) {
             case true :
-                socket.emit('waitingToStart', {});
-                console.info('Player ' + params.name + ' joined the game');
-                setTimeout(function () {
-                    smartphoneSocket.emit('gameStart', {});
-                    console.info('We can start the game');
-
-                }, 2000);
+                lastOneToJoin(socket);
                 break;
             case false:
                 socket.emit('waitingToStart', {});
@@ -101,6 +96,26 @@ smartphoneSocket.on('connect', function (socket) {
             default:
                 console.error('This case is not supposed to happen');
         }
+    }
+
+    /////////////////////////////////          Smartphone utilities function           /////////////////////////////////
+
+    /**
+     * This function aimed to start the game when the last player to join has joined the game.
+     * @param socket
+     */
+    function lastOneToJoin (socket) {
+        socket.emit('waitingToStart', {});
+        console.info('Player ' + params.name + ' joined the game');
+        setTimeout(function () {
+            smartphoneSocket.emit('gameStart', {});
+            console.info('We can start the game');
+            setTimeout(function () {
+                game.getPlayerToPlay(function (playerName) {
+                    smartphoneSocket.emit('play', {name : playerName});
+                });
+            }, 1000)
+        }, 2000);
     }
 
 });

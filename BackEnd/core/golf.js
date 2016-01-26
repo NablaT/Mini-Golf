@@ -48,6 +48,7 @@ class Golf {
     /**
      * This function adds a player if there is still room in the game.
      * @param {String} playerName - The player's name.
+     * @param {Function} callback - Callback's function to be triggered when a player has been added.
      * @returns {int} Returns :
      * <ul>
      *     <li>True if the player could join the game and he's the last one.</li>
@@ -55,9 +56,10 @@ class Golf {
      *     <li>-1 if there is no place anymore.</li>
      * </ul>
      */
-    addPlayer (playerName) {
+    addPlayer (playerName, callback) {
         if (this.players.length < this.playerNumber) {
             this.players.push(new Player(playerName));
+            callback();
             return this.isAllPlayersJoined();
         }
         else {
