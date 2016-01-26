@@ -3,6 +3,7 @@ var router = require('../core/core.js').express.Router();
 var game = require('../game/game.js');
 var sphero = require('../sockets/sphero.js');
 
+// TODO DELETE this function
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur
  */

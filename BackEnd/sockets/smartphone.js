@@ -31,6 +31,8 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('joinGame', joinGame);
 
+    socket.on('go', go);
+
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
     function disconnect () {
@@ -98,6 +100,33 @@ smartphoneSocket.on('connect', function (socket) {
         }
     }
 
+    /**
+     * This function aimed to get and analyse the shoot.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function go (params) {
+        var CLUB_MASS = 0.460; // 460 grammes
+
+        var datas = params;
+
+        var strike_force = game.calculateStrikeForce(datas, CLUB_MASS);
+
+        console.log('force de frappe ' + strike_force + 'N');
+
+        var result          = {};
+        result.valid        = game.isValidShoot(datas, strike_force);
+        result.strike_force = Math.abs(strike_force);
+
+        var response = JSON.stringify(result);
+
+        socket.emit('goResponse', response);
+
+        if (result.valid) {
+            // calculate with the server
+            game.go(result.strike_force);
+        }
+    }
+
     /////////////////////////////////          Smartphone utilities function           /////////////////////////////////
 
     /**
@@ -112,7 +141,7 @@ smartphoneSocket.on('connect', function (socket) {
             console.info('We can start the game');
             setTimeout(function () {
                 game.getPlayerToPlay(function (playerName) {
-                    smartphoneSocket.emit('play', {name : playerName});
+                    smartphoneSocket.emit('play', {name: playerName});
                 });
             }, 1000)
         }, 2000);
