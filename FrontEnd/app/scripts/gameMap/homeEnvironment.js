@@ -46,9 +46,6 @@ function createScene() {
 
   camera.attachControl(canvas);
 
-  // scene.registerBeforeRender(beforeRenderFunction);
-  /*var h= getH(24,25);
-  getAlpha(25,h);*/
   var alpha = 0.76;
 
   //Init ground2
@@ -101,13 +98,6 @@ function createScene() {
   var hFlag=getH(20,-7.2);
   alphaFlag= getAlpha(-7.2,hFlag);
 
-  /*
-  cylinder.position = new BABYLON.Vector3(20, 6, -5);
-  cylinder.material = cylinderMaterial;
-
-  wall1.position = new BABYLON.Vector3(20, 20, -7.2);*/
-
-
   scene.registerBeforeRender(function () {
     //ground.rotation.x += 0.01;
     ground.rotation.y += 0.001;
@@ -154,18 +144,6 @@ function createScene() {
     arrayPiquet[1].position = new BABYLON.Vector3(Math.sin(alphaFlag) *hFlag ,20, Math.cos(alphaFlag) * hFlag);
     alphaFlag+=0.001;
     arrayPiquet[1].rotation.y+=0.001;
-
-
-    //ground2.position = new BABYLON.Vector3(Math.sin(alpha) * 35.65, 6.9, Math.cos(alpha) * 35.65);
-    /*ground3.rotation.y += 0.001;
-    track.rotation.y += 0.001;
-    arrayPodium[0].rotation.y += 0.001;
-    arrayPodium[1].rotation.y += 0.001;
-    arrayPodium[2].rotation.y += 0.001;
-    golfHole.rotation.y += 0.001;
-    arrayPiquet[0].rotation.y += 0.001;
-    arrayPiquet[1].rotation.y += 0.001;*/
-    //ground.position = new BABYLON.Vector3(Math.cos(alpha) * 30, 10, Math.sin(alpha) * 30);
 
     alpha += 0.001;
 
@@ -263,8 +241,6 @@ function initialisationSkyBox(scene) {
  */
 function initialisationGround(scene) {
   var ground = BABYLON.Mesh.CreateGround("ground", 90, 90, 100, scene);
-  //var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap3.png", 90, 90, 30, 0, 10, scene, false);
-
   var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
   groundMaterial.diffuseTexture.uScale = 6;
@@ -272,8 +248,6 @@ function initialisationGround(scene) {
   groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   ground.position.y = 7;
   ground.material = groundMaterial;
-
-
   return ground;
 }
 
@@ -338,13 +312,18 @@ function initialisationTrack(scene){
 
 }
 
+/**
+ * Function initialisePodium. This function initializes the podium (three cylinders)
+ * @param scene
+ * @returns {*[]}
+ */
+
 function initialisePodium(scene){
   //First place
   var cylinder1 = BABYLON.Mesh.CreateCylinder("cylinder",4, 4, 4, 0, 1, scene, false);
   var cylinder1Material = new BABYLON.StandardMaterial("cylinder", scene);
   cylinder1.position = new BABYLON.Vector3(-30, 8, -10);
   cylinder1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  //cylinderMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 
   cylinder1Material.diffuseTexture = new BABYLON.Texture("textures/gold.png", scene);
   cylinder1.material = cylinder1Material;
@@ -375,27 +354,13 @@ function initialisePodium(scene){
 
 }
 
+/**
+ * Function initialisePiquet. This function initializes the golf stick.
+ * @param scene
+ * @returns {*[]}
+ */
+
 function initialisePiquet(scene){
-
-  /*var cylinder = BABYLON.Mesh.CreateCylinder("cylinder",30, 0.7, 1, 0, 1, scene, false);
-  var cylinderMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  cylinderMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
-  cylinder.position = new BABYLON.Vector3(0, 6, 0);
-  cylinder.material = cylinderMaterial;
-
-  var cylinder = BABYLON.Mesh.CreateCylinder("cylinder",30, 0.7, 1, 0, 1, scene, false);
-  var cylinderMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  cylinderMaterial.diffuseColor = new BABYLON.Color3(0, 1, 0);
-  cylinder.position = new BABYLON.Vector3(50, 6, 0);
-  cylinder.material = cylinderMaterial;
-
-  var cylinder = BABYLON.Mesh.CreateCylinder("cylinder",30, 0.7, 1, 0, 1, scene, false);
-  var cylinderMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  cylinderMaterial.diffuseColor = new BABYLON.Color3(0, 0, 1);
-  cylinder.position = new BABYLON.Vector3(0, 6, 50);
-  cylinder.material = cylinderMaterial;*/
-
-
   //First place
   var cylinder = BABYLON.Mesh.CreateCylinder("cylinder",30, 0.7, 1, 0, 1, scene, false);
   var cylinderMaterial = new BABYLON.StandardMaterial("cylinder", scene);
@@ -435,6 +400,11 @@ function initialisationWater(scene) {
   water.addToRenderList(skybox);
   waterMesh.material = water;
 }
+
+/**
+ * Function initialisationMagmaSphere. This function initializes the magma sphere. Not used right now.
+ * @param scene
+ */
 
 function initialisationMagmaSphere(scene){
   // Box5 material

@@ -78,6 +78,9 @@ angular.module('frontEndApp')
       }
     //TODO END
 
+    /**
+     * Function verifyGameIsRunning. This function verifies if the game is running.
+     */
     $scope.verifyGameIsRunning = function () {
       services.getGameIsRunning().then(
         function (data) {
@@ -110,17 +113,6 @@ angular.module('frontEndApp')
             console.log("error getbackscore homepage",msg);
           }
         );
-        /*
-        services.getScore().then(
-          function (data) {
-            $scope.players = data;
-           // $scope.getbackScore();
-            console.log(data);
-          },
-          function (msg) {
-            console.log(msg);
-          }
-        );*/
       }
 
 
