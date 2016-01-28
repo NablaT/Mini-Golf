@@ -15,7 +15,7 @@ class Map {
      * @param {Position} startPosition - The start position.
      * @param {Position} holePosition - The hole position.
      * @param {int} holeSide - The hole side.
-     * @param {in} deformationAngle - The deformation angle in degrees.
+     * @param {int} deformationAngle - The deformation angle in degrees.
      */
     constructor (width, height, startPosition, holePosition, holeSide, deformationAngle) {
         this._width         = width;
