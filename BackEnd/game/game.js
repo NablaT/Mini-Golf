@@ -10,9 +10,8 @@ var Map      = require('../core/map.js'),
     ecran    = require('../sockets/ecran.js');
 
 const DIST_TO_VELOCITY     = 0.534;
-const CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
 
-var map = new Map(1200, 800, new Position(100, 400), new Position(1100, 400));
+var map = new Map(270, 226, new Position(203, 53), new Position(230, 82), 10, 10);
 
 var golf = null;
 

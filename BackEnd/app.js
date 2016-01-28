@@ -37,51 +37,6 @@ app.use('/ecran', ecranRouter);
 app.use('/smartphone', smartphoneRouter);
 app.use('/kinect', kinectRouter);
 
-
-// crée la map
-//require('./map.js')
-//    .create();
-
-var MapDeform = require('./core/mapDeform.js');
-
-var m = new MapDeform();
-
-
-if(m.setPositionBall(210,325)){
-    console.log("YOU WIN !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-}else{
-   // m.toString();
-    console.log("NOP !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-
-}
-/*if(m.setPositionBall(175,0)){
-    console.log("YOU WIN !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-}else{
-    // m.toString();
-    console.log("NOP !");
-    console.log("X ball = ",m.getXball());
-    console.log("Y ball = ",m.getYball());
-
-}*/
-
-m.toString();
-
-
-
-
-/*if(m.setPositionBall(2,1)){
-    console.log("YOU WIN !");
-}else{
-    m.toString();
-    console.log("NOP !");
-}*/
-
 /**
  * Server on port 3000.
  */

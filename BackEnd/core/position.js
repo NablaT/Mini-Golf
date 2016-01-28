@@ -12,9 +12,9 @@ class Position {
     /**
      * This is the default constructor.
      */
-    constructor () {
-        this._latitude  = 0.0;
-        this._longitude = 0.0;
+    constructor (latitude, longitude) {
+        this._latitude  = latitude;
+        this._longitude = longitude;
     }
 
     /**

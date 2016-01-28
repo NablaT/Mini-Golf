@@ -1,34 +1,33 @@
 'use strict';
 
-/**
- * Created by guillaume on 17/01/2016.
- */
-
 var Matrix = require('./matrix.js');
 
 /**
- * This class represents a golf Map.
+ * This class represents a matrix.
  */
 class Map {
 
+    // TODO row and column params should be strictly positives.
     /**
-     * The constructor of a map.
-     * It creates a matrix with a value equal at 0 everywhere.
+     * The constrctor of a matrix.
      * @param {int} width - The width of the map.
      * @param {int} height - The height of the map.
      * @param {Position} startPosition - The start position.
      * @param {Position} holePosition - The hole position.
-     * @param {int} rayonHole - The rayon hole.
+     * @param {int} holeSide - The hole side.
+     * @param {in} deformationAngle - The deformation angle in degrees.
      */
-    constructor (width, height, startPosition, holePosition, rayonHole) {
-        if (rayonHole == 'undefined') {
-            rayonHole = 50;
-        }
-        this._matrix        = new Matrix(height, width);
+    constructor (width, height, startPosition, holePosition, holeSide, deformationAngle) {
+        this._width         = width;
+        this._height        = height;
         this._startPosition = startPosition;
         this._holePosition  = holePosition;
-        this._rayonHole     = rayonHole;
+        this._holeSide      = holeSide;
+        this._matrix        = new Matrix(height, width, '-', deformationAngle);
         this._ballPosition  = startPosition;
+
+        this.printHole();
+
     }
 
     /**
@@ -40,7 +39,7 @@ class Map {
     }
 
     /**
-     * Getter of ther starter position.
+     * Getter of the starter position.
      * @returns {Position} The starter position.
      */
     get startPosition () {
@@ -56,11 +55,11 @@ class Map {
     }
 
     /**
-     * Getter of the rayon hole.
-     * @returns {int} The rayon hole.
+     * Getter of the hole side.
+     * @returns {int} The hole side.
      */
-    get rayonHole () {
-        return this._rayonHole;
+    get holeSide () {
+        return this._holeSide;
     }
 
     /**
@@ -72,16 +71,84 @@ class Map {
     }
 
     /**
-     * Setter of the ball position.
-     * @param {Position} newBallPosition - The new ball position.
+     * This function sets the position ball.
+     * @param {number} distance - The shoot's distance.
+     * @param {int} angle - The shoot's angle in degrees.
+     * @param {function} callback - Callback to be triggered when the ball is in the hole.
      */
-    set ballPosition (newBallPosition) {
-        this._ballPosition = newBallPosition;
+    setPositionBall (distance, angle, callback) {
+
+        this.ballPosition.latitude += parseInt(Math.cos(Map.toRadians(angle)) * distance);
+        this.ballPosition.longitude += parseInt(Math.sin(Map.toRadians(angle)) * distance);
+
+        this.check(callback);
     }
 
-    // TODO Define this method
-    createObstacles () {
+    /**
+     * This function converts an angle in degrees to an angle in radians.
+     * @param {int} angle - The angle in degrees.
+     * @returns {number} The angle in radians.
+     */
+    static toRadians (angle) {
+        return angle * (Math.PI / 180);
+    }
 
+    /**
+     * This function checks if the ball is in the hole.
+     * @param {function} callback - Callback to be triggered when the ball is in the hole.
+     */
+    check (callback) {
+
+        if ((
+                (this.holePosition.latitude - (this.holeSide / 2))
+                < this.ballPosition.latitude
+                && (this.holeSide / 2)
+                > this.holePosition.latitude
+            )
+            &&
+            (
+                (this.holePosition.longitude - (this.holeSide / 2))
+                < this.ballPosition.longitude
+                && (this.holeSide / 2)
+                > this.holePosition.longitude
+            )
+        ) {
+            callback();
+        }
+    };
+
+    /**
+     * This function prints the ball position. (Rayon of 5).
+     */
+    printBall () {
+        for (let i = this.ballPosition.latitude - 2; i < this.ballPosition.latitude + 2; i++) {
+            for (let j = this.ballPosition.longitude - 2; j < this.ballPosition.longitude + 2; j++) {
+                this.matrix.setElement(j, i, '#');
+            }
+        }
+    }
+
+    /**
+     * This function prints the hole position.
+     */
+    printHole () {
+        for (let i = this.holePosition.latitude - (this.holeSide / 2);
+             i < this.holePosition.latitude + (this.holeSide / 2);
+             i++) {
+            for (let j = this.holePosition.longitude - (this.holeSide / 2);
+                 j < this.holePosition.longitude + (this.holeSide / 2);
+                 j++) {
+                this.matrix.setElement(j, i, ' ');
+            }
+        }
+    }
+
+    /**
+     * This functions prints the map.
+     */
+    toString () {
+        this.printBall();
+        this.matrix.toString();
     }
 
 }
