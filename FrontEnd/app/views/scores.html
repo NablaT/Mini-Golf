@@ -1,29 +1,15 @@
 <link rel="stylesheet" href="styles/scores.css">
 <div class="thescore">
-
-  <div class="container">
-    <div class="row">
-      <button class="homeButton col-lg-2" ng-click="updateHomePage('menu','HomepageCtrl')">
-        <!-- ng-click="updateHomePage('menu')" -->
-        <img src="../images/homeButton.png" class="img-responsive">
-      </button>
-      <div class="arrow col-lg-2">
-        <i class="fa fa-arrow-right " id="buttonSideBar" ng-hide="iconmenu" ng-click="openMenu()"></i>
-        <i class="fa fa-arrow-right fa-rotate-90" ng-show="iconmenu" id="buttonSideBar2" ng-click="closeMenu()"></i>
-      </div>
-      <!--<label class="labelOpenClose" id="viewAllScore" ng-hide="iconmenu">View all scores</label>
-    <label class="labelOpenClose" id="viewAllScore2" ng-show="iconmenu">View scores current player</label>
-  -->
-
-      <h2 class="col-lg-2"> SCORES </h2>
-      <div class="col-lg-2"></div>
-      <div class="col-lg-4"></div>
-    </div>
-    <div class="arrow2">
-      <i class="fa fa-list-ul " id="buttonSideBar3" ng-hide="iconmenu" ng-click="openMenu()"></i>
-      <i class="fa fa-arrow-up" ng-show="iconmenu" id="buttonSideBar4" ng-click="closeMenu()"></i>
-    </div>
-  </div>
+  <button class="homeButton col-lg-2" ng-click="updateHomePage('menu','HomepageCtrl')">
+    <!-- ng-click="updateHomePage('menu')" -->
+    <img src="../images/homeButton.png" class="img-responsive">
+  </button>
+  <i class="fa fa-arrow-right" id="buttonSideBar" ng-hide="iconmenu" ng-click="openMenu()" ></i>
+  <i class="fa fa-arrow-right fa-rotate-90" ng-show="iconmenu" id="buttonSideBar2" ng-click="closeMenu()" ></i>
+  <!--<label class="labelOpenClose" id="viewAllScore" ng-hide="iconmenu">View all scores</label>
+  <label class="labelOpenClose" id="viewAllScore2" ng-show="iconmenu">View scores current player</label>
+-->
+  <h2> SCORES </h2>
   <br/>
   <table class="table table-hover">
     <thead>
@@ -31,11 +17,10 @@
       <th>Player</th>
       <th>Map 1</th>
       <th class="finalScore">Final Scores</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
-
+    <!--  | filter:{_activePlayer:true} -->
     <tr ng-repeat="player in players | filter:{_activePlayer:true}  ">
       <td>{{player._playerName}}</td>
       <td>{{player._score}}</td>
@@ -44,4 +29,3 @@
     </tbody>
   </table>
 </div>
-
