@@ -108,9 +108,9 @@ class Matrix {
     toString () {
         var string = '';
         for (let i = 0; i < this.row; i++) {
-            string += i +"{ ";
+            string += i + "{ ";
             for (let j = 0; j < this.column; j++) {
-                string += this.getElement(i,j);
+                string += this.getElement(i, j);
             }
             string += "}\n";
         }

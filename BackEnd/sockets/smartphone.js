@@ -87,7 +87,7 @@ smartphoneSocket.on('connect', function (socket) {
         console.log('Somebody is trying to join the game');
         switch (game.addPlayer(params.name)) {
             case true :
-                lastOneToJoin(socket, params);
+                lastOneToJoin(socket);
                 break;
             case false:
                 socket.emit('waitingToStart', {});
@@ -108,28 +108,23 @@ smartphoneSocket.on('connect', function (socket) {
 
     /**
      * This function aimed to get and analyse the shoot.
-     * @param {Object} params - The json object containing the parameters.
+     * @param {Array} params - The array containing the parameters.
      */
     function go (params) {
 
         var CLUB_MASS = 0.460; // 460 grammes
 
-        var datas = params;
-
-        var strike_force = game.calculateStrikeForce(datas, CLUB_MASS);
+        var strike_force = game.calculateStrikeForce(params, CLUB_MASS);
 
         console.log('force de frappe ' + strike_force + 'N');
 
         var result          = {};
-        result.valid        = game.isValidShoot(datas, strike_force);
+        result.valid        = game.isValidShoot(params, strike_force);
         result.strike_force = Math.abs(strike_force);
 
-        var response = JSON.stringify(result);
-
-        socket.emit('goResponse', response);
+        socket.emit('goResponse', result);
 
         if (result.valid) {
-            // calculate with the server
             game.go(result.strike_force, function (playerName) {
                 smartphoneSocket.emit('play', {name: playerName});
             });
@@ -173,15 +168,20 @@ smartphoneSocket.on('connect', function (socket) {
      * This function aimed to start the game when the last player to join has joined the game.
      * @param socket
      */
-    function lastOneToJoin (socket, params) {
+    function lastOneToJoin (socket) {
         socket.emit('waitingToStart', {});
-        console.info('Player ' + params.name + ' joined the game');
+        console.info('The last player joined the game');
+
+        // This timeout is to handle the change view in smartphone !
         setTimeout(function () {
             smartphoneSocket.emit('gameStart', {});
             console.info('We can start the game');
+
+            // This timeout finds the player who is supposed to play and emit the event 'play' at every smartphone.
             setTimeout(function () {
                 smartphoneSocket.emit('play', {name: game.getPlayerToPlay()});
             }, 1000)
+
         }, 2000);
     }
 
