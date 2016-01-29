@@ -12,9 +12,9 @@ class Position {
     /**
      * This is the default constructor.
      */
-    constructor () {
-        this._latitude  = 0.0;
-        this._longitude = 0.0;
+    constructor (latitude, longitude) {
+        this._latitude  = latitude;
+        this._longitude = longitude;
     }
 
     /**
@@ -57,6 +57,17 @@ class Position {
     updatePosition (newLatitude, newLongitude) {
         this.latitude  = newLatitude;
         this.longitude = newLongitude;
+    }
+
+    /**
+     * This function converts a position in centimeters to a position in pixels.
+     * @returns {Object} An object containing the position in pixels.
+     */
+    toPixel () {
+        var posPixel            = {};
+        posPixel.longitudePixel = 400 - (this.longitude / 0.2825);
+        posPixel.latitudePixel  = -600 + (this.latitude / (0.225 - 0.000296 * this.longitude));
+        return posPixel;
     }
 }
 

@@ -60,17 +60,19 @@ public class CalibrateActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private class StartCalibrationTask extends AsyncTask<Void, Void, Boolean> {
+    private class StartCalibrationTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Boolean doInBackground(Void... params) {
-            return WebMinigolf.startCalibration();
+        protected Void doInBackground(Void... params) {
+             WebMinigolf.startCalibration();
+            return null;
         }
     }
 
-    private class StopCalibrationTask extends AsyncTask<Void, Void, Boolean> {
+    private class StopCalibrationTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Boolean doInBackground(Void... params) {
-            return WebMinigolf.stopCalibration();
+        protected Void doInBackground(Void... params) {
+            WebMinigolf.stopCalibration();
+            return null;
         }
     }
 

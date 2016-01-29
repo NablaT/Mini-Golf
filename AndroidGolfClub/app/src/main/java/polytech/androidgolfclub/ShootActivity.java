@@ -240,7 +240,6 @@ public class ShootActivity extends AppCompatActivity {
 
 
                 // erreur de tir
-
                 if (force==-3){
 
                     // connectivity error
