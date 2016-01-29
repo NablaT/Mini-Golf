@@ -87,7 +87,7 @@ smartphoneSocket.on('connect', function (socket) {
         console.log('Somebody is trying to join the game');
         switch (game.addPlayer(params.name)) {
             case true :
-                lastOneToJoin(socket);
+                lastOneToJoin(socket, params);
                 break;
             case false:
                 socket.emit('waitingToStart', {});
@@ -129,7 +129,9 @@ smartphoneSocket.on('connect', function (socket) {
 
         if (result.valid) {
             // calculate with the server
-            game.go(result.strike_force);
+            game.go(result.strike_force, function (playerName) {
+                smartphoneSocket.emit('play', {name: playerName});
+            });
         }
     }
 
@@ -152,7 +154,7 @@ smartphoneSocket.on('connect', function (socket) {
      * This function aimed to start the calibration of the sphero.
      * @param {Object} params - The json object containing the parameters.
      */
-    function startCalibration (params){
+    function startCalibration (params) {
         game.startCalibration();
     }
 
@@ -170,16 +172,14 @@ smartphoneSocket.on('connect', function (socket) {
      * This function aimed to start the game when the last player to join has joined the game.
      * @param socket
      */
-    function lastOneToJoin (socket) {
+    function lastOneToJoin (socket, params) {
         socket.emit('waitingToStart', {});
         console.info('Player ' + params.name + ' joined the game');
         setTimeout(function () {
             smartphoneSocket.emit('gameStart', {});
             console.info('We can start the game');
             setTimeout(function () {
-                game.getPlayerToPlay(function (playerName) {
-                    smartphoneSocket.emit('play', {name: playerName});
-                });
+                smartphoneSocket.emit('play', {name: game.getPlayerToPlay()});
             }, 1000)
         }, 2000);
     }

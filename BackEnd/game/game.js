@@ -11,15 +11,35 @@ var Map      = require('../core/map.js'),
 
 const DIST_TO_VELOCITY     = 0.534;
 
-var map = new Map(270, 226, new Position(203, 53), new Position(230, 82), 10, 10);
+var map = new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10);
 
 var golf = null;
 
 const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
+var playerToPlayIndice = -1;
+
+/**
+ * The angle of shoot.
+ * @type {int}
+ */
+var angle = null;
+
 var getGolf = function () {
     return golf;
+};
+
+var getAngle = function () {
+    return angle;
+};
+
+var getMap = function () {
+    return map;
+};
+
+var getPlayerToPlayIndice = function () {
+    return playerToPlayIndice;
 };
 
 /**
@@ -28,6 +48,7 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     golf = new Golf(numberPlayer, map);
+    playerToPlayIndice = -1;
 };
 
 /**
@@ -62,11 +83,18 @@ var addPlayer = function (playerName) {
 /**
  * This function finds the player who is supposed to play and executes the callback function with the player's name in
  * parameter.
- * @param {function} callback - The callback function to execute.
  */
-var getPlayerToPlay = function (callback) {
+var getPlayerToPlay = function () {
     // TODO find the real player who is supposed to play.
-    callback(getGolf().players[0]);
+    if (getPlayerToPlayIndice() === -1) {
+        playerToPlayIndice = 0;
+    }
+    else {
+        playerToPlayIndice = getPlayerToPlayIndice() + 1;
+    }
+    var playerName = getGolf().players[playerToPlayIndice].playerName;
+    ecran.emit('playerToPlay', {playerName: playerName});
+    return playerName;
 };
 
 /**
@@ -76,7 +104,10 @@ var getPlayerToPlay = function (callback) {
 var playerReady = function () {
     var direction = kinect.getLastShootDirection();
     if (direction !== -1) {
-        sphero.ready(convertKinectAngleToSpheroAngle(direction, true));
+        kinect.resetDirection();
+        var angleTmp = convertKinectAngleToSpheroAngle(direction, true);
+        angle = angleTmp;
+        sphero.ready(angleTmp);
         return true;
     }
     return false;
@@ -191,8 +222,13 @@ var distToVelocity = function (dist) {
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
  */
-var go = function (strikeForce) {
+var go = function (strikeForce, callback) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result en cm
+    getMap().setPositionBall(dist, angle, function () {
+        ecran.emit('victory', {});
+        callback(getGolf().getPlayerToPlay());
+        console.log(getMap().toString());
+    });
     console.log(dist);
     var velocity = distToVelocity(dist);
     console.log(velocity);
