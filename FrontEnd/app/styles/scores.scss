@@ -32,10 +32,34 @@
   font-size:3em;
 }
 
-#buttonSideBar:hover, #buttonSideBar2:hover{
+#buttonSideBar:hover, #buttonSideBar2:hover,
+#buttonSideBar3:hover, #buttonSideBar4:hover,{
   color:white;
   cursor:pointer;
+  width:100%;
+  height: 100%;
 }
+
+
+#buttonSideBar3{
+  position:fixed;
+  z-index:3002;
+  left:27%;
+  top:15.5%;
+  color:#adadad;
+  font-size:3em;
+}
+
+#buttonSideBar4{
+  position:fixed;
+  z-index:3002;
+  left:27%;
+  top:15.5%;
+  color:#adadad;
+  font-size:3em;
+}
+
+
 
 .labelOpenClose{
   font-size:5px;
