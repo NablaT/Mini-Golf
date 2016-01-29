@@ -20,7 +20,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="player in players | filter:{activePlayer:true}">
+    <!--  | filter:{_activePlayer:true} -->
+    <tr ng-repeat="player in players | filter:{_activePlayer:true}  ">
       <td>{{player._playerName}}</td>
       <td>{{player._score}}</td>
       <td class="finalScore"></td>

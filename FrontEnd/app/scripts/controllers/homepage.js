@@ -8,13 +8,18 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'constants', function ($scope, services, player, $location, $controller, $timeout, constants) {
+  .controller('HomepageCtrl', ['$rootScope', 'services',
+    'player', '$location', '$controller', '$timeout',
+    'constants',
+    function ($scope, services, player, $location, $controller, $timeout, constants) {
 
     // The id of the current page.
     $scope.currentPage = "menu"; //TODO: to change to menu
     $scope.controllerPage = "HomepageCtrl";
     $scope.nbOfPlayer = 1;
     $scope.players;
+
+    //=[{_playerName:"geaor", _id:300000000, _score:10}]
     $scope.messageForWaitingFrame = "Waiting for players ...";
     $scope.saveCurrentPlayer = "";
     $scope.socket;
@@ -22,8 +27,8 @@ angular.module('frontEndApp')
 
     connect();
     getBackPlayer();
-    getActivePlayer();
-    
+
+
     /**
      * Function updateHomePage. This function updates the home page.
      */
@@ -73,10 +78,6 @@ angular.module('frontEndApp')
             console.log(msg);
           }
         )
-
-
-        //$timeout($scope.getbackScore(),500);
-        //$scope.getbackScore();
       }
     //TODO END
 
@@ -118,31 +119,20 @@ angular.module('frontEndApp')
     function getBackPlayer() {
       $scope.socket.on("players", function (params) {
         if (params !== {}) {
+          console.log("params:::", params);
           $scope.$apply(function () {
-            $scope.players = params;
-            $scope.messageForWaitingFrame = "The game is starting ...";
-          });
-        }
-      });
-    }
-
-    /**
-     * Function getActivePlayer. This function gets back the active player.
-     */
-    function getActivePlayer() {
-      $scope.socket.on("playerToPlay", function (params) {
-        if (params !== {}) {
-          $scope.$apply(function () {
-            $scope.players._playerName;
-            for (var i = 0; i < $scope.players.length; i++) {
-              $scope.players[i].activePlayer = false;
-              if ($scope.players[i]._playerName === params.playerName) {
-                $scope.players[i].activePlayer = true;
-              }
-            }
+            $scope.players=params;
+            console.log("list of player: ", $scope.players);
+            console.log("$scope.players.lengt: ", $scope.players.length);
+            console.log("$scope.nbpayer", $scope.nbOfPlayer);
             if ($scope.players.length == $scope.nbOfPlayer) {
-              $scope.currentPage = "scores";
+
+              $scope.messageForWaitingFrame = "The game is starting ...";
+              $timeout(updateScore,3000);
             }
+//TODO: to remove !!!
+            //$scope.players.push({_playerName:"geaor", _id:300000000, _score:10});
+            var tmp=0;
           });
         }
       });
@@ -154,11 +144,11 @@ angular.module('frontEndApp')
      */
     $scope.openMenu = function () {
       for (var i = 0; i < $scope.players.length; i++) {
-        if ($scope.players[i].activePlayer) {
+        if ($scope.players[i]._activePlayer) {
           $scope.saveCurrentPlayer = $scope.players[i]._playerName;
           console.log("OpenMenu saveCurrent player: ", $scope.saveCurrentPlayer);
         }
-        $scope.players[i].activePlayer = true;
+        $scope.players[i]._activePlayer = true;
       }
       $scope.iconmenu = true;
     }
@@ -168,13 +158,19 @@ angular.module('frontEndApp')
      * as non-active player except the "real" active player.
      */
     $scope.closeMenu = function () {
-      console.log("CloseMENU saveCurrent player: ", $scope.saveCurrentPlayer);
+      console.log("CloseMENU saveCurrent player: ", $scope.players);
       for (var i = 0; i < $scope.players.length; i++) {
-        $scope.players[i].activePlayer = false;
+        $scope.players[i]._activePlayer = false;
         if ($scope.players[i]._playerName === $scope.saveCurrentPlayer) {
-          $scope.players[i].activePlayer = true;
+          $scope.players[i]._activePlayer = true;
         }
       }
       $scope.iconmenu = false;
     }
+
+
+      function updateScore(){
+        console.log("jerentre ici");
+        $scope.currentPage = "scores";
+      }
   }]);
