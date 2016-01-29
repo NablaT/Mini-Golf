@@ -15,7 +15,7 @@ angular.module('frontEndApp')
 
       // The id of the current page.
       $scope.currentPage = "menu"; //TODO: to change to menu
-      $scope.current3DPage="homeEnvironment";
+      $scope.current3DPage="scripts/gameMap/homeEnvironment.html";
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
@@ -109,6 +109,7 @@ angular.module('frontEndApp')
         //TODO to complete with socket io.
         }
         else{
+          $scope.current3DPage="scripts/gameMap/loading.html";
 
         }
       };

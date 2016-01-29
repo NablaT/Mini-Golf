@@ -43,7 +43,7 @@ function initialisationFountain(scene){
   var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
   fountain.position=new BABYLON.Vector3(0, 0, 0)
   var fountainMaterial = new BABYLON.StandardMaterial("fountain", scene);
-  fountainMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/golf.png", scene);
+  fountainMaterial.diffuseTexture = new BABYLON.Texture("textures/golf.png", scene); //../scripts/gameMap/
   fountain.material = fountainMaterial;
 
   fountain.actionManager = new BABYLON.ActionManager(scene);
@@ -52,15 +52,19 @@ function initialisationFountain(scene){
 
 function  initialisationLights(scene, fountain){
   var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 8), scene);
+  //light0.diffuse=BABYLON.Color3.Green();
 
   var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, -2, -8), scene);
+  //light1.diffuse= BABYLON.Color3.Yellow();
+
   var light3 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(2, 2, 2), scene);
+  //light3.diffuse= BABYLON.Color3.FromInts(252,155,28);
 
   var light4 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(-5, -2, -2), scene);
 
   //window.setInterval(changeColor(light0, new BABYLON.Color3.Green(),fountain),5000);
   //light0.diffuse= new BABYLON.Color3.Green();
-  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light0, "diffuse", BABYLON.Color3.Green(), 1000));
+    fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light0, "diffuse", BABYLON.Color3.Green(), 1000));
   fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light3, "diffuse", BABYLON.Color3.Yellow(), 1000));
   fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light1, "diffuse", BABYLON.Color3.FromInts(252,155,28), 1000));
 
@@ -75,7 +79,7 @@ function initialisationBackground(scene){
   //Plane
   var background = BABYLON.Mesh.CreatePlane("background", 45, scene);
   var backgroundMaterial = new BABYLON.StandardMaterial("backgroundMaterial", scene);
-  backgroundMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/black.png", scene); //scripts/gameMap/textures/black.png
+  backgroundMaterial.diffuseTexture = new BABYLON.Texture("textures/black.png", scene); //../scripts/gameMap/
   /*stairsMaterial.diffuseTexture.uScale = 6;
    stairsMaterial.diffuseTexture.vScale = 6;*/
   backgroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -90,7 +94,7 @@ function initialisationParticles(scene,fountain){
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
   //Texture of each particle
-  particleSystem.particleTexture = new BABYLON.Texture("../scripts/gameMap/textures/flare.png", scene);
+  particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);//../scripts/gameMap/
 
   // Where the particles come from
   particleSystem.emitter = fountain; // the starting object, the emitter
