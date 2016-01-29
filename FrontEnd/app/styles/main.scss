@@ -2,6 +2,10 @@
 @import "font-awesome/scss/font-awesome.scss";
 // endbower
 
+html{
+  overflow:hidden;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;

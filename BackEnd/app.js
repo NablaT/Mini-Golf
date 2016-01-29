@@ -37,11 +37,6 @@ app.use('/ecran', ecranRouter);
 app.use('/smartphone', smartphoneRouter);
 app.use('/kinect', kinectRouter);
 
-
-// crée la map
-require('./map.js')
-    .create();
-
 /**
  * Server on port 3000.
  */

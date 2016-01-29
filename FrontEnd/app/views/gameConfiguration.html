@@ -8,13 +8,13 @@
 
   <div class="row rowPlayer">
 
-    <button class="playerButton col-lg-2" ng-click="increment()">
-      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    <button class="playerButton col-lg-2" ng-click="decrement()">
+      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
     </button>
     <label class="col-lg-4" id="players"> {{nbOfPlayer}}</label>
 
-    <button class="playerButton col-lg-2" ng-click="decrement()">
-      <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    <button class="playerButton col-lg-2" ng-click="increment()">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     </button>
     <br/>
   </div>
@@ -23,7 +23,7 @@
   <!--<a ng-click="sendNumberOfPlayer()" ng-href="#/scores"> Validate </a>-->
 
   <div class="row rowHomeValidation">
-    <button class="homeButton col-lg-2" ng-click="updateHomePage('menu','HomepageCtrl')">
+    <button class="homeButton col-lg-2" ng-click="updateHomePage('menu','HomepageCtrl' )">
       <!-- ng-click="updateHomePage('menu')" -->
       <img src="../images/homeButton.png" class="img-responsive">
     </button>

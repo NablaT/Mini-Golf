@@ -6,12 +6,12 @@ var Map      = require('../core/map.js'),
     Position = require('../core/position.js'),
     Golf     = require('../core/golf.js'),
     kinect   = require('../webAPI/kinect.js'),
-    sphero   = require('../sockets/sphero.js');
+    sphero   = require('../sockets/sphero.js'),
+    ecran    = require('../sockets/ecran.js');
 
 const DIST_TO_VELOCITY     = 0.534;
-const CENTIMETRE_TO_PIXELS = 2; // TODO fake to define
 
-var map = new Map(1200, 800, new Position(100, 400), new Position(1100, 400));
+var map = new Map(270, 226, new Position(203, 53), new Position(230, 82), 10, 10);
 
 var golf = null;
 
@@ -23,10 +23,10 @@ var getGolf = function () {
 };
 
 /**
- * This function starts a new game.
+ * This function initiates a new game.
  * @param {int} numberPlayer - The number of players.
  */
-var startGame = function (numberPlayer) {
+var initGame = function (numberPlayer) {
     golf = new Golf(numberPlayer, map);
 };
 
@@ -40,31 +40,33 @@ var endGame = function () {
 /**
  * This function adds a player to the game.
  * @param {String} playerName - The player's name.
- * @param {function} callback - The callback function.
- * @returns {int} Returns 0 if the player could joing the game, 1 if there is no room anymore, 2 if the game is not started.
+ * @returns {int} Returns :
+ * <ul>
+ *     <li>True if the player could join the game and he's the last one.</li>
+ *     <li>False if the player could join the game and he's not the last one.</li>
+ *     <li>-1 if there is no room anymore.</li>
+ *     <li>-2 if the game is not started.</li>
+ * </ul>
  */
-var addPlayer = function (playerName, callback) {
+var addPlayer = function (playerName) {
     if (getGolf() === null) {
-        return 2;
+        return -2;
     }
     else {
-        var tmp = getGolf().addPlayer(playerName);
-        if (tmp === 0) {
-            isAllPlayersJoined(callback);
-        }
-        return tmp;
+        return getGolf().addPlayer(playerName, function () {
+            ecran.emit('players', getGolf().players);
+        });
     }
 };
 
 /**
- * This function looks if all players have joined the game.
- * If everyone has joined the game it broadcast the 'gameStart' event.
- * @param {function} callback - The callback function to be triggered when all players have joined the game.
+ * This function finds the player who is supposed to play and executes the callback function with the player's name in
+ * parameter.
+ * @param {function} callback - The callback function to execute.
  */
-var isAllPlayersJoined = function (callback) {
-    if (getGolf().isAllPlayersJoined()) {
-        callback();
-    }
+var getPlayerToPlay = function (callback) {
+    // TODO find the real player who is supposed to play.
+    callback(getGolf().players[0]);
 };
 
 /**
@@ -81,7 +83,21 @@ var playerReady = function () {
 };
 
 /**
- * This function converts the angle redeived from the kinect to a valid angle for the sphero.
+ * This function aimed to start the calibration of the sphero.
+ */
+var startCalibration = function () {
+    sphero.startCalibration();
+};
+
+/**
+ * This function aimed to stop the calibration of the sphero.
+ */
+var stopCalibration = function () {
+    sphero.stopCalibration();
+};
+
+/**
+ * This function converts the angle received from the kinect to a valid angle for the sphero.
  * @param {int} kinectAngle - The angle sent from the kinect.
  * @param {boolean} isRighty - A boolean to know if the user is righty.
  * @returns {number} A valid angle for the sphero.
@@ -90,10 +106,14 @@ var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
     var angle = 0; // transformation de l'angle pour la sphero
     if (isRighty) {
         angle = kinectAngle - 90; // tir à gauche pour un droitier
-        if (angle < 0) angle += 360;
+        if (angle < 0) {
+            angle += 360;
+        }
     } else {
         angle = kinectAngle + 90; // tir à droite pour un gaucher
-        if (angle > 360) angle -= 360;
+        if (angle > 360) {
+            angle -= 360;
+        }
     }
     return angle;
 };
@@ -118,8 +138,12 @@ var calculateStrikeForce = function (datas, clubMass) {
         y = datas[i].y;
         z = datas[i].z;
 
-        if (z < zmin) zmin = z;
-        if (z > zmax) zmax = z;
+        if (z < zmin) {
+            zmin = z;
+        }
+        if (z > zmax) {
+            zmax = z;
+        }
     }
 
     return zmin * clubMass; // force en Newton : F(Newton) = m(kg) * a(m.s-2)
@@ -178,10 +202,13 @@ var go = function (strikeForce) {
 
 module.exports = {
     getGolf             : getGolf,
-    startGame           : startGame,
+    initGame            : initGame,
     endGame             : endGame,
     addPlayer           : addPlayer,
+    getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
+    startCalibration    : startCalibration,
+    stopCalibration     : stopCalibration,
     calculateStrikeForce: calculateStrikeForce,
     isValidShoot        : isValidShoot,
     distToVelocity      : distToVelocity,

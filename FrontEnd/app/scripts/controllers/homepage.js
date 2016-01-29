@@ -8,16 +8,20 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller' , '$timeout', function ($scope, services, player, $location, $controller, $timeout) {
+  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'socket', function ($scope, services, player, $location, $controller, $timeout, socket) {
 
 
     //console.log("controller: ",$controller("HomepageCtrl"));
     // The id of the current page.
     $scope.currentPage = "menu"; //TODO: to change to menu
-    $scope.controllerPage="HomepageCtrl";
+    $scope.controllerPage = "HomepageCtrl";
     //$scope.controllerPage=$controller('ConfigurationGameCtrl');
     $scope.nbOfPlayer = 1;
     $scope.players;
+
+    socket.connect();
+    //socket.listenPlayers();
+    socket.listenDisconnection();
 
     /**
      * Function updateHomePage. This function updates the home page.
@@ -32,7 +36,9 @@ angular.module('frontEndApp')
      * Function increment. This function increments the number of players.
      */
     $scope.increment = function () {
-      $scope.nbOfPlayer++;
+      if ($scope.nbOfPlayer < 10) {
+        $scope.nbOfPlayer++;
+      }
       console.log($scope.nbOfPlayer);
     },
 
@@ -47,15 +53,15 @@ angular.module('frontEndApp')
 
     /**
      * Function sendNumberOfPlayer. This function sends the number of player to the server and set the number of player in the service "player". It uses a function to post this number to the server.
-      **/
+     **/
       $scope.sendNumberOfPlayer = function () {
         player.setNbPlayer($scope.nbOfPlayer);
         //services.postGameIsRunning(true);
-        $scope.currentPage ="scores";
+        $scope.currentPage = "waitingFrame";
         services.postNumberOfPlayer($scope.nbOfPlayer).then(
           function (data) {
             console.log(data);
-            $scope.players=data;
+            $scope.players = data;
             console.log("player 0", $scope.players[0]);
             //$scope.players=data
           },
@@ -70,53 +76,44 @@ angular.module('frontEndApp')
 
 
       }
+    //TODO END
 
-
-      //TODO END
-
+    /**
+     * Function verifyGameIsRunning. This function verifies if the game is running.
+     */
     $scope.verifyGameIsRunning = function () {
-      console.log("oui bha oui");
       services.getGameIsRunning().then(
-        function(data){
-          if(data===true){
-            //$scope.currentPage = 'scores';
+        function (data) {
+          if (data === true) {
+            //$scope.currentPage = ' scores';
             $location.path("/loadingContainer");
           }
-          else{
+          else {
             $location.path("/loadingContainer");
           }
         },
-        function(error){
+        function (error) {
           console.log("error in the game verification");
         }
       );
-      /*console.log("data back:",isrunning);
-      if(isrunning==true){
-        console.log("non");
-        $scope.currentPage = 'scores';
-      }
-      else{
-        $location.path("/loadingContainer");
-      }*/
-
     },
 
 
     /**
      * Function getBackScore. This function gets back the score from the server. It calls the function getScore() in the service "services" (globalservices.js)
      */
-    $scope.getbackScore = function () {
-      console.log("jerentre");
-      services.getScore().then(
-        function (data) {
-          $scope.players=data;
-          //$scope.getbackScore();
-          console.log(data);
-        },
-        function (msg) {
-          console.log(msg);
-        }
-      );
-    }
+      $scope.getbackScore = function () {
+        console.log("jerentre dans getBackScore");
+        socket.getPlayers().then(
+          function(data){
+            console.log("data getscore: ",data);
+            $scope.players=data;
+          },
+          function (msg){
+            console.log("error getbackscore homepage",msg);
+          }
+        );
+      }
+
 
   }]);

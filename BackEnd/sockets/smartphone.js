@@ -27,9 +27,17 @@ smartphoneSocket.on('connect', function (socket) {
 
     socket.on('reconnect_failed', reconnectFailed);
 
-    /////////////////////////////////           Mini Golf Socket Events                /////////////////////////////////
+    /////////////////////////////////           Smartphone Socket Events               /////////////////////////////////
 
     socket.on('joinGame', joinGame);
+
+    socket.on('go', go);
+
+    socket.on('ready', ready);
+
+    socket.on('startCalibration', startCalibration);
+
+    socket.on('stopCalibration', stopCalibration);
 
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
@@ -63,29 +71,33 @@ smartphoneSocket.on('connect', function (socket) {
         console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
     }
 
-    /////////////////////////////////       Callback Mini-Golf Socket Events           /////////////////////////////////
+    /////////////////////////////////       Callback Smartphone Socket Events          /////////////////////////////////
 
     /**
      * This function aimed to allow a player to join the game.
      * <ul>
      *     <li>If the game is not started it emits the 'gameNoStarted' event.</li>
      *     <li>If there is no place anymore for the player it emits the 'noPlaceAvailable' event.</li>
-     *     <li>If there is place for the player it emits the 'waitingToStart' event.</li>
+     *     <li>If there is place for the player (and he's not the last one) it emits the 'waitingToStart' event.</li>
+     *     <li>If there is place for the player (and he's the last one) it emits the 'gameStart' event.</li>
      * </ul>
      * @param {Object} params - The json object containing the parameters.
      */
     function joinGame (params) {
         console.log('Somebody is trying to join the game');
-        switch (game.addPlayer(params.name, gameStart)) {
-            case 0 :
+        switch (game.addPlayer(params.name)) {
+            case true :
+                lastOneToJoin(socket);
+                break;
+            case false:
                 socket.emit('waitingToStart', {});
                 console.info('Player ' + params.name + ' joined the game');
                 break;
-            case 1 :
+            case -1 :
                 socket.emit('noPlaceAvailable', {});
                 console.error('There is no place anymore to join the game');
                 break;
-            case 2 :
+            case -2 :
                 socket.emit('gameNotStarted', {});
                 console.error('The game is not started yet');
                 break;
@@ -95,10 +107,81 @@ smartphoneSocket.on('connect', function (socket) {
     }
 
     /**
-     * This function emits the event 'gameStart'.
+     * This function aimed to get and analyse the shoot.
+     * @param {Object} params - The json object containing the parameters.
      */
-    function gameStart () {
-        smartphone.emit('gameStart', {})
+    function go (params) {
+        var CLUB_MASS = 0.460; // 460 grammes
+
+        var datas = params;
+
+        var strike_force = game.calculateStrikeForce(datas, CLUB_MASS);
+
+        console.log('force de frappe ' + strike_force + 'N');
+
+        var result          = {};
+        result.valid        = game.isValidShoot(datas, strike_force);
+        result.strike_force = Math.abs(strike_force);
+
+        var response = JSON.stringify(result);
+
+        socket.emit('goResponse', response);
+
+        if (result.valid) {
+            // calculate with the server
+            game.go(result.strike_force);
+        }
+    }
+
+    /**
+     * This function aimed to prepare the sphero to roll.
+     * It emits the response 'ok' or 'bad' to the smartphone.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function ready (params) {
+        var response;
+        if (game.playerReady()) {
+            response = 'ok';
+        } else {
+            response = 'bad';
+        }
+        socket.emit('readyResponse', {response: response});
+    }
+
+    /**
+     * This function aimed to start the calibration of the sphero.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function startCalibration (params){
+        game.startCalibration();
+    }
+
+    /**
+     * This function aimed to stop the calibration of the sphero.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function stopCalibration (params) {
+        game.stopCalibration();
+    }
+
+    /////////////////////////////////          Smartphone utilities function           /////////////////////////////////
+
+    /**
+     * This function aimed to start the game when the last player to join has joined the game.
+     * @param socket
+     */
+    function lastOneToJoin (socket) {
+        socket.emit('waitingToStart', {});
+        console.info('Player ' + params.name + ' joined the game');
+        setTimeout(function () {
+            smartphoneSocket.emit('gameStart', {});
+            console.info('We can start the game');
+            setTimeout(function () {
+                game.getPlayerToPlay(function (playerName) {
+                    smartphoneSocket.emit('play', {name: playerName});
+                });
+            }, 1000)
+        }, 2000);
     }
 
 });

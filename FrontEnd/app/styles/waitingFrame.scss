@@ -1,0 +1,86 @@
+.thescore{
+  background-color: rgba(0, 0, 0, 0.7);
+  border:none;
+  width:50%;
+  margin-left:5%;
+}
+
+.waitingPlayers > h2{
+  padding-top:20px;
+  text-align:center;
+}
+
+.waitingPlayers > .row{
+  width:100%;
+}
+
+.waitingPlayers{
+  background-color: rgba(0, 0, 0, 0.7);
+  width:40%;
+  margin-top:5%;
+}
+
+.btn-warning{
+  background-color:white;
+  color:black;
+  border-color:white;
+  font-size:30px;
+}
+
+.glyphicon-refresh{
+  color:black;
+}
+
+.glyphicon-refresh:hover{
+  color:white;
+}
+
+.btn-warning:hover{
+  background-color:green;
+  border-color: green;
+}
+
+.btn-warning:active{
+  background-color:green;
+  border-color: green;
+}
+th{
+  text-align:center;
+  border:none;
+}
+
+th:hover{
+  text-align:center;
+  border:none;
+  color:white;
+}
+
+tr{
+  text-align:center;
+  border:none;
+}
+
+tr:hover{
+  color:black;
+}
+
+.table{
+  background-color: rgba(0, 0, 0, 0.1);
+  border:none;
+  font-size: 30px;
+  color:white;
+}
+
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -webkit-animation: spin .7s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}
+
+
+
+

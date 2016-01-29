@@ -34,8 +34,8 @@ socket.on('startCalibration', function (params) {
  * Event listener.
  * This event aims to finish the calibration of the sphero.
  */
-socket.on('finishCalibration', function (params) {
-    finishCalibration();
+socket.on('stopCalibration', function (params) {
+    stopCalibration();
 });
 
 /**
@@ -109,7 +109,7 @@ function startCalibration () {
 /**
  * This function send the signal to finish the calibration to the sphero.
  */
-function finishCalibration () {
+function stopCalibration () {
     orb.finishCalibration(function () {
         isInCalibrationPhase = false;
     });
@@ -141,7 +141,7 @@ function handle (key, velocity) {
     }
 
     if (key === "F") {
-        finishCalibration();
+        stopCalibration();
     }
 
     if (key === "&") {

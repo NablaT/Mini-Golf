@@ -1,8 +1,10 @@
+// TODO DELETE this file.
 var router = require('../core/core.js').express.Router();
 
 var game = require('../game/game.js');
 var sphero = require('../sockets/sphero.js');
 
+// TODO DELETE this function
 /**
  * Cette route permet de récupérer et d'analyser le mouvement du tireur
  */
@@ -34,6 +36,7 @@ router.put('/go', function (req, res) {
 
 });
 
+// TODO DELETE this function
 /**
  * This route prepares the sphero to roll.
  */
@@ -45,6 +48,7 @@ router.put('/ready', function (req, res) {
     }
 });
 
+// TODO DELETE this function
 /**
  * This route lauch the calibration of the sphero
  */
@@ -53,6 +57,7 @@ router.put('/startcalibration', function (req, res) {
     res.send('ok');
 });
 
+// TODO DELETE this function
 /**
  * This route stop the calibration of the sphero
  */
