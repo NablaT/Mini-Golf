@@ -10,35 +10,28 @@
 angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'constants', function ($scope, services, player, $location, $controller, $timeout, constants) {
 
-
-    //console.log("controller: ",$controller("HomepageCtrl"));
     // The id of the current page.
     $scope.currentPage = "menu"; //TODO: to change to menu
     $scope.controllerPage = "HomepageCtrl";
-    //$scope.controllerPage=$controller('ConfigurationGameCtrl');
     $scope.nbOfPlayer = 1;
     $scope.players;
-
     $scope.messageForWaitingFrame = "Waiting for players ...";
-
-    //socket.connect();
-    //socket.listenPlayers();
-    //socket.listenDisconnection();
-
     $scope.saveCurrentPlayer = "";
     $scope.socket;
     $scope.iconmenu = false;
-    //  $scope.players=socket.listenPlayers();
-
 
     connect();
     getBackPlayer();
     getActivePlayer();
+    
     /**
      * Function updateHomePage. This function updates the home page.
      */
     $scope.updateHomePage = function (id, controllerId) {
       $scope.currentPage = id;
+      $scope.messageForWaitingFrame = "Waiting for players ...";
+      $scope.saveCurrentPlayer = "";
+      $scope.iconmenu = false;
       //$scope.controllerPage= controllerId;
     }
 
