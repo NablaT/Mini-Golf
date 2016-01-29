@@ -15,6 +15,7 @@ angular.module('frontEndApp')
 
       // The id of the current page.
       $scope.currentPage = "menu"; //TODO: to change to menu
+      $scope.current3DPage="homeEnvironment";
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
@@ -24,6 +25,7 @@ angular.module('frontEndApp')
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
+
 
       connect();
       getBackPlayer();
@@ -97,6 +99,33 @@ angular.module('frontEndApp')
           }
         );
       };
+
+      /**
+       * Function verifyGameIsRunningForTrack. This function is checking if the game has been ran or not. If the game is
+       * running, it update the content of the track frame.
+       */
+      $scope.verifyGameIsRunningForTrack=function(){
+        if(false){
+        //TODO to complete with socket io.
+        }
+        else{
+
+        }
+      };
+
+
+      /**
+       * Function verifyGameIsRunningForGuide. This function checks if the game has been ran. If the game is running
+       * it updates the content of the track frame.
+       */
+      $scope.verifyGameIsRunningForGuide=function(){
+        if(false){
+          //TODO to complete with socket io
+        }
+        else{
+
+        }
+      }
 
 
       /**
