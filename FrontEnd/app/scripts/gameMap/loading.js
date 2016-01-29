@@ -12,6 +12,10 @@ window.addEventListener("resize", function () {
   engine.resize();
 });
 
+/**
+ * Function createScene. This function creates the all 3D environment. It calls all function used to build every 3D component.
+ * @returns {BABYLON.Scene}
+ */
 function createScene(){
   var scene = new BABYLON.Scene(engine);
 
@@ -38,6 +42,12 @@ function createScene(){
   return scene;
 }
 
+/**
+ * Function InitialisationFountain. This function initializes the "foutain of particle". To be more precise, this function just initializes
+ * the source of the particle, the object which emits particles.
+ * @param scene
+ * @returns {*}
+ */
 function initialisationFountain(scene){
   // Fountain object
   var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
@@ -50,6 +60,12 @@ function initialisationFountain(scene){
   return fountain;
 }
 
+/**
+ * Function initialisationLights. This functions initializes all the lights in the map and some events which change the color of the
+ * golf ball by changing the color of the light after a click.
+ * @param scene
+ * @param fountain
+ */
 function  initialisationLights(scene, fountain){
   var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 2, 8), scene);
   //light0.diffuse=BABYLON.Color3.Green();
@@ -70,11 +86,11 @@ function  initialisationLights(scene, fountain){
 
 }
 
-function changeColor(light, color,fountain){
-  light.diffuse=color;
-  fountain.actionManager.registerAction(new BABYLON.InterpolateValueAction(BABYLON.ActionManager.OnPickTrigger, light, "diffuse", color, 1000));
-}
-
+/**
+ * Function initialisationBackground. This function creates a plan on which we load a texture. We define the size, the position and the orientation
+ * of the background plane.
+ * @param scene
+ */
 function initialisationBackground(scene){
   //Plane
   var background = BABYLON.Mesh.CreatePlane("background", 45, scene);
@@ -89,6 +105,13 @@ function initialisationBackground(scene){
   background.material = backgroundMaterial;
 }
 
+/**
+ * Function initialisationParticles. This function creates the particle emition movement. We take in parameter the scene and the fountain, we
+ * associate the particle system to the fountain (which is the source of the emission). We define several parameters for the particle animation
+ * as the emit rate, the  quantity of particles we emit, colors etc..
+ * @param scene
+ * @param fountain
+ */
 function initialisationParticles(scene,fountain){
   // Create a particle system
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
@@ -145,6 +168,12 @@ function initialisationParticles(scene,fountain){
 
 }
 
+
+/**
+ * Function initialisationAnimation. This function initializes the ball rotation. 
+ * @param scene
+ * @returns {*}
+ */
 function initialisationAnimation(scene){
   // Fountain's animation
   var keys = [];
