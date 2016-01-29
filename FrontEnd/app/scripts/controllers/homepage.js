@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'socket', function ($scope, services, player, $location, $controller, $timeout, socket) {
+  .controller('HomepageCtrl', ['$rootScope', 'services', 'player', '$location', '$controller', '$timeout', 'constants', function ($scope, services, player, $location, $controller, $timeout, constants) {
 
 
     //console.log("controller: ",$controller("HomepageCtrl"));
@@ -19,10 +19,21 @@ angular.module('frontEndApp')
     $scope.nbOfPlayer = 1;
     $scope.players;
 
-    socket.connect();
-    //socket.listenPlayers();
-    socket.listenDisconnection();
+    $scope.messageForWaitingFrame = "Waiting for players ...";
 
+    //socket.connect();
+    //socket.listenPlayers();
+    //socket.listenDisconnection();
+
+    $scope.saveCurrentPlayer = "";
+    $scope.socket;
+    $scope.iconmenu = false;
+    //  $scope.players=socket.listenPlayers();
+
+
+    connect();
+    getBackPlayer();
+    getActivePlayer();
     /**
      * Function updateHomePage. This function updates the home page.
      */
@@ -72,9 +83,7 @@ angular.module('frontEndApp')
 
 
         //$timeout($scope.getbackScore(),500);
-        $scope.getbackScore();
-
-
+        //$scope.getbackScore();
       }
     //TODO END
 
@@ -96,24 +105,83 @@ angular.module('frontEndApp')
           console.log("error in the game verification");
         }
       );
-    },
+    };
 
 
     /**
-     * Function getBackScore. This function gets back the score from the server. It calls the function getScore() in the service "services" (globalservices.js)
+     * Function Connect. This function makes the connection with the server.
+     **/
+    function connect() {
+      $scope.socket = io.connect(constants.backendUrlEcran);
+
+      $scope.socket.io.on('connect_error', function (err) {
+        console.log('Error connecting to server');
+      });
+    }
+
+    /**
+     * Function getBackPlayer. This function gets back the player list from the server.
+     **/
+    function getBackPlayer() {
+      $scope.socket.on("players", function (params) {
+        if (params !== {}) {
+          $scope.$apply(function () {
+            $scope.players = params;
+            $scope.messageForWaitingFrame = "The game is starting ...";
+          });
+        }
+      });
+    }
+
+    /**
+     * Function getActivePlayer. This function gets back the active player.
      */
-      $scope.getbackScore = function () {
-        console.log("jerentre dans getBackScore");
-        socket.getPlayers().then(
-          function(data){
-            console.log("data getscore: ",data);
-            $scope.players=data;
-          },
-          function (msg){
-            console.log("error getbackscore homepage",msg);
-          }
-        );
+    function getActivePlayer() {
+      $scope.socket.on("playerToPlay", function (params) {
+        if (params !== {}) {
+          $scope.$apply(function () {
+            $scope.players._playerName;
+            for (var i = 0; i < $scope.players.length; i++) {
+              $scope.players[i].activePlayer = false;
+              if ($scope.players[i]._playerName === params.playerName) {
+                $scope.players[i].activePlayer = true;
+              }
+            }
+            if ($scope.players.length == $scope.nbOfPlayer) {
+              $scope.currentPage = "scores";
+            }
+          });
+        }
+      });
+    }
+
+    /**
+     * Function OpenMenu. This function puts all the players
+     * as active player.
+     */
+    $scope.openMenu = function () {
+      for (var i = 0; i < $scope.players.length; i++) {
+        if ($scope.players[i].activePlayer) {
+          $scope.saveCurrentPlayer = $scope.players[i]._playerName;
+          console.log("OpenMenu saveCurrent player: ", $scope.saveCurrentPlayer);
+        }
+        $scope.players[i].activePlayer = true;
       }
+      $scope.iconmenu = true;
+    }
 
-
+    /**
+     * Function closeMenu. This functions puts all the players
+     * as non-active player except the "real" active player.
+     */
+    $scope.closeMenu = function () {
+      console.log("CloseMENU saveCurrent player: ", $scope.saveCurrentPlayer);
+      for (var i = 0; i < $scope.players.length; i++) {
+        $scope.players[i].activePlayer = false;
+        if ($scope.players[i]._playerName === $scope.saveCurrentPlayer) {
+          $scope.players[i].activePlayer = true;
+        }
+      }
+      $scope.iconmenu = false;
+    }
   }]);

@@ -4,10 +4,13 @@
     <!-- ng-click="updateHomePage('menu')" -->
     <img src="../images/homeButton.png" class="img-responsive">
   </button>
-
+  <i class="fa fa-arrow-right" id="buttonSideBar" ng-hide="iconmenu" ng-click="openMenu()" ></i>
+  <i class="fa fa-arrow-right fa-rotate-90" ng-show="iconmenu" id="buttonSideBar2" ng-click="closeMenu()" ></i>
+  <!--<label class="labelOpenClose" id="viewAllScore" ng-hide="iconmenu">View all scores</label>
+  <label class="labelOpenClose" id="viewAllScore2" ng-show="iconmenu">View scores current player</label>
+-->
   <h2> SCORES </h2>
 
-  <!--<button ng-click="getbackScore()"> Get score ! </button>-->
 
   <br/>
   <table class="table table-hover">
@@ -15,15 +18,13 @@
     <tr>
       <th>Player</th>
       <th>Map 1</th>
-      <th>Map 2</th>
       <th class="finalScore">Final Scores</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="player in players">
+    <tr ng-repeat="player in players | filter:{activePlayer:true}">
       <td>{{player._playerName}}</td>
       <td>{{player._score}}</td>
-      <td></td>
       <td class="finalScore"></td>
     </tr>
     </tbody>
