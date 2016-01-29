@@ -132,12 +132,19 @@ public class WebMinigolf {
         }
     }
 
+    /**
+     * Ready state when touch the screen
+     */
+    public static void readyNew(){
+        SocketGolf.getInstance().getSocket().emit("ready", null);
+    }
+
 
     /**
      * Start the calibration of the sphero
      * @return
      */
-    public static boolean startCalibration(){
+    public static boolean startCalibrationOld(){
 
             String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
@@ -161,10 +168,17 @@ public class WebMinigolf {
     }
 
     /**
+     * Start the calibration of the sphero with socket io
+     */
+    public static void startCalibration(){
+        SocketGolf.getInstance().getSocket().emit("startCalibration", null);
+    }
+
+    /**
      * Stop the calibration of the sphero
      * @return
      */
-    public static boolean stopCalibration(){
+    public static boolean stopCalibrationOld(){
 
         String server_addr = "http://" + ServerIp.getInstance().getIp() + ":" + ServerIp.getInstance().getPort();
 
@@ -186,5 +200,12 @@ public class WebMinigolf {
             return false;
         }
 
+    }
+
+    /**
+     * Stop the calibration of the sphero with socket io
+     */
+    public static void stopCalibration(){
+        SocketGolf.getInstance().getSocket().emit("stopCalibration", null);
     }
 }

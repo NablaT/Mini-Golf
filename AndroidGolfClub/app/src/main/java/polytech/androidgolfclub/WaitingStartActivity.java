@@ -1,8 +1,6 @@
 package polytech.androidgolfclub;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;

@@ -111,6 +111,7 @@ smartphoneSocket.on('connect', function (socket) {
      * @param {Object} params - The json object containing the parameters.
      */
     function go (params) {
+
         var CLUB_MASS = 0.460; // 460 grammes
 
         var datas = params;

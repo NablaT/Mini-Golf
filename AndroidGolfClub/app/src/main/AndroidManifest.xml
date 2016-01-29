@@ -20,7 +20,7 @@
         <activity
             android:name=".IpSettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Lancement d'une partie"
+            android:label="Mini golf"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
