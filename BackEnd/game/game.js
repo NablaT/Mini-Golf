@@ -42,6 +42,7 @@ var getPlayerToPlayIndice = function () {
 var initGame = function (numberPlayer) {
     golf               = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
     playerToPlayIndice = -1;
+    ecran.emit('waitingForPlayers', {});
 };
 
 /**

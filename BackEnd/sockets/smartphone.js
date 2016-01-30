@@ -174,6 +174,7 @@ smartphoneSocket.on('connect', function (socket) {
      * @param socket
      */
     function lastOneToJoin (socket) {
+        // TODO maybe we can skip this step and directly triggered the 'gameStart' event.
         socket.emit('waitingToStart', {});
         console.info('The last player joined the game');
 
