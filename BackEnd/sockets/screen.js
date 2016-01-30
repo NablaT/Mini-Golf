@@ -4,10 +4,10 @@
 
 var io = require("../core/core.js").getIO();
 
-// Route for the ecran socket.
-var ecranSocket = io.of('/ecran');
+// Route for the screen socket.
+var screenSocket = io.of('/ecran');
 
-ecranSocket.on('connect', function (socket) {
+screenSocket.on('connect', function (socket) {
     console.log('connected ecran');
 
     /////////////////////////////////            Base Socket Events                    /////////////////////////////////
@@ -26,7 +26,7 @@ ecranSocket.on('connect', function (socket) {
 
     socket.on('reconnect_failed', reconnectFailed);
 
-    /////////////////////////////////             Ecran Socket Events                  /////////////////////////////////
+    /////////////////////////////////             Screen Socket Events                 /////////////////////////////////
 
 
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
@@ -61,9 +61,9 @@ ecranSocket.on('connect', function (socket) {
         console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
     }
 
-    /////////////////////////////////         Callback Ecran Socket Events             /////////////////////////////////
+    /////////////////////////////////         Callback Screen Socket Events            /////////////////////////////////
 
 
 });
 
-module.exports = ecranSocket;
+module.exports = screenSocket;

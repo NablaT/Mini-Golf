@@ -9,7 +9,7 @@ var http = require('./core/core.js').getHttp(),
 
 /////////////////////////////////                 Routers inclusion                    /////////////////////////////////
 
-var ecranRouter  = require('./webAPI/ecran.js'),
+var screenRouter = require('./webAPI/screen.js'),
     kinectRouter = require('./webAPI/kinect.js');
 
 /////////////////////////////////                     Sockets                          /////////////////////////////////
@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 
 /////////////////////////////////                      Routers                         /////////////////////////////////
 
-app.use('/ecran', ecranRouter);
+app.use('/ecran', screenRouter);
 app.use('/kinect', kinectRouter);
 
 /**

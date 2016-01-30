@@ -7,12 +7,12 @@ var Map      = require('../core/map.js'),
     Golf     = require('../core/golf.js'),
     kinect   = require('../game/kinect.js'),
     sphero   = require('../sockets/sphero.js'),
-    ecran    = require('../sockets/ecran.js');
+    screen   = require('../sockets/screen.js');
 
 /////////////////////////////////                     CONSTANTS                        /////////////////////////////////
 
 const DIST_TO_VELOCITY   = 0.534;
-const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
+const MINIMUM_SHOOT_TIME = 1000; // 1 sec minimal time for a shoot
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
 
@@ -36,7 +36,7 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
-    ecran.emit('waitingForPlayers', {});
+    screen.emit('waitingForPlayers', {});
 };
 
 /**
@@ -64,20 +64,20 @@ var addPlayer = function (playerName) {
     }
     else {
         return getGolf().addPlayer(playerName, function () {
-            ecran.emit('players', getGolf().players);
+            screen.emit('players', getGolf().players);
         });
     }
 };
 
 /**
  * This function finds the player supposed to play and places the attribute _activePlayer in it.
- * It also emits the 'players' event to the ecran.
+ * It also emits the 'players' event to the screen.
  * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
     var players                                       = getGolf.players;
     players[getGolf().rankPlayerToPlay]._activePlayer = true;
-    ecran.emit('players', players);
+    screen.emit('players', players);
     return getGolf().getPlayerToPlay();
 };
 
@@ -154,7 +154,7 @@ var isValidShoot = function (datas, strikeForce) {
     else if (datas_size < MINIMUM_NB_VALUES) { // not enough values
 
         console.log("Your accelerometer is bad");
-        return alse;
+        return false;
     }
     else if (strikeForce === 0) {
 
@@ -189,7 +189,7 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame) {
     getGolf().map.setPositionBall(dist, kinect.shootDirectionReady, function () {
 
         getGolf.updatePlayerToPlay(function () {
-            ecran.emit('endGame', {});
+            screen.emit('endGame', {});
             callbackEndOfGame();
             endGame();
         }, callbackChangeOfPlayer);
