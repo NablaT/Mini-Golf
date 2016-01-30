@@ -53,7 +53,7 @@ function initialisationFountain(scene){
   var fountain = BABYLON.Mesh.CreateSphere("foutain", 10,2, scene);
   fountain.position=new BABYLON.Vector3(0, 0, 0)
   var fountainMaterial = new BABYLON.StandardMaterial("fountain", scene);
-  fountainMaterial.diffuseTexture = new BABYLON.Texture("textures/golf.png", scene); //../scripts/gameMap/
+  fountainMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/golf.png", scene); //../scripts/gameMap/
   fountain.material = fountainMaterial;
 
   fountain.actionManager = new BABYLON.ActionManager(scene);
@@ -95,7 +95,7 @@ function initialisationBackground(scene){
   //Plane
   var background = BABYLON.Mesh.CreatePlane("background", 45, scene);
   var backgroundMaterial = new BABYLON.StandardMaterial("backgroundMaterial", scene);
-  backgroundMaterial.diffuseTexture = new BABYLON.Texture("textures/black.png", scene); //../scripts/gameMap/
+  backgroundMaterial.diffuseTexture = new BABYLON.Texture("../scripts/gameMap/textures/black.png", scene); //../scripts/gameMap/
   /*stairsMaterial.diffuseTexture.uScale = 6;
    stairsMaterial.diffuseTexture.vScale = 6;*/
   backgroundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -117,7 +117,7 @@ function initialisationParticles(scene,fountain){
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
   //Texture of each particle
-  particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);//../scripts/gameMap/
+  particleSystem.particleTexture = new BABYLON.Texture("../scripts/gameMap/textures/flare.png", scene);//../scripts/gameMap/
 
   // Where the particles come from
   particleSystem.emitter = fountain; // the starting object, the emitter
@@ -125,9 +125,6 @@ function initialisationParticles(scene,fountain){
   particleSystem.maxEmitBox = new BABYLON.Vector3(1, 0, 0); // To...
 
   // Colors of all particles
-  /*particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
-   particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
-   particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);*/
 
   particleSystem.color1 = new BABYLON.Color4(0, 0.4, 0, 1.0);
   particleSystem.color2 = new BABYLON.Color4(0.1, 0.4, 0, 1.0);
@@ -170,7 +167,7 @@ function initialisationParticles(scene,fountain){
 
 
 /**
- * Function initialisationAnimation. This function initializes the ball rotation. 
+ * Function initialisationAnimation. This function initializes the ball rotation.
  * @param scene
  * @returns {*}
  */
