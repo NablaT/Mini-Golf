@@ -69,7 +69,7 @@ class Kinect {
         if (shootDirectionTmp !== -1) {
             this.resetDirection();
             this.shootDirectionReady = shootDirectionTmp;
-            callback(Kinect.convertKinectAngleToSpheroAngle(shootDirectionTmp, true));
+            callback(Kinect.convertKinectAngleToSpheroAngle(shootDirectionTmp, isRighty));
             return true;
         }
         return false;
