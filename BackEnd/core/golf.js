@@ -16,9 +16,10 @@ class Golf {
      * @param {Map} map - The golf map.
      */
     constructor (playerNumber, map) {
-        this._playerNumber = playerNumber;
-        this._players      = [];
-        this._map          = map;
+        this._playerNumber     = playerNumber;
+        this._players          = [];
+        this._map              = map;
+        this._rankPlayerToPlay = 0;
     }
 
     /**
@@ -43,6 +44,22 @@ class Golf {
      */
     get playerNumber () {
         return this._playerNumber;
+    }
+
+    /**
+     * Getter of the rank of the player supposed to play.
+     * @returns {number} The rank of the player.
+     */
+    get rankPlayerToPlay () {
+        return this._indicePlayerToPlay;
+    }
+
+    /**
+     * Setter of the rank of the player supposed to play.
+     * @param {number} newRank - The new rank of the player.
+     */
+    set rankPlayerToPlay (newRank) {
+        this._rankPlayerToPlay = newRank;
     }
 
     /**
@@ -91,6 +108,29 @@ class Golf {
      */
     isAllPlayersJoined () {
         return (this.players.length === this.playerNumber);
+    }
+
+    /**
+     * This function returns the player supposed to play.
+     * @returns {Player} The player supposed to play.
+     */
+    getPlayerToPlay () {
+        return this.players[this.rankPlayerToPlay];
+    }
+
+    /**
+     * This function updates the player supposed to play.
+     * @param {function} callbackEndOfGame - Callback to be triggered when the game is finished.
+     * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a playerName in parameter.
+     */
+    updatePlayerToPlay (callbackEndOfGame, callbackChangeOfPlayer) {
+        this.rankPlayerToPlay++;
+        if (this.rankPlayerToPlay === this.players.length) {
+            callbackEndOfGame();
+        }
+        else {
+            callbackChangeOfPlayer(this.getPlayerToPlay().playerName);
+        }
     }
 }
 

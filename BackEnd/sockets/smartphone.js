@@ -130,9 +130,14 @@ smartphoneSocket.on('connect', function (socket) {
         socket.emit('goResponse', result);
 
         if (result.valid) {
-            game.go(result.strike_force, function (playerName) {
-                smartphoneSocket.emit('play', {name: playerName});
-            });
+            game.go(result.strike_force,
+                function (playerName) {
+                    smartphoneSocket.emit('play', {name: playerName});
+                },
+                function () {
+                    smartphoneSocket.emit('end');
+                }
+            );
         }
     }
 
@@ -185,7 +190,7 @@ smartphoneSocket.on('connect', function (socket) {
 
             // This timeout finds the player who is supposed to play and emit the event 'play' at every smartphone.
             setTimeout(function () {
-                smartphoneSocket.emit('play', {name: game.getPlayerToPlay()});
+                smartphoneSocket.emit('play', {name: game.getPlayerToPlay().playerName});
             }, 1000)
 
         }, 2000);

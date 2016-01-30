@@ -20,19 +20,14 @@ const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
  * The golf game variable.
  * @type {Golf}
  */
-var golf               = null,
-    /**
-     * The indice of the player who is supposed to play.
-     * @type {int}
-     */
-    playerToPlayIndice = -1;
+var golf = null;
 
+/**
+ * Getter of the golf variable.
+ * @returns {Golf} The golf variable.
+ */
 var getGolf = function () {
     return golf;
-};
-
-var getPlayerToPlayIndice = function () {
-    return playerToPlayIndice;
 };
 
 /**
@@ -40,8 +35,7 @@ var getPlayerToPlayIndice = function () {
  * @param {int} numberPlayer - The number of players.
  */
 var initGame = function (numberPlayer) {
-    golf               = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
-    playerToPlayIndice = -1;
+    golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
     ecran.emit('waitingForPlayers', {});
 };
 
@@ -76,22 +70,15 @@ var addPlayer = function (playerName) {
 };
 
 /**
- * This function finds the player who is supposed to play and executes the callback function with the player's name in
- * parameter.
+ * This function finds the player supposed to play and places the attribute _activePlayer in it.
+ * It also emits the 'players' event to the ecran.
+ * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
-    // TODO find the real player who is supposed to play.
-    if (getPlayerToPlayIndice() === -1) {
-        playerToPlayIndice = 0;
-    }
-    else {
-        // TODO handle the case where the indice is equal to the length of players. Cannot be superior !
-        playerToPlayIndice = getPlayerToPlayIndice() + 1;
-    }
-    getGolf().players[playerToPlayIndice]._activePlayer = true;
-    var playerName                                      = getGolf().players[playerToPlayIndice].playerName;
-    ecran.emit('players', getGolf().players);
-    return playerName;
+    var players                                       = getGolf.players;
+    players[getGolf().rankPlayerToPlay]._activePlayer = true;
+    ecran.emit('players', players);
+    return getGolf().getPlayerToPlay();
 };
 
 /**
@@ -190,22 +177,26 @@ var distToVelocity = function (dist) {
 /**
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
- * @param {function} callback - The function to be triggered when the player wins a game. Needs a playerName in parameter.
+ * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a playerName in parameter.
+ * @param {function} callbackEndOfGame - The function to be triggered when a game is finished.
  */
-var go = function (strikeForce, callback) {
+var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
-    var velocity = distToVelocity(dist);
-    sphero.goSphero(velocity);
+    sphero.goSphero(distToVelocity(dist));
+
+    getPlayerToPlay().score += 1;
 
     getGolf().map.setPositionBall(dist, kinect.shootDirectionReady, function () {
-        ecran.emit('victory', {});
-        callback(getGolf().getPlayerToPlay());
+
+        getGolf.updatePlayerToPlay(function () {
+            ecran.emit('endGame', {});
+            callbackEndOfGame();
+            endGame();
+        }, callbackChangeOfPlayer);
     });
+
     // TODO DELETE the next line when it will be working.
     getGolf().map.toString();
-    golf.players[playerToPlayIndice].score += 1;
-    getGolf().players[playerToPlayIndice]._activePlayer = true;
-    ecran.emit('players', getGolf().players);
 };
 
 module.exports = {
