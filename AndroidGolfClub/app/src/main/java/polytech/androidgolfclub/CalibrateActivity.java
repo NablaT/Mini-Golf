@@ -4,11 +4,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import polytech.androidgolfclub.webconnector.SocketGolf;
 import polytech.androidgolfclub.webconnector.WebConnector;
 import polytech.androidgolfclub.webconnector.WebMinigolf;
 
@@ -18,6 +26,8 @@ public class CalibrateActivity extends AppCompatActivity {
     private Button btncalibrate;
     private ProgressBar progressBar;
 
+    private Socket socket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -26,6 +36,9 @@ public class CalibrateActivity extends AppCompatActivity {
 
         btncalibrate = (Button) findViewById(R.id.btncalibrate);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        socket = SocketGolf.getInstance().getSocket();
+        socket.on("play", play);
 
         calibrating = false;
     }
@@ -39,15 +52,16 @@ public class CalibrateActivity extends AppCompatActivity {
             btncalibrate.setText(getString(R.string.btniscalibrating));
             progressBar.setVisibility(View.VISIBLE);
 
-            new StartCalibrationTask().execute();
+            socket.emit("startCalibration", new JSONObject());
 
         } else {
+
             // stop calibration
             calibrating = false;
             btncalibrate.setText(getString(R.string.btntocalibrate));
             progressBar.setVisibility(View.GONE);
 
-            new StopCalibrationTask().execute();
+            socket.emit("stopCalibration", new JSONObject());
 
             Toast.makeText(this, "Calibration effectuée", Toast.LENGTH_SHORT).show();
 
@@ -55,26 +69,36 @@ public class CalibrateActivity extends AppCompatActivity {
 
     }
 
+    private Emitter.Listener play = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : play");
+
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
+                    } catch (JSONException e) {
+                        return;
+                    }
+                }
+
+            }).start();
+        }
+    };
+
     public void backClick(View view){
+
+        socket.off("play", play);
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
-
-    private class StartCalibrationTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-             WebMinigolf.startCalibration();
-            return null;
-        }
-    }
-
-    private class StopCalibrationTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            WebMinigolf.stopCalibration();
-            return null;
-        }
-    }
-
 
 }

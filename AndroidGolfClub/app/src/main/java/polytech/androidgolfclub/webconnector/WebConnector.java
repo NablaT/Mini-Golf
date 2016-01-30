@@ -24,7 +24,7 @@ import polytech.androidgolfclub.Results;
 import polytech.androidgolfclub.ServerIp;
 
 /**
- * This class is used to send datas to the web server
+ * This class is used to send http requests to a web server
  *
  * Created by Romain Guillot on 18/12/15
  */

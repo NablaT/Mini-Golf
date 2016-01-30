@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +18,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Calendar;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import polytech.androidgolfclub.webconnector.SocketGolf;
 import polytech.androidgolfclub.webconnector.WebConnector;
 import polytech.androidgolfclub.webconnector.WebMinigolf;
 
@@ -47,7 +58,10 @@ public class ShootActivity extends AppCompatActivity {
     private long timeStartShoot;
 
     private Results resultShoot;
-    private final Handler mHideHandler = new Handler();
+    private Socket socket;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +78,11 @@ public class ShootActivity extends AppCompatActivity {
 
         resultShoot = Results.getInstance();
 
+        // get the socket and register the events
+        socket = SocketGolf.getInstance().getSocket();
+        registerSocketListeners();
+
+        // register the accelometer
         senSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senListener = new ShootSensorListener();
@@ -83,16 +102,25 @@ public class ShootActivity extends AppCompatActivity {
                             resultShoot.clearValues();
                             shooting = true;
 
-                            Log.d("TOUCH", "TOUCH DOWN !");
+                            Log.i("TOUCH", "TOUCH DOWN !");
 
-                            new SendReadyTask().execute();
+                            // launch the event that the player is ready (touch down)
+                            if (socket.connected()){
 
-                            vibrator.vibrate(50);
-                            timeStartShoot = Calendar.getInstance().getTimeInMillis();
-                            resultShoot.setStart(0l);
+                                Log.i("socketio", "emit event ready");
+                                socket.emit("ready", new JSONObject());
 
-                            mContentView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                            mtextContentView.setText(getResources().getText(R.string.dummy_content_shoot));
+                                vibrator.vibrate(50);
+                                timeStartShoot = Calendar.getInstance().getTimeInMillis();
+                                resultShoot.setStart(0l);
+
+                                mContentView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                mtextContentView.setText(getResources().getText(R.string.dummy_content_shoot));
+
+                            } else {
+                                connectivityError();
+                            }
+
                         }
 
                         break;
@@ -112,7 +140,7 @@ public class ShootActivity extends AppCompatActivity {
                             // tir effectué
                             // send datas to server
                             if (!shootCanceled){ // check if the shoot has been canceled
-                                new SendDatasTask().execute();
+                                sendShoot();
                             }
 
                         }
@@ -129,22 +157,227 @@ public class ShootActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-
         super.onPause();
-
         Log.i("GOLF", "onPause");
         senSensorManager.unregisterListener(senListener);
     }
 
     @Override
     protected void onResume() {
-
         super.onResume();
-
         Log.i("GOLF", "onResume");
         senSensorManager.registerListener(senListener, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
+    private void registerSocketListeners(){
+        socket.on("readyResponse", readyResponse);
+        socket.on("goResponse", goResponse);
+        socket.on("play", play);
+    }
+
+    private void unregisterSocketListeners(){
+        socket.off("readyResponse", readyResponse);
+        socket.off("goResponse", goResponse);
+        socket.off("play", play);
+    }
+
+    /**
+     * Listener for ready response event
+     */
+    private Emitter.Listener readyResponse = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            Log.i("socketio", "received event : ready response");
+
+            JSONObject data = (JSONObject) args[0];
+
+            String rep = null;
+            try {
+                rep = data.getString("response");
+                if ("ok".equals(rep)){
+                    shootCanceled = false;
+                } else {
+                    kinectNotSetError();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    /**
+     * Listener for ready response event
+     */
+    private Emitter.Listener goResponse = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            Log.i("socketio", "received event : go response");
+
+            JSONObject resp = (JSONObject) args[0];
+
+            try {
+
+                Log.i("GOLF", "cccc");
+
+                boolean valid = resp.getBoolean("valid");
+                final double force = resp.getDouble("strike_force");
+
+                // test if the shoot is considered as valid by the server
+                if (!valid) {
+
+                    Log.i("GOLF", "Shoot not valid");
+                    shootError(-1);
+
+                } else {
+
+                    Log.i("GOLF", "Shoot AND ACCEPTED F=" + force);
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            // shoot accepted
+                            // vibration de confirmation
+                            vibrator.vibrate(500);
+
+                            resultShoot.setForce(force);
+                            mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                            mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
+
+                            unregisterSocketListeners();
+                            Intent i = new Intent(ShootActivity.this, ShootAcceptedActivity.class);
+                            startActivity(i);
+
+                        }
+
+                    });
+
+                }
+            } catch (JSONException e) {
+                Log.i("GOLF", "JSON parse error");
+                shootError(-3);
+            }
+
+        }
+    };
+
+    private Emitter.Listener play = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : play");
+
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
+                    } catch (JSONException e) {
+                        return;
+                    }
+                }
+
+            }).start();
+        }
+    };
+
+    /**
+     * This method is called when there is a connectivy error withe server on socket io
+     */
+    private void connectivityError(){
+
+        Log.i("GOLF", "CONNECTIVITY ERROR");
+        shootCanceled = true;
+        shootError(-3);
+    }
+
+    /**
+     * This method is called when the position of the player is not set by the kinect
+     */
+    private void kinectNotSetError(){
+
+        Log.i("GOLF", "Position on kinect not set");
+        shootCanceled = true;
+        shootError(-4);
+    }
+
+    /**
+     * THis medthod is called in case of error during the shoot
+     * @param error the error code you can find in ShootErrorActivity
+     */
+    private void shootError(final int error){
+
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
+
+                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
+
+                // unregister listeners
+                socket.off("readyResponse", readyResponse);
+                socket.off("goResponse", goResponse);
+                socket.off("play", play);
+
+                Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putDouble("reason", error);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+    }
+
+    /**
+     * THis medthod is called when a shoot is valid
+     * Construct the json to send to the server with the datas of the shoot and send it by socket io
+     */
+    private void sendShoot(){
+
+        // the object with the datas of the shoot to send
+        JSONArray json = new JSONArray();
+
+        // get the values
+        LinkedHashMap<Long, Float[]> values = Results.getInstance().getValues();
+
+        // construct the json to send
+        for (Map.Entry<Long, Float[]> entry : values.entrySet()) {
+            try{
+                JSONObject object = new JSONObject();
+                Float[] vals = entry.getValue();
+
+                object.put("t", entry.getKey());
+                object.put("x", vals[0]);
+                object.put("y", vals[1]);
+                object.put("z", vals[2]);
+
+                json.put(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // emit the evnt with the datas to the server
+        if (socket.connected()){
+            socket.emit("go", json);
+        } else {
+            connectivityError();
+        }
+    }
 
     /**
      * Accelerometer listener
@@ -163,54 +396,22 @@ public class ShootActivity extends AppCompatActivity {
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
         }
 
     }
 
-
-    /**
-     * Send ready state to server
-     */
-    private class SendReadyTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return WebMinigolf.ready();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isOK) {
-
-            if (!isOK){
-
-                shootCanceled = true;
-
-                Log.i("GOLF", "Position on kinect not set");
-
-                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
-
-                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
-
-                Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putDouble("reason", -4);
-                i.putExtras(bundle);
-                startActivity(i);
-
-            } else {
-                shootCanceled = false;
-            }
-        }
+    @Override
+    public void onBackPressed() {
+        socket.off("play", play);
+        super.onBackPressed();
     }
 
         /**
      * Send datas to server task
      * It also receive the response
      */
+        /*
     private class SendDatasTask extends AsyncTask<String, Void, Double> {
-
 
         protected Double doInBackground(String... urls) {
 
@@ -220,7 +421,6 @@ public class ShootActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Double force) {
-
 
             if (force>0){
 
@@ -268,5 +468,5 @@ public class ShootActivity extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 }

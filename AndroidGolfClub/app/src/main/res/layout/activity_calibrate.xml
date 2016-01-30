@@ -48,7 +48,8 @@
         android:background="@drawable/btn_ball_texture"
         android:onClick="backClick"
         android:layout_width="match_parent"
-        android:layout_marginTop="100dp"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

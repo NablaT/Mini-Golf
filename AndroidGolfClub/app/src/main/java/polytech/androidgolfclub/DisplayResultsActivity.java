@@ -3,16 +3,24 @@ package polytech.androidgolfclub;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import polytech.androidgolfclub.webconnector.SocketGolf;
 
 
 /**
@@ -24,11 +32,16 @@ import java.util.Map;
  */
 public class DisplayResultsActivity extends AppCompatActivity {
 
+    private Socket socket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_results);
+
+        socket = SocketGolf.getInstance().getSocket();
+        socket.on("play", play);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
@@ -84,7 +97,38 @@ public class DisplayResultsActivity extends AppCompatActivity {
     }
 
     public void goMenu(View v){
+
+        socket.off("play", play);
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
+    }
+
+    private Emitter.Listener play = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : play");
+
+                    JSONObject data = (JSONObject) args[0];
+
+                    try {
+                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
+                    } catch (JSONException e) {
+                        return;
+                    }
+                }
+
+            }).start();
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
     }
 }

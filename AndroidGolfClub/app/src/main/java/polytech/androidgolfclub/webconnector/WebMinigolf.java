@@ -19,7 +19,7 @@ import polytech.androidgolfclub.ServerIp;
  */
 public class WebMinigolf {
 
-    private static final int TIMEOUT = 1000; //set timeout to 2 seconds
+    private static final int TIMEOUT = 1000; //set timeout to 1 seconds
 
     /**
      * Send the shoot datas to the server
