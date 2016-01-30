@@ -92,6 +92,13 @@ var playerReady = function () {
 };
 
 /**
+ * This function aimed to emit the 'gameStart' event.
+ */
+var screenGameStart = function () {
+    screen.emit('gameStart', {});
+};
+
+/**
  * This function aimed to start the calibration of the sphero.
  */
 var startCalibration = function () {
@@ -206,6 +213,7 @@ module.exports = {
     addPlayer           : addPlayer,
     getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
+    screenGameStart     : screenGameStart,
     startCalibration    : startCalibration,
     stopCalibration     : stopCalibration,
     calculateStrikeForce: calculateStrikeForce,

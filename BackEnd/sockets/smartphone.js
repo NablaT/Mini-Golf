@@ -186,6 +186,7 @@ smartphoneSocket.on('connect', function (socket) {
         // This timeout is to handle the change view in smartphone !
         setTimeout(function () {
             smartphoneSocket.emit('gameStart', {});
+            game.screenGameStart();
             console.info('We can start the game');
 
             // This timeout finds the player who is supposed to play and emit the event 'play' at every smartphone.
