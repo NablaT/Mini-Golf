@@ -60,6 +60,7 @@ var endGame = function () {
  *     <li>False if the player could join the game and he's not the last one.</li>
  *     <li>-1 if there is no room anymore.</li>
  *     <li>-2 if the game is not started.</li>
+ *     <li>-3 if a player with the playerName param already exists.</li>
  * </ul>
  */
 var addPlayer = function (playerName) {

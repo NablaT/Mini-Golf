@@ -54,17 +54,35 @@ class Golf {
      *     <li>True if the player could join the game and he's the last one.</li>
      *     <li>False if the player could join the game and he's not the last one.</li>
      *     <li>-1 if there is no place anymore.</li>
+     *     <li>-3 if a player with the playerName param already exists.</li>
      * </ul>
      */
     addPlayer (playerName, callback) {
         if (this.players.length < this.playerNumber) {
-            this.players.push(new Player(playerName));
-            callback();
-            return this.isAllPlayersJoined();
+            if (!this.isContaining(playerName)) {
+                this.players.push(new Player(playerName));
+                callback();
+                return this.isAllPlayersJoined();
+            }
+            return -3;
         }
         else {
             return -1;
         }
+    }
+
+    /**
+     * This function aimed to look if a player with the playerName param already exists.
+     * @param {string} playerName - The player's name.
+     * @returns {boolean} True if the player already exists, else false.
+     */
+    isContaining (playerName) {
+        for (let i = 0, length = this.players.length; i < length; i++) {
+            if (this.players[i].playerName === playerName) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

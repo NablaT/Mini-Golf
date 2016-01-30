@@ -80,6 +80,7 @@ smartphoneSocket.on('connect', function (socket) {
      *     <li>If there is no place anymore for the player it emits the 'noPlaceAvailable' event.</li>
      *     <li>If there is place for the player (and he's not the last one) it emits the 'waitingToStart' event.</li>
      *     <li>If there is place for the player (and he's the last one) it emits the 'gameStart' event.</li>
+     *     <li>If the player's name is already taken it emits the 'nameUnvalid' event.</li>
      * </ul>
      * @param {Object} params - The json object containing the parameters.
      */
@@ -100,6 +101,10 @@ smartphoneSocket.on('connect', function (socket) {
             case -2 :
                 socket.emit('gameNotStarted', {});
                 console.error('The game is not started yet');
+                break;
+            case -3 :
+                socket.emit('nameUnvalid', {});
+                console.error('A player with the name ' + params.name + ' already exists');
                 break;
             default:
                 console.error('This case is not supposed to happen');
