@@ -74,7 +74,8 @@ public class IpSettingsActivity extends AppCompatActivity {
 
         editor.commit();
 
-        SocketGolf.getInstance().connect(); // create the socket with the server
+        // create the socket with the server
+        SocketGolf.getInstance().connect();
 
         Intent i = new Intent(this, JoinGameActivity.class);
         startActivity(i);

@@ -20,5 +20,8 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_join_game">JoinGameActivity</string>
 
+    <string name="next_player_event_title">"Bien joué ! C'est maintenant au joueur suivant de jouer"</string>
+    <string name="next_player_confirm_yes">Youpi !</string>
+
 
 </resources>

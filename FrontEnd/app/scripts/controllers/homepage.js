@@ -15,15 +15,17 @@ angular.module('frontEndApp')
 
       // The id of the current page.
       $scope.currentPage = "menu"; //TODO: to change to menu
+      $scope.current3DPage = "scripts/gameMap/homeEnvironment.html";
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
 
       //=[{_playerName:"geaor", _id:300000000, _score:10}]
-      $scope.messageForWaitingFrame = "Waiting for players ...";
+      $scope.messageForWaitingFrame = "Waiting until the game starts";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
+
 
       connect();
       getBackPlayer();
@@ -32,9 +34,12 @@ angular.module('frontEndApp')
       /**
        * Function updateHomePage. This function updates the home page.
        */
-      $scope.updateHomePage = function (id, controllerId) {
+      $scope.updateHomePage = function (id, path3DEnvironement) {
         $scope.currentPage = id;
-        $scope.messageForWaitingFrame = "Waiting for players ...";
+        if (!(path3DEnvironement === '')) {
+          $scope.current3DPage = path3DEnvironement;
+        }
+        $scope.messageForWaitingFrame = "Waiting until the game starts";
         $scope.saveCurrentPlayer = "";
         $scope.iconmenu = false;
       }
@@ -65,6 +70,7 @@ angular.module('frontEndApp')
           player.setNbPlayer($scope.nbOfPlayer);
           //services.postGameIsRunning(true);
           $scope.currentPage = "waitingFrame";
+          $scope.messageForWaitingFrame = "Waiting for players ...";
           services.postNumberOfPlayer($scope.nbOfPlayer).then(
             function (data) {
               console.log(data);
@@ -97,6 +103,35 @@ angular.module('frontEndApp')
           }
         );
       };
+
+      /**
+       * Function verifyGameIsRunningForTrack. This function is checking if the game has been ran or not. If the game is
+       * running, it update the content of the track frame.
+       */
+      $scope.verifyGameIsRunningForTrack = function () {
+        if (false) {
+          //TODO to complete with socket io.
+        }
+        else {
+          $scope.current3DPage = "views/loading.html";
+          $scope.currentPage = "loadingContainer";
+
+        }
+      };
+
+
+      /**
+       * Function verifyGameIsRunningForGuide. This function checks if the game has been ran. If the game is running
+       * it updates the content of the track frame.
+       */
+      $scope.verifyGameIsRunningForGuide = function () {
+        if (false) {
+          //TODO to complete with socket io
+        }
+        else {
+
+        }
+      }
 
 
       /**
