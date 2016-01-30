@@ -5,7 +5,7 @@
 var Map      = require('../core/map.js'),
     Position = require('../core/position.js'),
     Golf     = require('../core/golf.js'),
-    kinect   = require('../webAPI/kinect.js'),
+    kinect   = require('../game/kinect.js'),
     sphero   = require('../sockets/sphero.js'),
     ecran    = require('../sockets/ecran.js');
 
@@ -25,12 +25,7 @@ var golf               = null,
      * The indice of the player who is supposed to play.
      * @type {int}
      */
-    playerToPlayIndice = -1,
-    /**
-     * The angle of shoot.
-     * @type {int}
-     */
-    angle              = null;
+    playerToPlayIndice = -1;
 
 var getGolf = function () {
     return golf;
@@ -99,18 +94,12 @@ var getPlayerToPlay = function () {
 
 /**
  * This function gets the direction from kinect and transmits it to sphero.
- * @returns {boolean} True if the direction exists, false either.
+ * @returns {boolean} True if the direction is correct, else false.
  */
 var playerReady = function () {
-    var direction = kinect.getLastShootDirection();
-    if (direction !== -1) {
-        kinect.resetDirection();
-        var angleTmp = convertKinectAngleToSpheroAngle(direction, true);
-        angle        = angleTmp;
-        sphero.ready(angleTmp);
-        return true;
-    }
-    return false;
+    return kinect.playerReady(true, function (angle) {
+        sphero.ready(angle);
+    });
 };
 
 /**
@@ -125,28 +114,6 @@ var startCalibration = function () {
  */
 var stopCalibration = function () {
     sphero.stopCalibration();
-};
-
-/**
- * This function converts the angle received from the kinect to a valid angle for the sphero.
- * @param {int} kinectAngle - The angle sent from the kinect.
- * @param {boolean} isRighty - A boolean to know if the user is righty.
- * @returns {number} A valid angle for the sphero.
- */
-var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
-    var angle = 0; // transformation de l'angle pour la sphero
-    if (isRighty) {
-        angle = kinectAngle - 90; // tir à gauche pour un droitier
-        if (angle < 0) {
-            angle += 360;
-        }
-    } else {
-        angle = kinectAngle + 90; // tir à droite pour un gaucher
-        if (angle > 360) {
-            angle -= 360;
-        }
-    }
-    return angle;
 };
 
 /**
@@ -228,7 +195,7 @@ var go = function (strikeForce, callback) {
     var velocity = distToVelocity(dist);
     sphero.goSphero(velocity);
 
-    getGolf().map.setPositionBall(dist, angle, function () {
+    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady, function () {
         ecran.emit('victory', {});
         callback(getGolf().getPlayerToPlay());
     });
