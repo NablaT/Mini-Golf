@@ -1,8 +1,8 @@
 .thescore{
   background-color: rgba(0, 0, 0, 0.7);
   border:none;
-  width:50%;
-  margin-left:5%;
+  width:30%;
+  margin-left:2%;
 }
 
 .thescore > h2{
@@ -17,6 +17,31 @@
   color:white;
 }
 
+#buttonSideBar{
+  top: 3%;
+  position:fixed;
+  z-index:3002;
+  color:#adadad;
+  font-size:3em;
+}
+#buttonSideBar2{
+  position:fixed;
+  top:3%;
+  z-index:3002;
+  color:#adadad;
+  font-size:3em;
+}
 
+#buttonSideBar:hover, #buttonSideBar2:hover{
+  color:white;
+  cursor:pointer;
+}
 
+.labelOpenClose{
+  font-size:5px;
+  top:3%;
+}
 
+.homeButton{
+  top:3%;
+}

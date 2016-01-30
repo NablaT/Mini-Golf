@@ -58,6 +58,17 @@ class Position {
         this.latitude  = newLatitude;
         this.longitude = newLongitude;
     }
+
+    /**
+     * This function converts a position in centimeters to a position in pixels.
+     * @returns {Object} An object containing the position in pixels.
+     */
+    toPixel () {
+        var posPixel            = {};
+        posPixel.longitudePixel = 400 - (this.longitude / 0.2825);
+        posPixel.latitudePixel  = -600 + (this.latitude / (0.225 - 0.000296 * this.longitude));
+        return posPixel;
+    }
 }
 
 module.exports = Position;

@@ -9,17 +9,35 @@ var Map      = require('../core/map.js'),
     sphero   = require('../sockets/sphero.js'),
     ecran    = require('../sockets/ecran.js');
 
-const DIST_TO_VELOCITY     = 0.534;
+/////////////////////////////////                     CONSTANTS                        /////////////////////////////////
 
-var map = new Map(270, 226, new Position(203, 53), new Position(230, 82), 10, 10);
-
-var golf = null;
-
+const DIST_TO_VELOCITY   = 0.534;
 const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
+
+/**
+ * The golf game variable.
+ * @type {Golf}
+ */
+var golf               = null,
+    /**
+     * The indice of the player who is supposed to play.
+     * @type {int}
+     */
+    playerToPlayIndice = -1,
+    /**
+     * The angle of shoot.
+     * @type {int}
+     */
+    angle              = null;
+
 var getGolf = function () {
     return golf;
+};
+
+var getPlayerToPlayIndice = function () {
+    return playerToPlayIndice;
 };
 
 /**
@@ -27,7 +45,8 @@ var getGolf = function () {
  * @param {int} numberPlayer - The number of players.
  */
 var initGame = function (numberPlayer) {
-    golf = new Golf(numberPlayer, map);
+    golf               = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
+    playerToPlayIndice = -1;
 };
 
 /**
@@ -62,11 +81,20 @@ var addPlayer = function (playerName) {
 /**
  * This function finds the player who is supposed to play and executes the callback function with the player's name in
  * parameter.
- * @param {function} callback - The callback function to execute.
  */
-var getPlayerToPlay = function (callback) {
+var getPlayerToPlay = function () {
     // TODO find the real player who is supposed to play.
-    callback(getGolf().players[0]);
+    if (getPlayerToPlayIndice() === -1) {
+        playerToPlayIndice = 0;
+    }
+    else {
+        // TODO handle the case where the indice is equal to the length of players. Cannot be superior !
+        playerToPlayIndice = getPlayerToPlayIndice() + 1;
+    }
+    getGolf().players[playerToPlayIndice]._activePlayer = true;
+    var playerName                                      = getGolf().players[playerToPlayIndice].playerName;
+    ecran.emit('players', getGolf().players);
+    return playerName;
 };
 
 /**
@@ -76,7 +104,10 @@ var getPlayerToPlay = function (callback) {
 var playerReady = function () {
     var direction = kinect.getLastShootDirection();
     if (direction !== -1) {
-        sphero.ready(convertKinectAngleToSpheroAngle(direction, true));
+        kinect.resetDirection();
+        var angleTmp = convertKinectAngleToSpheroAngle(direction, true);
+        angle        = angleTmp;
+        sphero.ready(angleTmp);
         return true;
     }
     return false;
@@ -190,14 +221,22 @@ var distToVelocity = function (dist) {
 /**
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
+ * @param {function} callback - The function to be triggered when the player wins a game. Needs a playerName in parameter.
  */
-var go = function (strikeForce) {
-    var dist = Math.abs(strikeForce) * 30; // fake calcul, result en cm
-    console.log(dist);
+var go = function (strikeForce, callback) {
+    var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
     var velocity = distToVelocity(dist);
-    console.log(velocity);
     sphero.goSphero(velocity);
-    golf.players[0].score += 1;
+
+    getGolf().map.setPositionBall(dist, angle, function () {
+        ecran.emit('victory', {});
+        callback(getGolf().getPlayerToPlay());
+    });
+    // TODO DELETE the next line when it will be working.
+    getGolf().map.toString();
+    golf.players[playerToPlayIndice].score += 1;
+    getGolf().players[playerToPlayIndice]._activePlayer = true;
+    ecran.emit('players', getGolf().players);
 };
 
 module.exports = {
