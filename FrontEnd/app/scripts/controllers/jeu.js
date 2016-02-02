@@ -8,6 +8,6 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('JeuCtrl', ['$scope','services', function ($scope, services) {
+  .controller('JeuCtrl', [ function () {
 
   }]);
