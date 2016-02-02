@@ -184,10 +184,12 @@ var distToVelocity = function (dist) {
 /**
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
- * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a playerName in parameter.
+ * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a
+ *     playerName in parameter.
  * @param {function} callbackEndOfGame - The function to be triggered when a game is finished.
+ * @param {function} callbackOutOfMap - The function to be triggered when the ball is out of the map.
  */
-var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame) {
+var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callbackOutOfMap) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
     sphero.goSphero(distToVelocity(dist));
 
@@ -200,6 +202,9 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame) {
             callbackEndOfGame();
             endGame();
         }, callbackChangeOfPlayer);
+    }, function () {
+        screen.emit('outOfMap', {});
+        callbackOutOfMap();
     });
 
     // TODO DELETE the next line when it will be working.
