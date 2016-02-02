@@ -25,6 +25,7 @@ angular.module('frontEndApp')
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
+      $scope.currentScreen;
 
 
       connect();
@@ -115,6 +116,7 @@ angular.module('frontEndApp')
         else {
           $scope.current3DPage = "views/loading.html";
           $scope.currentPage = "loadingContainer";
+          $scope.currentScreen="game";
 
         }
       };
@@ -129,7 +131,9 @@ angular.module('frontEndApp')
           //TODO to complete with socket io
         }
         else {
-
+          $scope.current3DPage="views/loading.html";
+          $scope.currentPage="loadingContainer";
+          $scope.currentScreen="swingGuide";
         }
       }
 
