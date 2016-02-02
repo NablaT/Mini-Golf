@@ -147,10 +147,12 @@ angular.module('frontEndApp')
        * running, it update the content of the track frame.
        */
       $scope.verifyGameIsRunningForTrack = function () {
-        $scope.socket.on("waitingForPlayers", function (params) {
+       $scope.socket.on("waitingForPlayers", function (params) {
           if (params !== {}) {
               $scope.$apply(function(){
-
+                $scope.current3DPage = "scripts/gameMap/homeEnvironment.html";
+                $scope.currentPage = "loadingContainer";
+                $scope.currentScreen="game";
               });
           }
           else{
@@ -161,7 +163,7 @@ angular.module('frontEndApp')
             });
           }
         });
-        /*if (false) {
+       /* if (false) {
           //TODO to complete with socket io. 'waitingForPlayers'
 
         }
