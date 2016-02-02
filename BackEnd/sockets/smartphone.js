@@ -135,7 +135,9 @@ smartphoneSocket.on('connect', function (socket) {
                     smartphoneSocket.emit('play', {name: playerName});
                 },
                 function () {
-                    smartphoneSocket.emit('end');
+                    smartphoneSocket.emit('end', {});
+                }, function () {
+                    socket.emit('outOfMap', {});
                 }
             );
         }
