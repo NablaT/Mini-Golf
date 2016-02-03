@@ -15,7 +15,7 @@ var screenRouter = require('./webAPI/screen.js'),
 /////////////////////////////////                     Sockets                          /////////////////////////////////
 
 require('./sockets/sphero.js');
-require('./sockets/ecran.js');
+require('./sockets/screen.js');
 require('./sockets/smartphone.js');
 
 /////////////////////////////////                 Logger and parsing                   /////////////////////////////////
