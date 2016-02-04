@@ -1,14 +1,5 @@
 package polytech.androidgolfclub.webconnector;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,17 +8,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import polytech.androidgolfclub.Results;
-import polytech.androidgolfclub.ServerIp;
 
 /**
  * This class is used to send http requests to a web server
  *
  * Created by Romain Guillot on 18/12/15
  */
+@Deprecated
 public class WebConnector {
 
     /**

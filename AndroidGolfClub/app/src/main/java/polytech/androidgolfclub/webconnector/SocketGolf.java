@@ -8,9 +8,13 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import java.net.URISyntaxException;
 
-import polytech.androidgolfclub.ServerIp;
+import polytech.androidgolfclub.data.ServerIp;
 
 /**
+ *
+ * This class is used to keep the socket
+ * Connect the socket to the server
+ *
  * Created by Romain Guillot on 25/01/16.
  */
 public class SocketGolf {

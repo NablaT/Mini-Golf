@@ -11,12 +11,13 @@ import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import polytech.androidgolfclub.Results;
-import polytech.androidgolfclub.ServerIp;
+import polytech.androidgolfclub.data.Results;
+import polytech.androidgolfclub.data.ServerIp;
 
 /**
  * Created by Romain Guillot on 22/01/16.
  */
+@Deprecated
 public class WebMinigolf {
 
     private static final int TIMEOUT = 1000; //set timeout to 1 seconds

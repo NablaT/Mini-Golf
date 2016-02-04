@@ -10,6 +10,10 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
+/**
+ * Waiting for other player activity
+ * Display while the party is not started
+ */
 public class WaitingStartActivity extends AppCompatActivity {
 
     private Socket socket;
@@ -23,6 +27,10 @@ public class WaitingStartActivity extends AppCompatActivity {
         socket.on("gameStart", gameStart);
     }
 
+    /**
+     * Gamestart event listener
+     * All the users are kept
+     */
     private Emitter.Listener gameStart = new Emitter.Listener() {
 
         @Override
@@ -35,8 +43,10 @@ public class WaitingStartActivity extends AppCompatActivity {
 
                     Log.i("socketio", "received event : game start");
 
+                    // unregister event
                     socket.off("gameStart", gameStart);
 
+                    // go to main activity
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
 
@@ -48,6 +58,9 @@ public class WaitingStartActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Disable back button
+     */
     @Override
     public void onBackPressed() {
     }

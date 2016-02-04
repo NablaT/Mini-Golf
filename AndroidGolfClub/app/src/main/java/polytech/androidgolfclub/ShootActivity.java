@@ -29,13 +29,22 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import polytech.androidgolfclub.data.DataKeeper;
+import polytech.androidgolfclub.data.Results;
 import polytech.androidgolfclub.webconnector.SocketGolf;
-import polytech.androidgolfclub.webconnector.WebConnector;
 import polytech.androidgolfclub.webconnector.WebMinigolf;
 
 /**
  *
  * This activity is used to detect the shoot and save the datas
+ * Process :
+ * 1) user put finger on the screen
+ * 2) send ready event to server
+ * 3) receive ready response
+ * 4) user shoot : accelerometer get and save movement information
+ * 5) user relash his finger
+ * 6) send go event with datas of the shoot
+ * 7) receive goResponse : if the shoot is accepted : go ShootAcceptedActivity /// otherwise go to ShootErrorActivity
  *
  * Created by Romain Guillot on 18/12/15
  *
@@ -76,6 +85,7 @@ public class ShootActivity extends AppCompatActivity {
         shooting = false;
         hasJustShoot = false;
 
+        // object to save the results
         resultShoot = Results.getInstance();
 
         // get the socket and register the events
@@ -169,12 +179,18 @@ public class ShootActivity extends AppCompatActivity {
         senSensorManager.registerListener(senListener, senAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
+    /**
+     * Register events
+     */
     private void registerSocketListeners(){
         socket.on("readyResponse", readyResponse);
         socket.on("goResponse", goResponse);
         socket.on("play", play);
     }
 
+    /**
+     * Unregister events
+     */
     private void unregisterSocketListeners(){
         socket.off("readyResponse", readyResponse);
         socket.off("goResponse", goResponse);
@@ -209,7 +225,7 @@ public class ShootActivity extends AppCompatActivity {
     };
 
     /**
-     * Listener for ready response event
+     * Listener for go response event
      */
     private Emitter.Listener goResponse = new Emitter.Listener() {
 
@@ -251,6 +267,8 @@ public class ShootActivity extends AppCompatActivity {
                             mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
 
                             unregisterSocketListeners();
+
+                            // go to shoot accepted activity
                             Intent i = new Intent(ShootActivity.this, ShootAcceptedActivity.class);
                             startActivity(i);
 
@@ -267,6 +285,10 @@ public class ShootActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Listener for play event
+     * Not supposed to arrive
+     */
     private Emitter.Listener play = new Emitter.Listener() {
 
         @Override
@@ -282,6 +304,7 @@ public class ShootActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
+                        // change current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
                     } catch (JSONException e) {
                         return;
@@ -333,8 +356,11 @@ public class ShootActivity extends AppCompatActivity {
                 socket.off("goResponse", goResponse);
                 socket.off("play", play);
 
+                // go to shoot error activity
                 Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
                 Bundle bundle = new Bundle();
+
+                // set the reason
                 bundle.putDouble("reason", error);
                 i.putExtras(bundle);
                 startActivity(i);
@@ -402,15 +428,18 @@ public class ShootActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        socket.off("play", play);
+        unregisterSocketListeners();
         super.onBackPressed();
     }
 
-        /**
+    /**
+     * Used with HTTP REQUESTS
+     *
+     *
      * Send datas to server task
      * It also receive the response
      */
-        /*
+    @Deprecated
     private class SendDatasTask extends AsyncTask<String, Void, Double> {
 
         protected Double doInBackground(String... urls) {
@@ -468,5 +497,5 @@ public class ShootActivity extends AppCompatActivity {
             }
 
         }
-    }*/
+    }
 }

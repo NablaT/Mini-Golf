@@ -1,9 +1,10 @@
-package polytech.androidgolfclub;
+package polytech.androidgolfclub.data;
 
 import java.util.LinkedHashMap;
 
 /**
  * this class is used to save the results of the shoot
+ * Save the results of the last shoot
  *
  * Created by Romain Guillot on 28/12/15.
  */
