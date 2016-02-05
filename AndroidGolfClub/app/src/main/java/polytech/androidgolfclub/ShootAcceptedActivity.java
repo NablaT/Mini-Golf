@@ -3,6 +3,9 @@ package polytech.androidgolfclub;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +28,8 @@ import polytech.androidgolfclub.data.Results;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 public class ShootAcceptedActivity extends AppCompatActivity {
+
+    private MediaPlayer player;
 
     private TextView forceText;
     private Button btnReshoot;
@@ -110,6 +115,48 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     }
 
     /**
+     * Play ball in hole song
+     */
+    private class PlaySongInHoleTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootAcceptedActivity.this, R.raw.in_hole);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new PlaySongApplauseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    /**
+     * Applause the player
+     */
+    private class PlaySongApplauseTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            player = MediaPlayer.create(ShootAcceptedActivity.this, R.raw.applause);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            player.start();
+            return null;
+        }
+    }
+
+    /**
      * Play event listener
      * This is where this event is supposed to arrive
      *
@@ -141,6 +188,9 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            // Great, ball in hole !
+                            // Play the song
+                            new PlaySongInHoleTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                             // disable button because it's somebody else turn
                             btnReshoot.setEnabled(false);
@@ -148,6 +198,7 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                             // display felicitation message
                             // its now the next player turn
                             new AlertDialog.Builder(ShootAcceptedActivity.this)
+                                    .setCancelable(false)
                                     .setTitle(R.string.next_player_event_title)
                                     .setPositiveButton(R.string.next_player_confirm_yes, new DialogInterface.OnClickListener() {
                                         @Override
@@ -184,6 +235,8 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
 
+                                    DataKeeper.getInstance().setGameEnded(true);
+
 
                                     // disable button because it's somebody else turn
                                     btnReshoot.setEnabled(false);
@@ -191,11 +244,11 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                                     // display felicitation message
                                     // its now the next player turn
                                     new AlertDialog.Builder(ShootAcceptedActivity.this)
+                                            .setCancelable(false)
                                             .setTitle(R.string.end_game_title)
                                             .setPositiveButton(R.string.end_game_confirm_yes, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    DataKeeper.getInstance().setGameEnded(true);
                                                 }
                                             })
                                             .show();
@@ -236,6 +289,7 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                             // display felicitation message
                             // its now the next player turn
                             new AlertDialog.Builder(ShootAcceptedActivity.this)
+                                    .setCancelable(false)
                                     .setTitle(R.string.out_of_map_title)
                                     .setMessage(R.string.out_of_map_message)
                                     .setPositiveButton(R.string.out_of_map_yes, new DialogInterface.OnClickListener() {

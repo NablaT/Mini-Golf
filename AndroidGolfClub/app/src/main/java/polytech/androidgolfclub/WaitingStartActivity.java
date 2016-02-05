@@ -1,6 +1,8 @@
 package polytech.androidgolfclub;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,14 +19,37 @@ import polytech.androidgolfclub.webconnector.SocketGolf;
 public class WaitingStartActivity extends AppCompatActivity {
 
     private Socket socket;
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_start);
 
         socket = SocketGolf.getInstance().getSocket();
         socket.on("gameStart", gameStart);
+
+        new PlaySongWaitingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+
+    /**
+     * Waiting music
+     */
+    private class PlaySongWaitingTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            player = MediaPlayer.create(WaitingStartActivity.this, R.raw.waiting_song);
+            player.setLooping(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            player.start();
+            return null;
+        }
     }
 
     /**
@@ -45,6 +70,9 @@ public class WaitingStartActivity extends AppCompatActivity {
 
                     // unregister event
                     socket.off("gameStart", gameStart);
+
+                    // stop music
+                    player.stop();
 
                     // go to main activity
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);

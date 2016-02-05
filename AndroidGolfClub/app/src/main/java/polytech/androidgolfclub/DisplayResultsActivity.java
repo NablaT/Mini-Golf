@@ -196,14 +196,16 @@ public class DisplayResultsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            DataKeeper.getInstance().setGameEnded(true);
+
                             // display felicitation message
                             // its now the next player turn
                             new AlertDialog.Builder(DisplayResultsActivity.this)
+                                    .setCancelable(false)
                                     .setTitle(R.string.end_game_title)
                                     .setPositiveButton(R.string.end_game_confirm_yes, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            DataKeeper.getInstance().setGameEnded(true);
                                         }
                                     })
                                     .show();
