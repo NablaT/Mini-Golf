@@ -204,7 +204,10 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
         }, callbackChangeOfPlayer);
     }, function () {
         screen.emit('outOfMap', {});
-        callbackOutOfMap();
+        // This timeout is to handle the change view in smartphone !
+        setTimeout(function () {
+            callbackOutOfMap();
+        }, 2000);
     });
 
     // TODO DELETE the next line when it will be working.

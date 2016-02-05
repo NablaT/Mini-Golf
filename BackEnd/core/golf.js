@@ -126,10 +126,16 @@ class Golf {
     updatePlayerToPlay (callbackEndOfGame, callbackChangeOfPlayer) {
         this.rankPlayerToPlay++;
         if (this.rankPlayerToPlay === this.players.length) {
-            callbackEndOfGame();
+            // This timeout is to handle the change view in smartphone !
+            setTimeout(function () {
+                callbackEndOfGame();
+            }, 2000);
         }
         else {
-            callbackChangeOfPlayer(this.getPlayerToPlay().playerName);
+            // This timeout is to handle the change view in smartphone !
+            setTimeout(function () {
+                callbackChangeOfPlayer(this.getPlayerToPlay().playerName);
+            }, 2000);
         }
     }
 }
