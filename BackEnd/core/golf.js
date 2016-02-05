@@ -134,7 +134,7 @@ class Golf {
         else {
             // This timeout is to handle the change view in smartphone !
             setTimeout(function () {
-                callbackChangeOfPlayer(this.getPlayerToPlay().playerName);
+                callbackChangeOfPlayer();
             }, 2000);
         }
     }

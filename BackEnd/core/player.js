@@ -38,6 +38,14 @@ class Player {
     }
 
     /**
+     * Setter of the id.
+     * @param {int} newId - The new player's id.
+     */
+    set id (newId) {
+        this._id = newId;
+    }
+
+    /**
      * Getter of the score.
      * @returns {int} The score.
      */
@@ -51,6 +59,18 @@ class Player {
      */
     set score (newScore) {
         this._score = newScore
+    }
+
+    /**
+     * This function copies a player.
+     * @param player
+     * @returns {Player}
+     */
+    static copy (player) {
+        var playerTmp   = new Player(player.playerName);
+        playerTmp.id    = player.id;
+        playerTmp.score = player.score;
+        return playerTmp;
     }
 
 }

@@ -9,9 +9,9 @@
  */
 angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$rootScope', 'services',
-    'player', '$location', '$controller', '$timeout',
+    'position', '$location', '$controller', '$timeout',
     'constants',
-    function ($scope, services, player, $location, $controller, $timeout, constants) {
+    function ($scope, services, position, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
       $scope.currentPage = "menu";
@@ -20,19 +20,17 @@ angular.module('frontEndApp')
       $scope.nbOfPlayer = 1;
       $scope.players;
 
-      //=[{_playerName:"geaor", _id:300000000, _score:10}]
       $scope.messageForWaitingFrame = "Waiting for the game to starts";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
       $scope.currentScreen;
 
-
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
-
+      checkingIfGameStops();
 
       /**
        * Function updateHomePage. This function updates the home page.
@@ -141,18 +139,19 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.messageForWaitingFrame = "Waiting for players";
-              console.log("jerentre dans checking for waiting frame");
             });
           }
         });
       }
 
+      /**
+       * Function checkingIfGameStarts. This functions verifies if the game has been ran.
+       */
       function checkingIfGameStarts(){
         $scope.socket.on("gameStart", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
               if($scope.currentScreen==="game"){
-                console.log("in checking if game starts: currentScreen game");
                 $scope.current3DPage = "scripts/GameMap/index.html";
                 $scope.currentPage = "gameContainer";
               }
@@ -167,6 +166,22 @@ angular.module('frontEndApp')
             });
           }
         });
+      }
+
+      /**
+       * Function checkingIfGameStops. This function is checking the end of the game  by listening
+       * "endGame" event on the server.
+       **/
+      function checkingIfGameStops(){
+        $scope.socket.on("endGame", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              $scope.current3DPage="views/endPage.html";
+              $scope.currentPage="";
+            });
+          }
+        });
+
       }
 
       /**

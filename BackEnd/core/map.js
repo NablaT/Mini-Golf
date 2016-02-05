@@ -98,14 +98,15 @@ class Map {
      * This function sets the position ball.
      * @param {number} distance - The shoot's distance.
      * @param {int} angle - The shoot's angle in degrees.
-     * @param {function} callback - Callback to be triggered when the ball is in the hole.
+     * @param {function} callbackInHole - Callback to be triggered when the ball is in the hole.
+     * @param {function} callbackOutOfMap - Callback to be triggered when the ball is out of the map.
      */
-    setPositionBall (distance, angle, callback) {
+    setPositionBall (distance, angle, callbackInHole, callbackOutOfMap) {
 
-        this.ballPosition.latitude += parseInt(Math.cos(Map.toRadians(angle)) * distance);
-        this.ballPosition.longitude += parseInt(Math.sin(Map.toRadians(angle)) * distance);
+        this.ballPosition.latitude += parseInt(Math.cos(Map.toRadians(angle)) * distance, 10);
+        this.ballPosition.longitude += parseInt(Math.sin(Map.toRadians(angle)) * distance, 10);
 
-        this.check(callback);
+        this.check(callbackInHole, callbackOutOfMap);
     }
 
     /**
@@ -132,7 +133,6 @@ class Map {
             }
         }
         else {
-            this.ballPosition = this.startPosition;
             callbackOutOfMap();
         }
 
@@ -144,13 +144,13 @@ class Map {
      */
     isInMap () {
         return !(this.ballPosition.latitude
-                 < 0
-                 || this.ballPosition.latitude
-                    > this.width
-                 || this.ballPosition.longitude
-                    < 0
-                 || this.ballPosition.longitude
-                    > this.height);
+        < 0
+        || this.ballPosition.latitude
+        > this.width
+        || this.ballPosition.longitude
+        < 0
+        || this.ballPosition.longitude
+        > this.height);
     };
 
     /**
@@ -158,19 +158,12 @@ class Map {
      * @returns {boolean} True if the ball is in the hole, else false.
      */
     isInHole () {
-        return !!((
-                  (this.holePosition.latitude - (this.holeSide / 2))
-                  < this.ballPosition.latitude
-                  && (this.holeSide / 2)
-                     > this.holePosition.latitude
-                  )
-                  &&
-                  (
-                  (this.holePosition.longitude - (this.holeSide / 2))
-                  < this.ballPosition.longitude
-                  && (this.holeSide / 2)
-                     > this.holePosition.longitude
-                  ));
+        var latMin  = this.holePosition.latitude - (this.holeSide / 2);
+        var latMax  = this.holePosition.latitude + (this.holeSide / 2);
+        var longMin = this.holePosition.longitude - (this.holeSide / 2);
+        var longMax = this.holePosition.longitude + (this.holeSide / 2);
+        return !!(latMin <= this.ballPosition.latitude && this.ballPosition.latitude <= latMax
+        && longMin <= this.ballPosition.longitude && this.ballPosition.longitude <= longMax);
     };
 
     /**
@@ -180,6 +173,17 @@ class Map {
         for (let i = this.ballPosition.latitude - 2; i < this.ballPosition.latitude + 2; i++) {
             for (let j = this.ballPosition.longitude - 2; j < this.ballPosition.longitude + 2; j++) {
                 this.matrix.setElement(j, i, '#');
+            }
+        }
+    }
+
+    /**
+     * This function erases the ball position on the map.
+     */
+    resetBall () {
+        for (let i = this.ballPosition.latitude - 2; i < this.ballPosition.latitude + 2; i++) {
+            for (let j = this.ballPosition.longitude - 2; j < this.ballPosition.longitude + 2; j++) {
+                this.matrix.setElement(j, i, '-');
             }
         }
     }
@@ -205,6 +209,7 @@ class Map {
     toString () {
         this.printBall();
         this.matrix.toString();
+        this.resetBall();
     }
 
 }

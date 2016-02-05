@@ -8,7 +8,7 @@
  * Factory in the frontEndApp.
  */
 angular.module('frontEndApp')
-  .factory('player', function () {
+  .factory('position', function () {
     var numberOfPlayer;
 
     return {

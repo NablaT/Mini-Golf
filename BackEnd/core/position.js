@@ -69,6 +69,15 @@ class Position {
         posPixel.latitudePixel  = -600 + (this.latitude / (0.225 - 0.000296 * this.longitude));
         return posPixel;
     }
+
+    /**
+     * This function copies a position.
+     * @param position
+     * @returns {Position}
+     */
+    static copy (position) {
+        return new Position(position.latitude, position.longitude);
+    }
 }
 
 module.exports = Position;

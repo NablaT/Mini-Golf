@@ -69,32 +69,10 @@ class Kinect {
         if (shootDirectionTmp !== -1) {
             this.resetDirection();
             this.shootDirectionReady = shootDirectionTmp;
-            callback(Kinect.convertKinectAngleToSpheroAngle(shootDirectionTmp, isRighty));
+            callback(shootDirectionTmp, isRighty);
             return true;
         }
         return false;
-    }
-
-    /**
-     * This function converts the angle received from the kinect to a valid angle for the sphero.
-     * @param {int} kinectAngle - The angle sent from the kinect.
-     * @param {boolean} isRighty - A boolean to know if the user is righty.
-     * @returns {number} A valid angle for the sphero.
-     */
-    static convertKinectAngleToSpheroAngle (kinectAngle, isRighty) {
-        var angle = 0;
-        if (isRighty) {
-            angle = kinectAngle - 90; // Shoot left for a righty.
-            if (angle < 0) {
-                angle += 360;
-            }
-        } else {
-            angle = kinectAngle + 90; // Shoot right for a lefty.
-            if (angle > 360) {
-                angle -= 360;
-            }
-        }
-        return angle;
     }
 }
 
