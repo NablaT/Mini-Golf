@@ -6,7 +6,7 @@ var router = require('../core/core.js').express.Router(),
  */
 router.post('/direction', function (req, res, next) {
 
-    kinect.shootDirection = req.param('direction', null);
+    kinect.shootDirection = req.query['direction'];
 
     res.send('\nok\n');
 
