@@ -30,14 +30,6 @@ class Player {
     }
 
     /**
-     * Setter of the player's name.
-     * @param {String} playerName - The new player's name.
-     */
-    set playerName (playerName) {
-        this._playerName = playerName;
-    }
-
-    /**
      * Getter of the id.
      * @returns {int} The player's id.
      */
@@ -75,8 +67,7 @@ class Player {
      * @returns {Player}
      */
     static copy (player) {
-        var playerTmp        = new Player();
-        playerTmp.playerName = player.playerName;
+        var playerTmp        = new Player(player.playerName);
         playerTmp.id         = player.id;
         playerTmp.score      = player.score;
         return playerTmp;
