@@ -14,14 +14,14 @@ angular.module('frontEndApp')
     function ($scope, services, player, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
-      $scope.currentPage = "menu"; //TODO: to change to menu
+      $scope.currentPage = "menu";
       $scope.current3DPage = "scripts/gameMap/homeEnvironment.html";
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
 
       //=[{_playerName:"geaor", _id:300000000, _score:10}]
-      $scope.messageForWaitingFrame = "Waiting until the game starts";
+      $scope.messageForWaitingFrame = "Waiting for the game to starts";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
@@ -30,6 +30,8 @@ angular.module('frontEndApp')
 
       connect();
       getBackPlayer();
+      checkingMessageForWaitingFrame();
+      checkingIfGameStarts();
 
 
       /**
@@ -106,7 +108,6 @@ angular.module('frontEndApp')
       };
 
 
-
       /**
        * Function Connect. This function makes the connection with the server.
        **/
@@ -124,19 +125,49 @@ angular.module('frontEndApp')
       function getBackPlayer() {
         $scope.socket.on("players", function (params) {
           if (params !== {}) {
-            console.log("params:::", params);
             $scope.$apply(function () {
               $scope.players = params;
-              console.log("list of player: ", $scope.players);
-              console.log("$scope.players.lengt: ", $scope.players.length);
-              console.log("$scope.nbpayer", $scope.nbOfPlayer);
               if ($scope.players.length == $scope.nbOfPlayer) {
-
-                $scope.messageForWaitingFrame = "The game is starting ...";
-                $timeout(updateScore, 3000);
+               // $scope.messageForWaitingFrame = "The game is starting ...";
+                console.log("d'ou je rentre ici????");
+                //$timeout(updateScore, 3000);
               }
-              //TODO: to remove !!!
-              $scope.players.push({_playerName: "Remi", _id: 300000000, _score: 10});
+            });
+          }
+        });
+      }
+
+      /**
+       * Function checkingMessageForWaitingFrame. This function is always checking the status of the game.
+       */
+      function checkingMessageForWaitingFrame(){
+        $scope.socket.on("waitingForPlayers", function (params) {
+          if (params !== {}) {
+            $scope.$apply(function () {
+              $scope.messageForWaitingFrame = "Waiting for players";
+              console.log("jerentre dans checking for waiting frame");
+            });
+          }
+        });
+      }
+
+      function checkingIfGameStarts(){
+        $scope.socket.on("gameStart", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              if($scope.currentScreen==="game"){
+                console.log("in checking if game starts: currentScreen game");
+                $scope.current3DPage = "scripts/GameMap/index.html";
+                $scope.currentPage = "gameContainer";
+              }
+              else if($scope.currentScreen==="guide"){
+                console.log("in checking if game starts: currentScreen guide");
+                $scope.current3DPage = "views/swingGuide.html";
+                $scope.currentPage = "guideContainer";
+              }
+              else{
+                updateScore();
+              }
             });
           }
         });
@@ -147,31 +178,30 @@ angular.module('frontEndApp')
        * running, it update the content of the track frame.
        */
       $scope.verifyGameIsRunningForTrack = function () {
-       $scope.socket.on("waitingForPlayers", function (params) {
+        $scope.current3DPage="views/loading.html";
+        $scope.currentPage="loadingContainer";
+        $scope.currentScreen="game";
+        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
+
+        $scope.socket.on("waitingForPlayers", function (params) {
           if (params !== {}) {
-              $scope.$apply(function(){
-                $scope.current3DPage = "scripts/gameMap/homeEnvironment.html";
-                $scope.currentPage = "loadingContainer";
-                $scope.currentScreen="game";
-              });
-          }
-          else{
-            $scope.$apply(function(){
-              $scope.current3DPage = "views/loading.html";
-              $scope.currentPage = "loadingContainer";
-              $scope.currentScreen="game";
+            $scope.$apply(function () {
+              $scope.messageForWaitingFrame = params;
             });
           }
-        });
-       /* if (false) {
-          //TODO to complete with socket io. 'waitingForPlayers'
+        });*/
 
-        }
-        else {
-          $scope.current3DPage = "views/loading.html";
-          $scope.currentPage = "loadingContainer";
-          $scope.currentScreen="game";
-        }*/
+       /* $scope.socket.on("gameStart", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              $scope.current3DPage = "views/swingGuide.html";
+              $scope.currentPage = "gameContainer";
+              $scope.currentScreen = "";
+              $scope.messageForWaitingFrame = params;
+            });
+          }
+        });*/
+
       };
 
 
@@ -180,15 +210,32 @@ angular.module('frontEndApp')
        * it updates the content of the track frame.
        */
       $scope.verifyGameIsRunningForGuide = function () {
-        if (false) {
-          //TODO to complete with socket io /gameStart
-        }
-        else {
-          $scope.current3DPage="views/loading.html";
-          $scope.currentPage="loadingContainer";
-          $scope.currentScreen="swingGuide";
-        }
+        $scope.current3DPage="views/loading.html";
+        $scope.currentPage="loadingContainer";
+        $scope.currentScreen="guide";
+        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
+
+        $scope.socket.on("waitingForPlayers", function (params) {
+          if (params !== {}) {
+            $scope.$apply(function () {
+              $scope.messageForWaitingFrame = params;
+            });
+          }
+        });*/
+
+        /*$scope.socket.on("gameStart", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              console.log("game start in apply");
+              $scope.current3DPage = "views/swingGuide.html";
+              $scope.currentPage = "guideContainer";
+              $scope.currentScreen = "guide";
+              $scope.messageForWaitingFrame = params;
+            });
+          }
+        });*/
       }
+
 
 
       /**
