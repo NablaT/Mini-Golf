@@ -5,14 +5,14 @@
 var Map      = require('../core/map.js'),
     Position = require('../core/position.js'),
     Golf     = require('../core/golf.js'),
-    kinect   = require('../webAPI/kinect.js'),
+    kinect   = require('../game/kinect.js'),
     sphero   = require('../sockets/sphero.js'),
-    ecran    = require('../sockets/ecran.js');
+    screen   = require('../sockets/screen.js');
 
 /////////////////////////////////                     CONSTANTS                        /////////////////////////////////
 
 const DIST_TO_VELOCITY   = 0.534;
-const MINIMUM_SHOOT_TIME = 1000; // 1 sec temps minimal d'un tir
+const MINIMUM_SHOOT_TIME = 1000; // 1 sec minimal time for a shoot
 const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
 
 
@@ -20,24 +20,14 @@ const MINIMUM_NB_VALUES = 100; // minimum values getted by the accelerometer
  * The golf game variable.
  * @type {Golf}
  */
-var golf               = null,
-    /**
-     * The indice of the player who is supposed to play.
-     * @type {int}
-     */
-    playerToPlayIndice = -1,
-    /**
-     * The angle of shoot.
-     * @type {int}
-     */
-    angle              = null;
+var golf = null;
 
+/**
+ * Getter of the golf variable.
+ * @returns {Golf} The golf variable.
+ */
 var getGolf = function () {
     return golf;
-};
-
-var getPlayerToPlayIndice = function () {
-    return playerToPlayIndice;
 };
 
 /**
@@ -45,8 +35,8 @@ var getPlayerToPlayIndice = function () {
  * @param {int} numberPlayer - The number of players.
  */
 var initGame = function (numberPlayer) {
-    golf               = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
-    playerToPlayIndice = -1;
+    golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
+    screen.emit('waitingForPlayers', {});
 };
 
 /**
@@ -65,6 +55,7 @@ var endGame = function () {
  *     <li>False if the player could join the game and he's not the last one.</li>
  *     <li>-1 if there is no room anymore.</li>
  *     <li>-2 if the game is not started.</li>
+ *     <li>-3 if a player with the playerName param already exists.</li>
  * </ul>
  */
 var addPlayer = function (playerName) {
@@ -73,44 +64,38 @@ var addPlayer = function (playerName) {
     }
     else {
         return getGolf().addPlayer(playerName, function () {
-            ecran.emit('players', getGolf().players);
+            screen.emit('players', getGolf().players);
         });
     }
 };
 
 /**
- * This function finds the player who is supposed to play and executes the callback function with the player's name in
- * parameter.
+ * This function finds the player supposed to play and places the attribute _activePlayer in it.
+ * It also emits the 'players' event to the screen.
+ * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
-    // TODO find the real player who is supposed to play.
-    if (getPlayerToPlayIndice() === -1) {
-        playerToPlayIndice = 0;
-    }
-    else {
-        // TODO handle the case where the indice is equal to the length of players. Cannot be superior !
-        playerToPlayIndice = getPlayerToPlayIndice() + 1;
-    }
-    getGolf().players[playerToPlayIndice]._activePlayer = true;
-    var playerName                                      = getGolf().players[playerToPlayIndice].playerName;
-    ecran.emit('players', getGolf().players);
-    return playerName;
+    var players                                       = getGolf.players;
+    players[getGolf().rankPlayerToPlay]._activePlayer = true;
+    screen.emit('players', players);
+    return getGolf().getPlayerToPlay();
 };
 
 /**
  * This function gets the direction from kinect and transmits it to sphero.
- * @returns {boolean} True if the direction exists, false either.
+ * @returns {boolean} True if the direction is correct, else false.
  */
 var playerReady = function () {
-    var direction = kinect.getLastShootDirection();
-    if (direction !== -1) {
-        kinect.resetDirection();
-        var angleTmp = convertKinectAngleToSpheroAngle(direction, true);
-        angle        = angleTmp;
-        sphero.ready(angleTmp);
-        return true;
-    }
-    return false;
+    return kinect.playerReady(true, function (angle) {
+        sphero.ready(angle);
+    });
+};
+
+/**
+ * This function aimed to emit the 'gameStart' event.
+ */
+var screenGameStart = function () {
+    screen.emit('gameStart', {});
 };
 
 /**
@@ -125,28 +110,6 @@ var startCalibration = function () {
  */
 var stopCalibration = function () {
     sphero.stopCalibration();
-};
-
-/**
- * This function converts the angle received from the kinect to a valid angle for the sphero.
- * @param {int} kinectAngle - The angle sent from the kinect.
- * @param {boolean} isRighty - A boolean to know if the user is righty.
- * @returns {number} A valid angle for the sphero.
- */
-var convertKinectAngleToSpheroAngle = function (kinectAngle, isRighty) {
-    var angle = 0; // transformation de l'angle pour la sphero
-    if (isRighty) {
-        angle = kinectAngle - 90; // tir à gauche pour un droitier
-        if (angle < 0) {
-            angle += 360;
-        }
-    } else {
-        angle = kinectAngle + 90; // tir à droite pour un gaucher
-        if (angle > 360) {
-            angle -= 360;
-        }
-    }
-    return angle;
 };
 
 /**
@@ -198,7 +161,7 @@ var isValidShoot = function (datas, strikeForce) {
     else if (datas_size < MINIMUM_NB_VALUES) { // not enough values
 
         console.log("Your accelerometer is bad");
-        return alse;
+        return false;
     }
     else if (strikeForce === 0) {
 
@@ -221,22 +184,31 @@ var distToVelocity = function (dist) {
 /**
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
- * @param {function} callback - The function to be triggered when the player wins a game. Needs a playerName in parameter.
+ * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a
+ *     playerName in parameter.
+ * @param {function} callbackEndOfGame - The function to be triggered when a game is finished.
+ * @param {function} callbackOutOfMap - The function to be triggered when the ball is out of the map.
  */
-var go = function (strikeForce, callback) {
+var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callbackOutOfMap) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
-    var velocity = distToVelocity(dist);
-    sphero.goSphero(velocity);
+    sphero.goSphero(distToVelocity(dist));
 
-    getGolf().map.setPositionBall(dist, angle, function () {
-        ecran.emit('victory', {});
-        callback(getGolf().getPlayerToPlay());
+    getPlayerToPlay().score += 1;
+
+    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady, function () {
+
+        getGolf.updatePlayerToPlay(function () {
+            screen.emit('endGame', {});
+            callbackEndOfGame();
+            endGame();
+        }, callbackChangeOfPlayer);
+    }, function () {
+        screen.emit('outOfMap', {});
+        callbackOutOfMap();
     });
+
     // TODO DELETE the next line when it will be working.
     getGolf().map.toString();
-    golf.players[playerToPlayIndice].score += 1;
-    getGolf().players[playerToPlayIndice]._activePlayer = true;
-    ecran.emit('players', getGolf().players);
 };
 
 module.exports = {
@@ -246,6 +218,7 @@ module.exports = {
     addPlayer           : addPlayer,
     getPlayerToPlay     : getPlayerToPlay,
     playerReady         : playerReady,
+    screenGameStart     : screenGameStart,
     startCalibration    : startCalibration,
     stopCalibration     : stopCalibration,
     calculateStrikeForce: calculateStrikeForce,

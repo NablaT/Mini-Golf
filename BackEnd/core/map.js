@@ -9,7 +9,7 @@ class Map {
 
     // TODO row and column params should be strictly positives.
     /**
-     * The constrctor of a matrix.
+     * The constructor of a matrix.
      * @param {int} width - The width of the map.
      * @param {int} height - The height of the map.
      * @param {Position} startPosition - The start position.
@@ -28,6 +28,22 @@ class Map {
 
         this.printHole();
 
+    }
+
+    /**
+     * Getter of the map width.
+     * @returns {int} The map width.
+     */
+    get width () {
+        return this._width;
+    }
+
+    /**
+     * Getter of the map height.
+     * @returns {int} The map height.
+     */
+    get height () {
+        return this._height;
     }
 
     /**
@@ -71,6 +87,14 @@ class Map {
     }
 
     /**
+     * Setter of the ball position.
+     * @param {Position} newPosition - The new ball position.
+     */
+    set ballPosition (newPosition) {
+        this._ballPosition = newPosition;
+    }
+
+    /**
      * This function sets the position ball.
      * @param {number} distance - The shoot's distance.
      * @param {int} angle - The shoot's angle in degrees.
@@ -94,27 +118,59 @@ class Map {
     }
 
     /**
-     * This function checks if the ball is in the hole.
-     * @param {function} callback - Callback to be triggered when the ball is in the hole.
+     * This function checks where is the ball.
+     * If the ball is in the hole a callback is triggered to inform everyone.
+     * If the ball is out of the map a callback is triggered to inform everyone and the ball position is reinitialized.
+     * @param {function} callbackInHole - Callback to be triggered when the ball is in the hole.
+     * @param {function} callbackOutOfMap - Callback to be triggered when the ball is out of the map.
      */
-    check (callback) {
+    check (callbackInHole, callbackOutOfMap) {
 
-        if ((
-                (this.holePosition.latitude - (this.holeSide / 2))
-                < this.ballPosition.latitude
-                && (this.holeSide / 2)
-                > this.holePosition.latitude
-            )
-            &&
-            (
-                (this.holePosition.longitude - (this.holeSide / 2))
-                < this.ballPosition.longitude
-                && (this.holeSide / 2)
-                > this.holePosition.longitude
-            )
-        ) {
-            callback();
+        if (this.isInMap()) {
+            if (this.isInHole()) {
+                callbackInHole();
+            }
         }
+        else {
+            this.ballPosition = this.startPosition;
+            callbackOutOfMap();
+        }
+
+    };
+
+    /**
+     * This function aimed to check if the ball is still on the map.
+     * @returns {boolean} True if the ball is on the map, else false.
+     */
+    isInMap () {
+        return !(this.ballPosition.latitude
+                 < 0
+                 || this.ballPosition.latitude
+                    > this.width
+                 || this.ballPosition.longitude
+                    < 0
+                 || this.ballPosition.longitude
+                    > this.height);
+    };
+
+    /**
+     * This function aimed to check if the ball is in the hole.
+     * @returns {boolean} True if the ball is in the hole, else false.
+     */
+    isInHole () {
+        return !!((
+                  (this.holePosition.latitude - (this.holeSide / 2))
+                  < this.ballPosition.latitude
+                  && (this.holeSide / 2)
+                     > this.holePosition.latitude
+                  )
+                  &&
+                  (
+                  (this.holePosition.longitude - (this.holeSide / 2))
+                  < this.ballPosition.longitude
+                  && (this.holeSide / 2)
+                     > this.holePosition.longitude
+                  ));
     };
 
     /**

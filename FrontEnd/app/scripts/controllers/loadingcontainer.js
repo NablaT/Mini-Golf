@@ -9,9 +9,4 @@
  */
 angular.module('frontEndApp')
   .controller('LoadingcontainerCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
   });

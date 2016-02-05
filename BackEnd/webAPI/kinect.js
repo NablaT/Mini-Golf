@@ -1,32 +1,15 @@
-var router = require('../core/core.js').express.Router();
-
-var lastShootDirection = "-1";
+var router = require('../core/core.js').express.Router(),
+    kinect = require('../game/kinect.js');
 
 /**
- * Cette route permet de récupérer les scores.
+ * This route aimed to update the player's direction received from kinect.
  */
-router.get('/test', function(req, res, next) {
-    console.log('cc');
-    res.send('ok');
-});
-
 router.post('/direction', function (req, res, next) {
 
-    var direction = req.param('direction', null); // DROIT, GAUCHE45, GAUCHE90, -GAUCHE45, -DROIT, -DROITE45, DROITE90, DROITE45
+    kinect.shootDirection = req.param('direction', null);
 
-    lastShootDirection = direction;
-
-    //console.log("dir = ", direction);
     res.send('\nok\n');
 
 });
 
-var getLastShootDirection = function(){
-    return lastShootDirection;
-};
-
-var resetDirection = function (){
-    lastShootDirection = "-1";
-};
-
-module.exports = {router:router, getLastShootDirection:getLastShootDirection, resetDirection:resetDirection};
+module.exports = router;
