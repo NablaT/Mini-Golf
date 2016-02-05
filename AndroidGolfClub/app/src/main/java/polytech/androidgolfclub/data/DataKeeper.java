@@ -60,4 +60,11 @@ public class DataKeeper {
     public void setFirstPlayerToPLay(boolean firstPlayerToPLay) {
         this.firstPlayerToPLay = firstPlayerToPLay;
     }
+
+    public void reset(){
+        playerName = null;
+        currentPlayer = null;
+        gameEnded = false;
+        firstPlayerToPLay = true;
+    }
 }

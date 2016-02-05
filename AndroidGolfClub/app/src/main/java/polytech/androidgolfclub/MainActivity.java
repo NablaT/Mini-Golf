@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import polytech.androidgolfclub.data.DataKeeper;
+import polytech.androidgolfclub.data.Results;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 
@@ -29,7 +30,7 @@ import polytech.androidgolfclub.webconnector.SocketGolf;
 public class MainActivity extends AppCompatActivity {
 
     private Socket socket;
-    private Button newShoot, seeShoot, calibrateSpehro;
+    private Button newShoot, seeShoot, calibrateSpehro, disconnectBtn;
     private TextView text;
     private MediaPlayer player;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         newShoot = (Button) findViewById(R.id.btnNewShoot);
         seeShoot = (Button) findViewById(R.id.btnSeeShoot);
         calibrateSpehro = (Button) findViewById(R.id.btnCalibrate);
+        disconnectBtn = (Button) findViewById(R.id.btnDisconnect);
 
         text = (TextView) findViewById(R.id.text);
 
@@ -118,6 +120,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Disconnect button callback
+     * @param v
+     */
+    public void disconnectClick(View v){
+
+        DataKeeper.getInstance().reset();
+        Results.getInstance().clearValues();
+
+        // emit disconnect event to server
+
+
+        // unregister event
+        unregisterEvents();
+
+        // go to ip settings activity
+        Intent intent = new Intent(this, IpSettingsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    /**
      * Update the view in function of the current player
      * If we are the current player we can unlock shoot button and calibrate button
      */
@@ -135,6 +158,9 @@ public class MainActivity extends AppCompatActivity {
                 // check if the game is ended
                 if (gameEnded) {
 
+                    disconnectBtn.setVisibility(View.VISIBLE);
+                    newShoot.setVisibility(View.GONE);
+
                     handler.post(new Runnable() {
 
                         @Override
@@ -145,35 +171,41 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                } else if (me.equals(current)) {
-
-                    Log.i("MAIN", "It's my turn");
-
-                    handler.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            newShoot.setEnabled(true);
-                            calibrateSpehro.setEnabled(true);
-                            text.setText(me + ", c'est à toi de jouer");
-
-                        }
-                    });
-
                 } else {
 
-                    Log.i("MAIN", "It's " + current + " turn");
+                    disconnectBtn.setVisibility(View.GONE);
+                    newShoot.setVisibility(View.VISIBLE);
 
-                    handler.post(new Runnable() {
+                    if (me.equals(current)) {
 
-                        @Override
-                        public void run() {
-                            newShoot.setEnabled(false);
-                            calibrateSpehro.setEnabled(false);
-                            text.setText("C'est à " + current + " de jouer");
-                        }
-                    });
+                        Log.i("MAIN", "It's my turn");
 
+                        handler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                newShoot.setEnabled(true);
+                                calibrateSpehro.setEnabled(true);
+                                text.setText(me + ", c'est à toi de jouer");
+
+                            }
+                        });
+
+                    } else {
+
+                        Log.i("MAIN", "It's " + current + " turn");
+
+                        handler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                newShoot.setEnabled(false);
+                                calibrateSpehro.setEnabled(false);
+                                text.setText("C'est à " + current + " de jouer");
+                            }
+                        });
+
+                    }
                 }
             }
         }
@@ -223,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Play ball in hole song
+     * Play end song
      */
     private class PlaySongEndTask extends AsyncTask<Void, Void, Void> {
 
