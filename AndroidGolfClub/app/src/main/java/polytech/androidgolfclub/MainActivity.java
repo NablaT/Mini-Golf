@@ -48,11 +48,27 @@ public class MainActivity extends AppCompatActivity {
 
         socket = SocketGolf.getInstance().getSocket();
 
-        // register play event
-        socket.on("play", play);
+        // register event
+        registerEvents();
 
         // update buttons view
         update();
+    }
+
+    /**
+     * Register socket events
+     */
+    private void registerEvents(){
+        socket.on("play", play);
+        socket.on("end", end);
+    }
+
+    /**
+     * Unregister socket events
+     */
+    private void unregisterEvents(){
+        socket.off("play", play);
+        socket.off("end", end);
     }
 
     /**
@@ -62,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     public void newShootClick(View view){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // go to shoot activity
         Intent intent = new Intent(this, ShootActivity.class);
@@ -76,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     public void statsClick(View view){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // go to display results activity
         Intent intent = new Intent(this, DisplayResultsActivity.class);
@@ -90,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     public void calibrateClick(View view){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // go to calibrate activity
         Intent intent = new Intent(this, CalibrateActivity.class);
@@ -106,12 +122,26 @@ public class MainActivity extends AppCompatActivity {
         DataKeeper dk = DataKeeper.getInstance();
         final String me = dk.getPlayerName();
         final String current = dk.getCurrentPlayer();
+        final boolean gameEnded = dk.isGameEnded();
 
         if (me != null) {
 
             if (current != null) {
 
-                if (me.equals(current)) {
+                // check if the game is ended
+                if (gameEnded) {
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            newShoot.setEnabled(false);
+                            calibrateSpehro.setEnabled(false);
+                            text.setText("La partie est terminée !");
+                        }
+                    });
+
+                } else if (me.equals(current)) {
 
                     Log.i("MAIN", "It's my turn");
 
@@ -125,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+
                 } else {
 
                     Log.i("MAIN", "It's " + current + " turn");
@@ -170,6 +201,40 @@ public class MainActivity extends AppCompatActivity {
 
                     // update the view
                     update();
+                }
+
+            }).start();
+        }
+    };
+
+    /**
+     * End event listener
+     *
+     * The player has put the ball in the hole and the game is ended
+     */
+    private Emitter.Listener end = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : end");
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            DataKeeper.getInstance().setGameEnded(true);
+
+                            // update the view
+                            update();
+                        }
+                    });
                 }
 
             }).start();

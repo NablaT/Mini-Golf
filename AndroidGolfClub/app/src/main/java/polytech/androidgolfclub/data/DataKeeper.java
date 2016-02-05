@@ -28,6 +28,8 @@ public class DataKeeper {
 
     private String currentPlayer;
 
+    private boolean gameEnded;
+
     private static DataKeeper ourInstance = new DataKeeper();
 
     public static DataKeeper getInstance() {
@@ -37,5 +39,14 @@ public class DataKeeper {
     private DataKeeper() {
         playerName = null;
         currentPlayer = null;
+        gameEnded = false;
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
     }
 }

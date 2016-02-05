@@ -7,6 +7,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -25,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -70,7 +73,7 @@ public class ShootActivity extends AppCompatActivity {
     private Socket socket;
 
     private Handler handler = new Handler(Looper.getMainLooper());
-
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +201,26 @@ public class ShootActivity extends AppCompatActivity {
     }
 
     /**
+     * Play ball in hole song
+     */
+    private class PlaySongShootTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootActivity.this, R.raw.shoot);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+    }
+
+    /**
      * Listener for ready response event
      */
     private Emitter.Listener readyResponse = new Emitter.Listener() {
@@ -257,6 +280,10 @@ public class ShootActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
+
+                            // Great shoot
+                            // Play the song
+                            new PlaySongShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                             // shoot accepted
                             // vibration de confirmation

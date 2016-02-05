@@ -94,7 +94,7 @@ public class IpSettingsActivity extends AppCompatActivity {
     }
 
     /**
-     * Do not autorize back click
+     * Disable back click
      */
     @Override
     public void onBackPressed() {
