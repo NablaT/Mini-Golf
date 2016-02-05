@@ -1,7 +1,6 @@
 package polytech.androidgolfclub;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,10 +15,12 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import polytech.androidgolfclub.data.DataKeeper;
 import polytech.androidgolfclub.webconnector.SocketGolf;
-import polytech.androidgolfclub.webconnector.WebConnector;
-import polytech.androidgolfclub.webconnector.WebMinigolf;
 
+/**
+ * This activity is used to calibrate the sphero
+ */
 public class CalibrateActivity extends AppCompatActivity {
 
     private boolean calibrating;
@@ -38,11 +39,19 @@ public class CalibrateActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         socket = SocketGolf.getInstance().getSocket();
+
+        // register event play
+        // if we receive the event play when we calibrate the sphero
+        // it won't arrive normally
         socket.on("play", play);
 
         calibrating = false;
     }
 
+    /**
+     * Calibrate button callback
+     * @param v
+     */
     public void calibrate(View v){
 
         if (!calibrating){
@@ -52,6 +61,7 @@ public class CalibrateActivity extends AppCompatActivity {
             btncalibrate.setText(getString(R.string.btniscalibrating));
             progressBar.setVisibility(View.VISIBLE);
 
+            // emit the event to start the calibration
             socket.emit("startCalibration", new JSONObject());
 
         } else {
@@ -61,14 +71,33 @@ public class CalibrateActivity extends AppCompatActivity {
             btncalibrate.setText(getString(R.string.btntocalibrate));
             progressBar.setVisibility(View.GONE);
 
+            // emit the event to stop the calibration
             socket.emit("stopCalibration", new JSONObject());
 
-            Toast.makeText(this, "Calibration effectuée", Toast.LENGTH_SHORT).show();
+            // display message
+            Toast.makeText(this, getString(R.string.calibration_done), Toast.LENGTH_SHORT).show();
 
         }
 
     }
 
+    /**
+     * Back button callback
+     * @param view
+     */
+    public void backClick(View view){
+
+        // unregister event play
+        socket.off("play", play);
+
+        // go to main activity
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+    }
+
+    /**
+     * Spcket play event listener
+     */
     private Emitter.Listener play = new Emitter.Listener() {
 
         @Override
@@ -84,6 +113,7 @@ public class CalibrateActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
+                        // change current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
                     } catch (JSONException e) {
                         return;
@@ -93,12 +123,5 @@ public class CalibrateActivity extends AppCompatActivity {
             }).start();
         }
     };
-
-    public void backClick(View view){
-
-        socket.off("play", play);
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
 
 }

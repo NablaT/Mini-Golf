@@ -1,6 +1,8 @@
-package polytech.androidgolfclub;
+package polytech.androidgolfclub.data;
 
 /**
+ * Keep server IP adress
+ *
  * Created by Romain Guillot on 08/01/16.
  */
 public class ServerIp {

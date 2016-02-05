@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -14,8 +13,12 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import polytech.androidgolfclub.data.DataKeeper;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
+/**
+ * Activity when the shoot is not accepted
+ */
 public class ShootErrorActivity extends AppCompatActivity {
 
     private TextView reasonText;

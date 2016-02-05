@@ -75,7 +75,7 @@ var addPlayer = function (playerName) {
  * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
-    var players                                       = getGolf.players;
+    var players                                       = getGolf().players;
     players[getGolf().rankPlayerToPlay]._activePlayer = true;
     screen.emit('players', players);
     return getGolf().getPlayerToPlay();
@@ -204,7 +204,10 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
         }, callbackChangeOfPlayer);
     }, function () {
         screen.emit('outOfMap', {});
-        callbackOutOfMap();
+        // This timeout is to handle the change view in smartphone !
+        setTimeout(function () {
+            callbackOutOfMap();
+        }, 2000);
     });
 
     // TODO DELETE the next line when it will be working.

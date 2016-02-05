@@ -1,6 +1,9 @@
-package polytech.androidgolfclub;
+package polytech.androidgolfclub.data;
 
 /**
+ *
+ * This class is used to keep player name and current player
+ *
  * Created by Romain Guillot on 25/01/16.
  */
 public class DataKeeper {
