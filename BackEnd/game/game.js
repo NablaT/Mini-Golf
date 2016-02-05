@@ -194,55 +194,42 @@ var distToVelocity = function (dist) {
 /**
  * This function moves the sphero.
  * @param {number} strikeForce - The force in Newton.
- * @param {function} callbackChangeOfPlayerSmartphone - The function to be triggered when the player wins a game. Needs a
+ * @param {function} callbackChangeOfPlayer - The function to be triggered when the player wins a game. Needs a
  *     playerName in parameter.
- * @param {function} callbackEndOfGameSmartphone - The function to be triggered when a game is finished.
- * @param {function} callbackOutOfMapSmartphone - The function to be triggered when the ball is out of the map.
+ * @param {function} callbackEndOfGame - The function to be triggered when a game is finished.
+ * @param {function} callbackOutOfMap - The function to be triggered when the ball is out of the map.
  */
-var go = function (strikeForce, callbackChangeOfPlayerSmartphone, callbackEndOfGameSmartphone, callbackOutOfMapSmartphone) {
+var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callbackOutOfMap) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
     sphero.goSphero(distToVelocity(dist));
 
     getPlayerToPlay().score += 1;
     getPlayerToPlay();
 
-    getGolf()
-        .map
-        .setPositionBall(dist, kinect.shootDirectionReady, callbackInHole(callbackEndOfGameSmartphone, callbackChangeOfPlayerSmartphone), callbackOutOfMap(callbackOutOfMapSmartphone));
+    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady,
+        function () {
+            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+            getGolf().updatePlayerToPlay(function () {
+                screen.emit('endGame', {});
+                callbackEndOfGame();
+                endGame();
+            }, function () {
+                getPlayerToPlay();
+                callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
+            });
+
+        }, function () {
+            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+            screen.emit('outOfMap', {});
+            // This timeout is to handle the change view in smartphone !
+            setTimeout(function () {
+                callbackOutOfMap();
+            }, 2000);
+
+        });
 
     // TODO DELETE the next line when it will be working.
     getGolf().map.toString();
-};
-
-/**
- * This function is the callback triggered when the ball is in the hole.
- * @param {function} callbackEndOfGameSmartphone - The function to be triggered when a game is finished.
- * @param {function} callbackChangeOfPlayerSmartphone - The function to be triggered when the player wins a game. Needs a
- *     playerName in parameter.
- */
-var callbackInHole = function (callbackEndOfGameSmartphone, callbackChangeOfPlayerSmartphone) {
-    getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
-    getGolf().updatePlayerToPlay(function () {
-        screen.emit('endGame', {});
-        callbackEndOfGameSmartphone();
-        endGame();
-    }, function () {
-        getPlayerToPlay();
-        callbackChangeOfPlayerSmartphone(getGolf().getPlayerToPlay().playerName);
-    });
-};
-
-/**
- * This function is the callback triggered when the ball is out of the map.
- * @param {function} callbackOutOfMapSmartphone - The function to be triggered when the ball is out of the map.
- */
-var callbackOutOfMap = function (callbackOutOfMapSmartphone) {
-    getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
-    screen.emit('outOfMap', {});
-    // This timeout is to handle the change view in smartphone !
-    setTimeout(function () {
-        callbackOutOfMapSmartphone();
-    }, 2000);
 };
 
 module.exports = {
