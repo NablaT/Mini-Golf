@@ -68,6 +68,12 @@ public class WebConnector {
 
     }
 
+    /**
+     * Convert an input stream to a string
+     * @param inputStream the inputstream to convert
+     * @return the string corresponding
+     * @throws IOException
+     */
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
 
