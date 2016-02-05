@@ -30,6 +30,8 @@ public class DataKeeper {
 
     private boolean gameEnded;
 
+    private boolean firstPlayerToPLay;
+
     private static DataKeeper ourInstance = new DataKeeper();
 
     public static DataKeeper getInstance() {
@@ -40,6 +42,7 @@ public class DataKeeper {
         playerName = null;
         currentPlayer = null;
         gameEnded = false;
+        firstPlayerToPLay = true;
     }
 
     public boolean isGameEnded() {
@@ -48,5 +51,20 @@ public class DataKeeper {
 
     public void setGameEnded(boolean gameEnded) {
         this.gameEnded = gameEnded;
+    }
+
+    public boolean isFirstPlayerToPLay() {
+        return firstPlayerToPLay;
+    }
+
+    public void setFirstPlayerToPLay(boolean firstPlayerToPLay) {
+        this.firstPlayerToPLay = firstPlayerToPLay;
+    }
+
+    public void reset(){
+        playerName = null;
+        currentPlayer = null;
+        gameEnded = false;
+        firstPlayerToPLay = true;
     }
 }

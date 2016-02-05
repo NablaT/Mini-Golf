@@ -157,6 +157,31 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     }
 
     /**
+     * Play end song
+     */
+    private class PlaySongEndTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootAcceptedActivity.this, R.raw.end_game);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new PlaySongApplauseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    /**
      * Play event listener
      * This is where this event is supposed to arrive
      *
@@ -237,9 +262,10 @@ public class ShootAcceptedActivity extends AppCompatActivity {
 
                                     DataKeeper.getInstance().setGameEnded(true);
 
-
                                     // disable button because it's somebody else turn
                                     btnReshoot.setEnabled(false);
+
+                                    new PlaySongEndTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                                     // display felicitation message
                                     // its now the next player turn
