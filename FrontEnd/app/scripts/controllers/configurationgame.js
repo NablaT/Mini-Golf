@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ConfigurationGameCtrl', ['$scope', 'services', 'player', 'homepage', function ($scope, services, player, homepage) {
+  .controller('ConfigurationGameCtrl', ['$scope', 'services', 'position', 'homepage', function ($scope, services, position, homepage) {
 
     // The number of player.
     $scope.nbOfPlayer = 1;
