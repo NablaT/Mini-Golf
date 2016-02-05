@@ -18,7 +18,7 @@ function createScene() {
   var scene = new BABYLON.Scene(engine);
   var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 1000, new BABYLON.Vector3(0, 0, 0), scene);
 
-  /*BABYLON.SceneLoader.Load("","girl.babylon",engine,function(newScene){
+  BABYLON.SceneLoader.Load("","girl.babylon",engine,function(newScene){
     var Scene= newScene;
 
     Scene.executeWhenReady(function(){
@@ -28,8 +28,8 @@ function createScene() {
         Scene.render();
       })
     })
-  });*/
-
+  });
+/*
   camera.attachControl(canvas, false);
 
   // The first parameter can be used to specify which mesh to import. Here we import all meshes
@@ -41,7 +41,7 @@ function createScene() {
     newMeshes[0].material.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
   });
 
-
+ */
   window.addEventListener("resize", function(newScene){
     engine.resize();
   })

@@ -27,13 +27,11 @@ angular.module('frontEndApp')
       $scope.iconmenu = false;
       $scope.currentScreen;
 
-
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
       checkingIfGameStops();
-
 
       /**
        * Function updateHomePage. This function updates the home page.
