@@ -25,4 +25,11 @@
 
     <string name="calibration_done">"Calibration effectuée"</string>
 
+    <string name="end_game_title">Partie terminée !!</string>
+    <string name="end_game_confirm_yes">Ok</string>
+
+    <string name="out_of_map_title">La balle est sortie :(</string>
+    <string name="out_of_map_message">Prenez la Sphero, placez-la sur le point de départ puis recalibrez-la</string>
+    <string name="out_of_map_yes">Recalibrer la balle</string>
+
 </resources>

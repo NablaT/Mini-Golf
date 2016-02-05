@@ -42,8 +42,8 @@ public class ShootAcceptedActivity extends AppCompatActivity {
 
         socket = SocketGolf.getInstance().getSocket();
 
-        // register play event
-        socket.on("play", play);
+        // register events
+        registerEvents();
 
         forceText = (TextView) findViewById(R.id.textViewForce);
         btnReshoot = (Button) findViewById(R.id.btnReshoot);
@@ -54,6 +54,18 @@ public class ShootAcceptedActivity extends AppCompatActivity {
         forceText.setText(fText + "");
     }
 
+    private void registerEvents(){
+        socket.on("play", play);
+        socket.on("end", end);
+        socket.on("outOfMap", outOfMap);
+    }
+
+    private void unregisterEvents(){
+        socket.off("play", play);
+        socket.off("end", end);
+        socket.off("outOfMap", outOfMap);
+    }
+
     /**
      * Go main menu callback
      * @param v
@@ -61,10 +73,10 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     public void goMainMenu(View v){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // go to main activity
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i = new Intent(ShootAcceptedActivity.this, MainActivity.class);
         startActivity(i);
     }
 
@@ -75,10 +87,10 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     public void goDisplayResults(View v){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // go display results activity
-        Intent i = new Intent(this, DisplayResultsActivity.class);
+        Intent i = new Intent(ShootAcceptedActivity.this, DisplayResultsActivity.class);
         startActivity(i);
     }
 
@@ -90,10 +102,10 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     public void goShoot(View v){
 
         // unregister event
-        socket.off("play", play);
+        unregisterEvents();
 
         // return to shoot activity
-        Intent i = new Intent(this, ShootActivity.class);
+        Intent i = new Intent(ShootAcceptedActivity.this, ShootActivity.class);
         startActivity(i);
     }
 
@@ -140,6 +152,102 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                                     .setPositiveButton(R.string.next_player_confirm_yes, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }});
+                }
+
+            }).start();
+        }
+    };
+
+    /**
+     * End event listener
+     *
+     * The player has put the ball in the hole and the game is ended
+     */
+    private Emitter.Listener end = new Emitter.Listener() {
+
+                @Override
+                public void call(final Object... args) {
+
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            Log.i("socketio", "received event : end");
+
+                            handler.post(new Runnable() {
+
+                                @Override
+                                public void run() {
+
+
+                                    // disable button because it's somebody else turn
+                                    btnReshoot.setEnabled(false);
+
+                                    // display felicitation message
+                                    // its now the next player turn
+                                    new AlertDialog.Builder(ShootAcceptedActivity.this)
+                                            .setTitle(R.string.end_game_title)
+                                            .setPositiveButton(R.string.end_game_confirm_yes, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    DataKeeper.getInstance().setGameEnded(true);
+                                                }
+                                            })
+                                            .show();
+                                }});
+                        }
+
+                    }).start();
+                }
+    };
+
+    /**
+     * outOfMap event listener
+     *
+     * The player has put the ball out of the map
+     * Tell him to put the ball on the start point and recalibrate the ball
+     */
+    private Emitter.Listener outOfMap = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : outOfMap");
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+
+                            // disable button because it's somebody else turn
+                            btnReshoot.setEnabled(false);
+
+                            // display felicitation message
+                            // its now the next player turn
+                            new AlertDialog.Builder(ShootAcceptedActivity.this)
+                                    .setTitle(R.string.out_of_map_title)
+                                    .setMessage(R.string.out_of_map_message)
+                                    .setPositiveButton(R.string.out_of_map_yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            // unregister event
+                                            unregisterEvents();
+
+                                            // return to shoot activity
+                                            Intent i = new Intent(ShootAcceptedActivity.this, CalibrateActivity.class);
+                                            startActivity(i);
                                         }
                                     })
                                     .show();

@@ -67,12 +67,31 @@ public class JoinGameActivity extends AppCompatActivity {
         socket = SocketGolf.getInstance().getSocket();
 
         // register events
+        registerEvents();
+
+    }
+
+    /**
+     * Register events for socket
+     */
+    private void registerEvents(){
         // gameNotStarted : no game is started on the frontend
         // noPlaceAvailable : all the players are already used
         // waitingToStart : the player has been regsiter, we are waiting for other players
         socket.on("gameNotStarted", gameNotStarted);
         socket.on("noPlaceAvailable", noPlaceAvailable);
         socket.on("waitingToStart", waitingToStart);
+        socket.on("nameInvalid", nameInvalid);
+    }
+
+    /**
+     * Unregister events for the socket
+     */
+    private void unregisterEvents() {
+        socket.off("gameNotStarted", gameNotStarted);
+        socket.off("noPlaceAvailable", noPlaceAvailable);
+        socket.off("waitingToStart", waitingToStart);
+        socket.off("nameInvalid", nameInvalid);
 
     }
 
@@ -83,9 +102,7 @@ public class JoinGameActivity extends AppCompatActivity {
     public void back(View view) {
 
         // unregister events
-        socket.off("gameNotStarted", gameNotStarted);
-        socket.off("noPlaceAvailable", noPlaceAvailable);
-        socket.off("waitingToStart", waitingToStart);
+        unregisterEvents();
 
         socket.disconnect();
 
@@ -143,10 +160,7 @@ public class JoinGameActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         // unregister events
-                        socket.off("gameNotStarted", gameNotStarted);
-                        socket.off("noPlaceAvailable", noPlaceAvailable);
-                        socket.off("waitingToStart", waitingToStart);
-
+                        unregisterEvents();
                         socket.disconnect();
 
                         // go to ip settings activity
@@ -268,6 +282,46 @@ public class JoinGameActivity extends AppCompatActivity {
     };
 
     /**
+     * nameInvalid event listener
+     * If a player has already the name
+     */
+    private Emitter.Listener nameInvalid = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            Log.i("socketio", "received event : name invalid");
+
+            handler.post(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    progressBar.setVisibility(View.GONE);
+                    joinBtn.setEnabled(true);
+                    name.setEnabled(true);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(JoinGameActivity.this);
+                    alertDialogBuilder.setMessage("Le nom est déjà pris par un autre joueur!");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                        }
+                    });
+                    ;
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+                }
+
+            });
+        }
+    };
+
+    /**
      * waitingToStart event listener
      * If all is ok, we will wait for the other players in an other activity
      */
@@ -292,9 +346,7 @@ public class JoinGameActivity extends AppCompatActivity {
                     });
 
                     // unregister events
-                    socket.off("gameNotStarted", gameNotStarted);
-                    socket.off("noPlaceAvailable", noPlaceAvailable);
-                    socket.off("waitingToStart", waitingToStart);
+                    unregisterEvents();
 
                     // set the player name
                     DataKeeper.getInstance().setPlayerName(pseudo);
