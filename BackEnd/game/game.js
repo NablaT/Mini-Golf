@@ -35,7 +35,10 @@ var getGolf = function () {
  * @param {int} numberPlayer - The number of players.
  */
 var initGame = function (numberPlayer) {
-    golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
+    // HDMI
+    golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 208), new Position(210, 82), 10, 10));
+    // VGA
+    //golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
     screen.emit('waitingForPlayers', {});
 };
 
