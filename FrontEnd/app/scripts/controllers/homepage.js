@@ -139,7 +139,6 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.messageForWaitingFrame = "Waiting for players";
-              console.log("jerentre dans checking for waiting frame");
             });
           }
         });
@@ -177,8 +176,7 @@ angular.module('frontEndApp')
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
-              console.log("oui oui ca a finit !!");
-              $scope.current3DPage="";
+              $scope.current3DPage="views/endPage.html";
               $scope.currentPage="";
             });
           }
