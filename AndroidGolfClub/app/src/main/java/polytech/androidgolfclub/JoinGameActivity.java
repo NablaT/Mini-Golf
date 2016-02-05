@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
@@ -23,6 +22,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import polytech.androidgolfclub.data.DataKeeper;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 /**
@@ -52,6 +52,7 @@ public class JoinGameActivity extends AppCompatActivity {
 
         name.setEnabled(true);
 
+        // button to press OK automatically in the keyboard
         name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -64,33 +65,49 @@ public class JoinGameActivity extends AppCompatActivity {
         });
 
         socket = SocketGolf.getInstance().getSocket();
+
+        // register events
+        // gameNotStarted : no game is started on the frontend
+        // noPlaceAvailable : all the players are already used
+        // waitingToStart : the player has been regsiter, we are waiting for other players
         socket.on("gameNotStarted", gameNotStarted);
         socket.on("noPlaceAvailable", noPlaceAvailable);
         socket.on("waitingToStart", waitingToStart);
 
     }
 
+    /**
+     * Back button callback
+     * @param view
+     */
     public void back(View view) {
 
+        // unregister events
         socket.off("gameNotStarted", gameNotStarted);
         socket.off("noPlaceAvailable", noPlaceAvailable);
         socket.off("waitingToStart", waitingToStart);
 
         socket.disconnect();
 
+        // go to ip settings activity
         Intent i = new Intent(getApplicationContext(), IpSettingsActivity.class);
         startActivity(i);
 
         finish();
     }
 
-
+    /**
+     * Button join game callback
+     * @param view
+     */
     public void joinGame(View view){
 
         pseudo = name.getText().toString();
 
+        // check if the input text is not empty
         if (pseudo.length() > 0){
 
+            // construct the object to send
             JSONObject json = new JSONObject();
             try {
                 json.put("name", pseudo);
@@ -102,17 +119,21 @@ public class JoinGameActivity extends AppCompatActivity {
 
                 Log.i("join game", pseudo + " is joigning the game");
 
+                // disable input
                 name.setEnabled(false);
-
-                socket.emit("joinGame", json);
-                progressBar.setVisibility(View.VISIBLE);
                 joinBtn.setEnabled(false);
-                name.setEnabled(false);
+
+                // show progress bar
+                progressBar.setVisibility(View.VISIBLE);
+
+                // emit join game event with the name of the player
+                socket.emit("joinGame", json);
 
             } else {
 
                 Log.i("join game", pseudo + " error connected");
 
+                // display error alert, the ip is not good or the server is down
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(JoinGameActivity.this);
                 alertDialogBuilder.setMessage("Le serveur n'est pas joignable, vérifiez l'adresse IP et recommencez");
                 alertDialogBuilder.setCancelable(false);
@@ -121,12 +142,14 @@ public class JoinGameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
+                        // unregister events
                         socket.off("gameNotStarted", gameNotStarted);
                         socket.off("noPlaceAvailable", noPlaceAvailable);
                         socket.off("waitingToStart", waitingToStart);
 
                         socket.disconnect();
 
+                        // go to ip settings activity
                         Intent i = new Intent(getApplicationContext(), IpSettingsActivity.class);
                         startActivity(i);
 
@@ -144,6 +167,7 @@ public class JoinGameActivity extends AppCompatActivity {
 
             Log.i("join game", "name empty");
 
+            // alert because the name is empty
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(JoinGameActivity.this);
             alertDialogBuilder.setMessage("Entrez un nom valide !");
             alertDialogBuilder.setCancelable(false);
@@ -152,6 +176,8 @@ public class JoinGameActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     joinBtn.setEnabled(true);
+                    name.setEnabled(true);
+                    progressBar.setVisibility(View.GONE);
                 }
             });
             ;
@@ -162,7 +188,10 @@ public class JoinGameActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * GameNotStarted event listener
+     * If no game was started on the frontend
+     */
     private Emitter.Listener gameNotStarted = new Emitter.Listener() {
 
         @Override
@@ -179,11 +208,11 @@ public class JoinGameActivity extends AppCompatActivity {
                     joinBtn.setEnabled(true);
                     name.setEnabled(true);
 
+                    // display error alert
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(JoinGameActivity.this);
                     alertDialogBuilder.setMessage("Le jeu n'a pas été démarré !");
                     alertDialogBuilder.setCancelable(false);
                     alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
                         }
@@ -198,6 +227,10 @@ public class JoinGameActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * noPlaceAvailable event listener
+     * If all the player are full
+     */
     private Emitter.Listener noPlaceAvailable = new Emitter.Listener() {
 
         @Override
@@ -234,6 +267,10 @@ public class JoinGameActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * waitingToStart event listener
+     * If all is ok, we will wait for the other players in an other activity
+     */
     private Emitter.Listener waitingToStart = new Emitter.Listener() {
 
         @Override
@@ -254,12 +291,15 @@ public class JoinGameActivity extends AppCompatActivity {
                         }
                     });
 
+                    // unregister events
                     socket.off("gameNotStarted", gameNotStarted);
                     socket.off("noPlaceAvailable", noPlaceAvailable);
                     socket.off("waitingToStart", waitingToStart);
 
+                    // set the player name
                     DataKeeper.getInstance().setPlayerName(pseudo);
 
+                    // go to WaitingStartActivity
                     Intent i = new Intent(getApplicationContext(), WaitingStartActivity.class);
                     startActivity(i);
 
@@ -271,6 +311,9 @@ public class JoinGameActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Disable back button
+     */
     @Override
     public void onBackPressed() {
     }

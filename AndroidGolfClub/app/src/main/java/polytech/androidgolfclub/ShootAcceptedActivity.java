@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
+import polytech.androidgolfclub.data.DataKeeper;
+import polytech.androidgolfclub.data.Results;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 public class ShootAcceptedActivity extends AppCompatActivity {
@@ -39,38 +41,68 @@ public class ShootAcceptedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shoot_accepted);
 
         socket = SocketGolf.getInstance().getSocket();
+
+        // register play event
         socket.on("play", play);
 
         forceText = (TextView) findViewById(R.id.textViewForce);
         btnReshoot = (Button) findViewById(R.id.btnReshoot);
 
+        // string format to display strike force
         DecimalFormat df = new java.text.DecimalFormat("0.##");
         String fText =  df.format(Results.getInstance().getForce()*10);
-
         forceText.setText(fText + "");
     }
 
+    /**
+     * Go main menu callback
+     * @param v
+     */
     public void goMainMenu(View v){
 
+        // unregister event
         socket.off("play", play);
+
+        // go to main activity
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Go display results callback
+     * @param v
+     */
     public void goDisplayResults(View v){
 
+        // unregister event
         socket.off("play", play);
+
+        // go display results activity
         Intent i = new Intent(this, DisplayResultsActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Retry shoot callback
+     * @param v
+     */
+    @Deprecated
     public void goShoot(View v){
 
+        // unregister event
         socket.off("play", play);
+
+        // return to shoot activity
         Intent i = new Intent(this, ShootActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Play event listener
+     * This is where this event is supposed to arrive
+     *
+     * The player has put the ball in the hole !
+     */
     private Emitter.Listener play = new Emitter.Listener() {
 
         @Override
@@ -86,6 +118,7 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
+                        // set the new current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
                     } catch (JSONException e) {
                         return;
@@ -100,6 +133,8 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                             // disable button because it's somebody else turn
                             btnReshoot.setEnabled(false);
 
+                            // display felicitation message
+                            // its now the next player turn
                             new AlertDialog.Builder(ShootAcceptedActivity.this)
                                     .setTitle(R.string.next_player_event_title)
                                     .setPositiveButton(R.string.next_player_confirm_yes, new DialogInterface.OnClickListener() {
@@ -115,6 +150,9 @@ public class ShootAcceptedActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Disable back button
+     */
     @Override
     public void onBackPressed() {
     }

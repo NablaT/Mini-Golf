@@ -16,8 +16,13 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import polytech.androidgolfclub.data.DataKeeper;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
+
+/**
+ * Main activity display main menu with buttons to shoot, calibrate, see last shoot
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Socket socket;
@@ -42,32 +47,60 @@ public class MainActivity extends AppCompatActivity {
         calibrateSpehro.setEnabled(false);
 
         socket = SocketGolf.getInstance().getSocket();
+
+        // register play event
         socket.on("play", play);
 
+        // update buttons view
         update();
     }
 
+    /**
+     * New shoot callback
+     * @param view
+     */
     public void newShootClick(View view){
 
+        // unregister event
         socket.off("play", play);
+
+        // go to shoot activity
         Intent intent = new Intent(this, ShootActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Stat button callback
+     * @param view
+     */
     public void statsClick(View view){
 
+        // unregister event
         socket.off("play", play);
+
+        // go to display results activity
         Intent intent = new Intent(this, DisplayResultsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Calibrate button callback
+     * @param view
+     */
     public void calibrateClick(View view){
 
+        // unregister event
         socket.off("play", play);
+
+        // go to calibrate activity
         Intent intent = new Intent(this, CalibrateActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Update the view in function of the current player
+     * If we are the current player we can unlock shoot button and calibrate button
+     */
     private void update() {
 
         DataKeeper dk = DataKeeper.getInstance();
@@ -111,6 +144,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Play event listener
+     */
     private Emitter.Listener play = new Emitter.Listener() {
 
         @Override
@@ -126,11 +162,13 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
+                        // change current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
                     } catch (JSONException e) {
                         return;
                     }
 
+                    // update the view
                     update();
                 }
 
@@ -138,6 +176,9 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Disable back button
+     */
     @Override
     public void onBackPressed() {
     }

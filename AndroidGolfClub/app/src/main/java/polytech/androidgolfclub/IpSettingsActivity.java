@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
+
+import polytech.androidgolfclub.data.DataKeeper;
+import polytech.androidgolfclub.data.ServerIp;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 /**
- *
  * This activity is used to set the ip and the port of the server
+ * That is the first activity when we start the application
  *
  * Created by Romain Guillot on 18/12/15
  *
@@ -50,6 +51,8 @@ public class IpSettingsActivity extends AppCompatActivity {
         ip_view.setText(ServerIp.getInstance().getIp());
         port_view.setText(ServerIp.getInstance().getPort());
 
+        // if player name and current user are already set
+        // go to main activity
         if (DataKeeper.getInstance().getPlayerName() != null &&
                 SocketGolf.getInstance().getSocket() != null &&
                 SocketGolf.getInstance().getSocket().connected()){
@@ -62,6 +65,10 @@ public class IpSettingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Ok callback
+     * @param view
+     */
     public void okClick(View view){
 
         // We need an Editor object to make preference changes.
@@ -69,6 +76,7 @@ public class IpSettingsActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
+        // register in shared preferences
         editor.putString("ip", String.valueOf(ip_view.getText()));
         editor.putString("port", String.valueOf(port_view.getText()));
 
@@ -77,6 +85,7 @@ public class IpSettingsActivity extends AppCompatActivity {
         // create the socket with the server
         SocketGolf.getInstance().connect();
 
+        // go to join game activity
         Intent i = new Intent(this, JoinGameActivity.class);
         startActivity(i);
 
@@ -84,6 +93,9 @@ public class IpSettingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Do not autorize back click
+     */
     @Override
     public void onBackPressed() {
     }

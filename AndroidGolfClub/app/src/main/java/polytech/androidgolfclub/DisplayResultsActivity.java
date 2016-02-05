@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import polytech.androidgolfclub.data.DataKeeper;
+import polytech.androidgolfclub.data.Results;
 import polytech.androidgolfclub.webconnector.SocketGolf;
 
 
@@ -41,10 +43,13 @@ public class DisplayResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_results);
 
         socket = SocketGolf.getInstance().getSocket();
+
+        // register event play
         socket.on("play", play);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
+        // create 3 curves for the 3 axes of the movement
         ArrayList<DataPoint> pointsX = new ArrayList<>();
         ArrayList<DataPoint> pointsY = new ArrayList<>();
         ArrayList<DataPoint> pointsZ = new ArrayList<>();
@@ -96,13 +101,31 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Go back callback
+     * @param v
+     */
     public void goMenu(View v){
 
+        // unregister event play
         socket.off("play", play);
+
+        // go to main activity
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Oveeride back button
+     */
+    @Override
+    public void onBackPressed() {
+        goMenu(null);
+    }
+
+    /**
+     * Play event listener
+     */
     private Emitter.Listener play = new Emitter.Listener() {
 
         @Override
@@ -118,6 +141,7 @@ public class DisplayResultsActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
 
                     try {
+                        // change current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
                     } catch (JSONException e) {
                         return;
@@ -128,7 +152,4 @@ public class DisplayResultsActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-    }
 }
