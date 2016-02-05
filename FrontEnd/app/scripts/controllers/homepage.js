@@ -20,7 +20,6 @@ angular.module('frontEndApp')
       $scope.nbOfPlayer = 1;
       $scope.players;
 
-      //=[{_playerName:"geaor", _id:300000000, _score:10}]
       $scope.messageForWaitingFrame = "Waiting for the game to starts";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
@@ -178,6 +177,7 @@ angular.module('frontEndApp')
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
+              console.log("oui oui ca a finit !!");
               $scope.current3DPage="";
               $scope.currentPage="";
             });
