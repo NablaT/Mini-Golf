@@ -32,6 +32,7 @@ angular.module('frontEndApp')
       getBackPlayer();
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
+      checkingIfGameStops();
 
 
       /**
@@ -147,12 +148,14 @@ angular.module('frontEndApp')
         });
       }
 
+      /**
+       * Function checkingIfGameStarts. This functions verifies if the game has been ran.
+       */
       function checkingIfGameStarts(){
         $scope.socket.on("gameStart", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
               if($scope.currentScreen==="game"){
-                console.log("in checking if game starts: currentScreen game");
                 $scope.current3DPage = "scripts/GameMap/index.html";
                 $scope.currentPage = "gameContainer";
               }
@@ -167,6 +170,22 @@ angular.module('frontEndApp')
             });
           }
         });
+      }
+
+      /**
+       * Function checkingIfGameStops. This function is checking the end of the game  by listening
+       * "endGame" event on the server.
+       **/
+      function checkingIfGameStops(){
+        $scope.socket.on("endGame", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              $scope.current3DPage="";
+              $scope.currentPage="";
+            });
+          }
+        });
+
       }
 
       /**
