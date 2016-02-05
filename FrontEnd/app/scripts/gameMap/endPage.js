@@ -26,9 +26,9 @@ function createScene(){
 
   //camera.setPosition(new BABYLON.Vector3(25, -10, 0));
 
-  var fountain = initialisationFountain(scene,0,0,0);
-  var fountain2 = initialisationFountain(scene,15,0,15);
-  var fountain3 = initialisationFountain(scene,-15,0,-15);
+  var fountain = initialisationFountain(scene,0,-10,0);
+  var fountain2 = initialisationFountain(scene,0,-10, 0);//15);
+  var fountain3 = initialisationFountain(scene,0,-10,0);//-15);
 
   initialisationLights(scene,fountain);
 
@@ -38,17 +38,17 @@ function createScene(){
   initialisationParticles(scene,fountain, new BABYLON.Color4(0, 0.4, 0, 1.0),
     new BABYLON.Color4(0.1, 0.4, 0, 1.0),new BABYLON.Color4(0, 0.9, 0.1, 0.0));
 
-  initialisationParticles(scene,fountain2, new BABYLON.Color4(0, 0.4, 0, 1.0),
-    new BABYLON.Color4(0.1, 0.4, 0, 1.0),new BABYLON.Color4(0, 0.9, 0.1, 0.0));
+  initialisationParticles(scene,fountain2, new BABYLON.Color4(0.8, 0.1, 0.4, 1.0),
+    new BABYLON.Color4(0.9, 0.1, 0.2, 1.0),new BABYLON.Color4(1, 0.1, 0.1, 0.0));
 
-  initialisationParticles(scene,fountain3, new BABYLON.Color4(0, 0.4, 0, 1.0),
-    new BABYLON.Color4(0.1, 0.4, 0, 1.0),new BABYLON.Color4(0, 0.9, 0.1, 0.0));
+  initialisationParticles(scene,fountain3, new BABYLON.Color4(1, 1, 0, 1.0),
+    new BABYLON.Color4(	0.541176471, 1, 0, 1.0),new BABYLON.Color4(1.0,0.87,0.37, 0.0));
 
-  var animation = initialisationAnimation(scene);
+  /*var animation = initialisationAnimation(scene);
 
   fountain.animations.push(animation);
   fountain2.animations.push(animation);
-  fountain3.animation.push(animation);
+  fountain3.animations.push(animation);*/
   scene.beginAnimation(fountain, 0, 250, true);
   scene.beginAnimation(fountain2, 0, 250, true);
   scene.beginAnimation(fountain3, 0, 250, true);
@@ -126,7 +126,7 @@ function initialisationBackground(scene){
  * @param scene
  * @param fountain
  */
-function initialisationParticles(scene,fountain, color1Arg, color2Arg, Color3Arg){
+function initialisationParticles(scene,fountain, color1Arg, color2Arg, color3Arg){
   // Create a particle system
   var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
@@ -167,7 +167,7 @@ function initialisationParticles(scene,fountain, color1Arg, color2Arg, Color3Arg
 
   // Angular speed, in radians
   particleSystem.minAngularSpeed = 0;
-  particleSystem.maxAngularSpeed = Math.PI;
+  particleSystem.maxAngularSpeed = Math.PI/2;
 
   // Speed
   particleSystem.minEmitPower = 1;
