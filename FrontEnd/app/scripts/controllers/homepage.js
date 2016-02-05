@@ -27,12 +27,11 @@ angular.module('frontEndApp')
       $scope.iconmenu = false;
       $scope.currentScreen;
 
-
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
-
+      checkingIfGameStops();
 
       /**
        * Function updateHomePage. This function updates the home page.
@@ -127,11 +126,7 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.players = params;
-              if ($scope.players.length == $scope.nbOfPlayer) {
-               // $scope.messageForWaitingFrame = "The game is starting ...";
-                console.log("d'ou je rentre ici????");
-                //$timeout(updateScore, 3000);
-              }
+              console.log("Getbackplayer: value params:", params);
             });
           }
         });
@@ -151,18 +146,20 @@ angular.module('frontEndApp')
         });
       }
 
+      /**
+       * Function checkingIfGameStarts. This functions verifies if the game has been ran.
+       */
       function checkingIfGameStarts(){
         $scope.socket.on("gameStart", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
               if($scope.currentScreen==="game"){
-                console.log("in checking if game starts: currentScreen game");
                 $scope.current3DPage = "scripts/GameMap/index.html";
                 $scope.currentPage = "gameContainer";
               }
               else if($scope.currentScreen==="guide"){
                 console.log("in checking if game starts: currentScreen guide");
-                $scope.current3DPage = "views/swingGuide.html";
+                $scope.current3DPage = "scripts/GameMap/swingGuide.html";
                 $scope.currentPage = "guideContainer";
               }
               else{
@@ -174,6 +171,22 @@ angular.module('frontEndApp')
       }
 
       /**
+       * Function checkingIfGameStops. This function is checking the end of the game  by listening
+       * "endGame" event on the server.
+       **/
+      function checkingIfGameStops(){
+        $scope.socket.on("endGame", function (params) {
+          if (params != {}) {
+            $scope.$apply(function () {
+              $scope.current3DPage="";
+              $scope.currentPage="";
+            });
+          }
+        });
+
+      }
+
+      /**
        * Function verifyGameIsRunningForTrack. This function is checking if the game has been ran or not. If the game is
        * running, it update the content of the track frame.
        */
@@ -181,27 +194,6 @@ angular.module('frontEndApp')
         $scope.current3DPage="views/loading.html";
         $scope.currentPage="loadingContainer";
         $scope.currentScreen="game";
-        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
-
-        $scope.socket.on("waitingForPlayers", function (params) {
-          if (params !== {}) {
-            $scope.$apply(function () {
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
-       /* $scope.socket.on("gameStart", function (params) {
-          if (params != {}) {
-            $scope.$apply(function () {
-              $scope.current3DPage = "views/swingGuide.html";
-              $scope.currentPage = "gameContainer";
-              $scope.currentScreen = "";
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
       };
 
 
@@ -213,27 +205,6 @@ angular.module('frontEndApp')
         $scope.current3DPage="views/loading.html";
         $scope.currentPage="loadingContainer";
         $scope.currentScreen="guide";
-        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
-
-        $scope.socket.on("waitingForPlayers", function (params) {
-          if (params !== {}) {
-            $scope.$apply(function () {
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
-        /*$scope.socket.on("gameStart", function (params) {
-          if (params != {}) {
-            $scope.$apply(function () {
-              console.log("game start in apply");
-              $scope.current3DPage = "views/swingGuide.html";
-              $scope.currentPage = "guideContainer";
-              $scope.currentScreen = "guide";
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
       }
 
 

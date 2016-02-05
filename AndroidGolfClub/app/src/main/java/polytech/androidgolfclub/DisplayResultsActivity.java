@@ -1,6 +1,10 @@
 package polytech.androidgolfclub;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +39,8 @@ import polytech.androidgolfclub.webconnector.SocketGolf;
 public class DisplayResultsActivity extends AppCompatActivity {
 
     private Socket socket;
+    private Handler handler = new Handler(Looper.getMainLooper());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +50,8 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
         socket = SocketGolf.getInstance().getSocket();
 
-        // register event play
-        socket.on("play", play);
+        // register events
+        registerEvents();
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
@@ -102,13 +108,29 @@ public class DisplayResultsActivity extends AppCompatActivity {
     }
 
     /**
+     * Register socket events
+     */
+    private void registerEvents(){
+        socket.on("play", play);
+        socket.on("end", end);
+    }
+
+    /**
+     * Unregister socket events
+     */
+    private void unregisterEvents(){
+        socket.off("play", play);
+        socket.off("end", end);
+    }
+
+    /**
      * Go back callback
      * @param v
      */
     public void goMenu(View v){
 
-        // unregister event play
-        socket.off("play", play);
+        // unregister event
+        unregisterEvents();
 
         // go to main activity
         Intent i = new Intent(this, MainActivity.class);
@@ -146,6 +168,48 @@ public class DisplayResultsActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         return;
                     }
+                }
+
+            }).start();
+        }
+    };
+
+    /**
+     * End event listener
+     *
+     * An other player has put the ball in the hole and the game is ended
+     */
+    private Emitter.Listener end = new Emitter.Listener() {
+
+        @Override
+        public void call(final Object... args) {
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    Log.i("socketio", "received event : end");
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            DataKeeper.getInstance().setGameEnded(true);
+
+                            // display felicitation message
+                            // its now the next player turn
+                            new AlertDialog.Builder(DisplayResultsActivity.this)
+                                    .setCancelable(false)
+                                    .setTitle(R.string.end_game_title)
+                                    .setPositiveButton(R.string.end_game_confirm_yes, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }});
                 }
 
             }).start();

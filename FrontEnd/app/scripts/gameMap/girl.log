@@ -1,0 +1,44 @@
+	Exporter version: 4.4.1, Blender version: 2.76 (sub 0)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used:
+		selected layers only:  false
+		flat shading entire scene:  false
+		inline textures:  false
+		texture directory:  D:\Mini golf\Mini-Golf\FrontEnd\app\scripts\gameMap\
+	Python World class constructor completed
+	processing begun of mesh:  29d74350_obj
+		processing begun of Standard material:  Material__612
+			Diffuse texture found "Kd"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  5968
+		num normals        :  5968
+		num uvs            :  11936
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  22830
+	processing begun of mesh:  2a6c1008_obj
+		processing begun of Standard material:  Material__708
+			Diffuse texture found "Kd.002"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1672
+		num normals        :  1672
+		num uvs            :  3344
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  6558
+	processing begun of mesh:  2a478c70_obj
+		processing begun of Standard material:  Material__646
+			Diffuse texture found "Kd.001"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  3352
+		num normals        :  3352
+		num uvs            :  6704
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  14859
+	processing begun of camera (FreeCamera):  Camera
+	processing begun of light (POINT):  Lamp
+========= Writing of scene file started =========
+========= Writing of scene file completed =========
+========= end of processing =========
+elapsed time:  0 min, 1.0761 secs
