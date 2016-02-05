@@ -132,11 +132,14 @@ smartphoneSocket.on('connect', function (socket) {
         if (result.valid) {
             game.go(result.strike_force,
                 function (playerName) {
+                    console.log('EVENT PLAY ' + playerName);
                     smartphoneSocket.emit('play', {name: playerName});
                 },
                 function () {
+                    console.log('EVENT END');
                     smartphoneSocket.emit('end', {});
                 }, function () {
+                    console.log('EVENT OUT OF MAP');
                     socket.emit('outOfMap', {});
                 }
             );

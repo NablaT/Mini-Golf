@@ -67,9 +67,9 @@ class Player {
      * @returns {Player}
      */
     static copy (player) {
-        var playerTmp        = new Player(player.playerName);
-        playerTmp.id         = player.id;
-        playerTmp.score      = player.score;
+        var playerTmp   = new Player(player.playerName);
+        playerTmp.id    = player.id;
+        playerTmp.score = player.score;
         return playerTmp;
     }
 
