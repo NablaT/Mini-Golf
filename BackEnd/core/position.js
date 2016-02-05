@@ -76,8 +76,7 @@ class Position {
      * @returns {Position}
      */
     static copy (position) {
-        var positionTmp = new Position(position.latitude, position.longitude);
-        return positionTmp;
+        return new Position(position.latitude, position.longitude);
     }
 }
 
