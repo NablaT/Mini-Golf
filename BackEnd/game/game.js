@@ -75,7 +75,7 @@ var addPlayer = function (playerName) {
  * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
-    var players                                       = getGolf.players;
+    var players                                       = getGolf().players;
     players[getGolf().rankPlayerToPlay]._activePlayer = true;
     screen.emit('players', players);
     return getGolf().getPlayerToPlay();

@@ -51,7 +51,7 @@ class Golf {
      * @returns {number} The rank of the player.
      */
     get rankPlayerToPlay () {
-        return this._indicePlayerToPlay;
+        return this._rankPlayerToPlay;
     }
 
     /**
