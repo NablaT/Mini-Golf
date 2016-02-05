@@ -1,6 +1,9 @@
 package polytech.androidgolfclub;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Socket socket;
     private Button newShoot, seeShoot, calibrateSpehro;
     private TextView text;
+    private MediaPlayer player;
 
     private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -175,6 +179,74 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Play ball in hole song
+     */
+    private class PlaySongInHoleTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(MainActivity.this, R.raw.in_hole);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new PlaySongApplauseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    /**
+     * Applause the player
+     */
+    private class PlaySongApplauseTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            player = MediaPlayer.create(MainActivity.this, R.raw.applause);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            player.start();
+            return null;
+        }
+    }
+
+    /**
+     * Play ball in hole song
+     */
+    private class PlaySongEndTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(MainActivity.this, R.raw.end_game);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new PlaySongApplauseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
     /**
      * Play event listener
      */
@@ -190,20 +262,37 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("socketio", "received event : play");
 
-                    JSONObject data = (JSONObject) args[0];
+                    handler.post(new Runnable() {
 
-                    try {
-                        // change current player
-                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
-                    } catch (JSONException e) {
-                        return;
-                    }
+                        @Override
+                        public void run() {
 
-                    // update the view
-                    update();
-                }
+                            JSONObject data = (JSONObject) args[0];
 
-            }).start();
+                            try {
+                                // change current player
+                                DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
+                            } catch (JSONException e) {
+                                return;
+                            }
+
+                            // update the view
+                            update();
+
+                            if (DataKeeper.getInstance().isFirstPlayerToPLay()){
+                                // do nothing first time
+                                DataKeeper.getInstance().setFirstPlayerToPLay(false);
+                            } else {
+                                // Great, ball in hole !
+                                // Play the song
+                                new PlaySongInHoleTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
+
+
+                        }
+                    });
+
+            }}).start();
         }
     };
 
@@ -233,6 +322,8 @@ public class MainActivity extends AppCompatActivity {
 
                             // update the view
                             update();
+
+                            new PlaySongEndTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
                     });
                 }
