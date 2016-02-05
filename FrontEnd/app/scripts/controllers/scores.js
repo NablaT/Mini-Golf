@@ -8,7 +8,7 @@
  * Controller of the frontEndApp
  */
 angular.module('frontEndApp')
-  .controller('ScoresCtrl', ['$scope', 'services', 'player', function ($scope, services, player) {
+  .controller('ScoresCtrl', ['$scope', 'services', 'position', function ($scope, services, position) {
 
     $scope.nbOfPlayer = player.getNbPlayer();
     $scope.players;

@@ -9,9 +9,9 @@
  */
 angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$rootScope', 'services',
-    'player', '$location', '$controller', '$timeout',
+    'position', '$location', '$controller', '$timeout',
     'constants',
-    function ($scope, services, player, $location, $controller, $timeout, constants) {
+    function ($scope, services, position, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
       $scope.currentPage = "menu";
