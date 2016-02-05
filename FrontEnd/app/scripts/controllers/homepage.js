@@ -127,11 +127,7 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.players = params;
-              if ($scope.players.length == $scope.nbOfPlayer) {
-               // $scope.messageForWaitingFrame = "The game is starting ...";
-                console.log("d'ou je rentre ici????");
-                //$timeout(updateScore, 3000);
-              }
+              console.log("Getbackplayer: value params:", params);
             });
           }
         });
@@ -181,27 +177,6 @@ angular.module('frontEndApp')
         $scope.current3DPage="views/loading.html";
         $scope.currentPage="loadingContainer";
         $scope.currentScreen="game";
-        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
-
-        $scope.socket.on("waitingForPlayers", function (params) {
-          if (params !== {}) {
-            $scope.$apply(function () {
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
-       /* $scope.socket.on("gameStart", function (params) {
-          if (params != {}) {
-            $scope.$apply(function () {
-              $scope.current3DPage = "views/swingGuide.html";
-              $scope.currentPage = "gameContainer";
-              $scope.currentScreen = "";
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
       };
 
 
@@ -213,27 +188,6 @@ angular.module('frontEndApp')
         $scope.current3DPage="views/loading.html";
         $scope.currentPage="loadingContainer";
         $scope.currentScreen="guide";
-        /*$scope.messageForWaitingFrame="Waiting for the game to starts";
-
-        $scope.socket.on("waitingForPlayers", function (params) {
-          if (params !== {}) {
-            $scope.$apply(function () {
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
-
-        /*$scope.socket.on("gameStart", function (params) {
-          if (params != {}) {
-            $scope.$apply(function () {
-              console.log("game start in apply");
-              $scope.current3DPage = "views/swingGuide.html";
-              $scope.currentPage = "guideContainer";
-              $scope.currentScreen = "guide";
-              $scope.messageForWaitingFrame = params;
-            });
-          }
-        });*/
       }
 
 
