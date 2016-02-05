@@ -30,11 +30,27 @@ class Player {
     }
 
     /**
+     * Setter of the player's name.
+     * @param {String} playerName - The new player's name.
+     */
+    set playerName (playerName) {
+        this._playerName = playerName;
+    }
+
+    /**
      * Getter of the id.
      * @returns {int} The player's id.
      */
     get id () {
         return this._id;
+    }
+
+    /**
+     * Setter of the id.
+     * @param {int} newId - The new player's id.
+     */
+    set id (newId) {
+        this._id = newId;
     }
 
     /**
@@ -51,6 +67,19 @@ class Player {
      */
     set score (newScore) {
         this._score = newScore
+    }
+
+    /**
+     * This function copies a player.
+     * @param player
+     * @returns {Player}
+     */
+    static copy (player) {
+        var playerTmp        = new Player();
+        playerTmp.playerName = player.playerName;
+        playerTmp.id         = player.id;
+        playerTmp.score      = player.score;
+        return playerTmp;
     }
 
 }
