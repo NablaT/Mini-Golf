@@ -1,12 +1,22 @@
-<div class="globalcontainer">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Game View</title>
 
-  <div class="loadingcontainer">
-    <iframe class="loading" src="scripts/gameMap/homeEnvironment.html">
+  <style>
 
-    </iframe>
-  </div>
-  <section class="menu" id="maincontent" ng-include="'views/' +
-   currentPage + '.html'" my-ng-controller="{{controllerPage}}">
-
-  </section>
-</div>
+    #renderCanvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+<canvas id="renderCanvas"></canvas>
+<script src="http://www.babylonjs.com/hand.minified-1.2.js"></script>
+<script src="http://www.babylonjs.com/babylon.js"></script>
+<script src="babylon.waterMaterial.js"></script>
+<script src="../scripts/gameMap/wateranimation.js"></script>
+</body>
+</html>

@@ -103,7 +103,7 @@ smartphoneSocket.on('connect', function (socket) {
                 console.error('The game is not started yet');
                 break;
             case -3 :
-                socket.emit('nameUnvalid', {});
+                socket.emit('nameInvalid', {});
                 console.error('A player with the name ' + params.name + ' already exists');
                 break;
             default:
