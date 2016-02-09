@@ -1,6 +1,7 @@
 'use strict';
 
-var Matrix = require('./matrix.js');
+var Matrix   = require('./matrix.js'),
+    Position = require('./position.js');
 
 /**
  * This class represents a matrix.
@@ -24,7 +25,7 @@ class Map {
         this._holePosition  = holePosition;
         this._holeSide      = holeSide;
         this._matrix        = new Matrix(height, width, '-', deformationAngle);
-        this._ballPosition  = startPosition;
+        this._ballPosition  = Position.copy(startPosition);
 
         this.printHole();
 

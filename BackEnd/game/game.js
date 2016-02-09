@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Created by guillaume on 20/01/2016.
  */
@@ -7,7 +9,8 @@ var Map      = require('../core/map.js'),
     Golf     = require('../core/golf.js'),
     kinect   = require('../game/kinect.js'),
     sphero   = require('../sockets/sphero.js'),
-    screen   = require('../sockets/screen.js');
+    screen   = require('../sockets/screen.js'),
+    Player   = require('../core/player.js');
 
 /////////////////////////////////                     CONSTANTS                        /////////////////////////////////
 
@@ -36,9 +39,10 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     // HDMI
-    golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 208), new Position(210, 82), 10, 10));
+    golf = new Golf(numberPlayer, new Map(264, 216, new Position(46, 198), new Position(205, 77), 50, 10));
+    getGolf().map.toString();
     // VGA
-    //golf = new Golf(numberPlayer, new Map(270, 226, new Position(53, 203), new Position(230, 82), 10, 10));
+    //golf = new Golf(numberPlayer, new Map(264, 216, new Position(46, 193), new Position(205, 77), 10, 10));
     screen.emit('waitingForPlayers', {});
 };
 
@@ -78,7 +82,10 @@ var addPlayer = function (playerName) {
  * @returns {Player} The player supposed to play.
  */
 var getPlayerToPlay = function () {
-    var players                                       = getGolf().players;
+    var players = [];
+    for (let i = 0; i < getGolf().players.length; i++) {
+        players.push(Player.copy(getGolf().players[i]));
+    }
     players[getGolf().rankPlayerToPlay]._activePlayer = true;
     screen.emit('players', players);
     return getGolf().getPlayerToPlay();
@@ -197,21 +204,29 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
     sphero.goSphero(distToVelocity(dist));
 
     getPlayerToPlay().score += 1;
+    getPlayerToPlay();
 
-    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady, function () {
+    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady,
+        function () {
+            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+            getGolf().updatePlayerToPlay(function () {
+                screen.emit('endGame', {});
+                callbackEndOfGame();
+                endGame();
+            }, function () {
+                getPlayerToPlay();
+                callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
+            });
 
-        getGolf.updatePlayerToPlay(function () {
-            screen.emit('endGame', {});
-            callbackEndOfGame();
-            endGame();
-        }, callbackChangeOfPlayer);
-    }, function () {
-        screen.emit('outOfMap', {});
-        // This timeout is to handle the change view in smartphone !
-        setTimeout(function () {
-            callbackOutOfMap();
-        }, 2000);
-    });
+        }, function () {
+            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+            screen.emit('outOfMap', {});
+            // This timeout is to handle the change view in smartphone !
+            setTimeout(function () {
+                callbackOutOfMap();
+            }, 2000);
+
+        });
 
     // TODO DELETE the next line when it will be working.
     getGolf().map.toString();
