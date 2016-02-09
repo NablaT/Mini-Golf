@@ -36,13 +36,9 @@ Ouvrez Ter­mi­nal et exé­cu­tez (exac­te­ment) la com­mande suivante :
 
 **Ins­tal­ler OpenNI Nite**
 
-Tout d’abord, je vous recom­mande la créa­tion d’un dos­sier nommé “Kinect” dans “Docu­ments” (non néces­saires, faire que pour des rai­sons d’organisation).
-
-Télé­char­ger la ver­sion du SDK OpenNI et l’extraire dans le dos­sier “Kinect“.
-
 Ouvrir une fenetre dans Ter­mi­nal.
 
-Chan­ger de réper­toire dans le dos­sier OpenNI SDK :
+Chan­ger de réper­toire dans le dos­sier OpenNI-Bin-Dev-MacOSX-v1.5.7 :
 
 cd [chemin vers le bon dossier]
 Exé­cu­tez la com­mande à installer :
@@ -50,8 +46,6 @@ Exé­cu­tez la com­mande à installer :
 *sudo ./install.sh*
 
 **Ins­tal­ler Pri­me­sense Nite**
-
-Télé­char­ger “NITE-Bin-MacOSX-Dev-v1.5.2.21“.
 
 Chan­ger de réper­toire dans le dos­sier NITE-Bin-MacOSX-Dev-v1.5.2.21
 
@@ -72,8 +66,7 @@ cd [chemin vers le bon dossier]
  
 --------------
 
-
-Extra­yez le contenu du dos­sier “Kinect”. Ouvrir un ter­mi­nal, allez dans le réper­toire “NITE-Bin-MacOSX-Dev-v1.5.2.21″ Exé­cu­tez la commande:
+Allez dans le réper­toire “NITE-Bin-MacOSX-Dev-v1.5.2.21″ Exé­cu­tez la commande:
 
 *sudo . /install.sh*
 
