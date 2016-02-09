@@ -24,7 +24,7 @@ Ouvrez Ter­mi­nal et exé­cu­tez (exac­te­ment) la com­mande suivante :
 
 *sudo port install libusb +universal*
 
-**Télé­char­ge­ments**
+ **Dans ce dossier on a tous les libs necesaires pour l'installation**
 
 - Sensor-Bin-MacOSX-v5.1.2.1
 
