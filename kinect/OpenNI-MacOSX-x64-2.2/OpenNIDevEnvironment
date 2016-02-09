@@ -1,0 +1,2 @@
+export OPENNI2_INCLUDE=/Users/garrigos/Downloads/OpenNI-MacOSX-x64-2.2/Include
+export OPENNI2_REDIST=/Users/garrigos/Downloads/OpenNI-MacOSX-x64-2.2/Redist
