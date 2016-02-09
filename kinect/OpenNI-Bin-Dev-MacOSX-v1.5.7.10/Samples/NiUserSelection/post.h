@@ -8,19 +8,18 @@
 #include <cstring>
 #include <string.h>
 
-//./Sample-NiUserSelection
-// 1- Tracking
-//
+// Adresse Server
+#define HOST "192.168.1.6"
+#define PORT 3000
+//#define HOST "localhost"
+
 int create_tcp_socket();
 char *get_ip(char *host);
 char *build_get_query(char *host, char *page);
 void usage();
 
-#define HOST "192.168.1.6"
-//#define HOST "localhost"
-
 #define PAGE "/kinect/direction?direction="
-#define PORT 3000
+
 #define USERAGENT "HTMLPOST 1.0"
 
 void post(int dir)

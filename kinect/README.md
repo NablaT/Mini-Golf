@@ -28,7 +28,7 @@ Ouvrez Ter­mi­nal et exé­cu­tez (exac­te­ment) la com­mande suivante :
 
 - Sensor-Bin-MacOSX-v5.1.2.1
 
-- OpenNI-Bin-Dev-MacOSX-v1.5.4.0
+- OpenNI-Bin-Dev-MacOSX-v1.5.7
 
 - NITE-Bin-Dev-MacOSX-v1.5.2.21
 
@@ -91,12 +91,30 @@ Extra­yez le contenu du dos­sier “Kinect”. Ouvrir un ter­mi­nal, allez d
 Lancer la Kinect
 ==============
 
-###myLib docs see documentation [here](myLib/README.md)
+###Pour changer l'adresse IP du server, il suffit de changer l'adresse et le port du suivant fichier :  [Adresse IP](https://github.com/NablaT/Mini-Golf/blob/master/kinect/OpenNI-Bin-Dev-MacOSX-v1.5.7.10/Samples/NiUserSelection/post.h)
 
-chmod +x compile_kinect.sh
+cd OpenNI-Bin-Dev-MacOSX-v1.5.7.10/Samples/NiUserSelection
 
-chmod +x run_kinect.sh
+nano post.h
+
+**example :**
+
+ #define HOST "192.168.1.6"
+ 
+ #define PORT 3000
+ 
+-------------------
+
+**On donne le droit d'execution :**
+
+- chmod +x compile_kinect.sh
+
+- chmod +x run_kinect.sh
+
+**Pour compiler :**
 
 ./compile_kinect.sh
+
+**Pour lancer la kinect :**
 
 ./run_kinect.sh
