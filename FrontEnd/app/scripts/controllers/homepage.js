@@ -14,8 +14,8 @@ angular.module('frontEndApp')
     function ($scope, services, position, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
-      $scope.currentPage = "";
-      $scope.current3DPage = "scripts/gameMap/index.html";
+      $scope.currentPage = ""; //menu
+      $scope.current3DPage = "scripts/gameMap/index.html"; //scripts/gameMap/homeEnvironment.html
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
@@ -68,13 +68,14 @@ angular.module('frontEndApp')
        * Function sendNumberOfPlayer. This function sends the number of player to the server and set the number of player in the service "player". It uses a function to post this number to the server.
        **/
         $scope.sendNumberOfPlayer = function () {
-          player.setNbPlayer($scope.nbOfPlayer);
+          //player.setNbPlayer($scope.nbOfPlayer);
           //services.postGameIsRunning(true);
           $scope.currentPage = "waitingFrame";
           $scope.messageForWaitingFrame = "Waiting for players ...";
           services.postNumberOfPlayer($scope.nbOfPlayer).then(
             function (data) {
               console.log(data);
+              console.log("number of players: ", $scope.nbOfPlayer);
               $scope.players = data;
               console.log("player 0", $scope.players[0]);
               //$scope.players=data
