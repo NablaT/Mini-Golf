@@ -14,11 +14,11 @@ function createScene() {
   var scene = new BABYLON.Scene(engine);
 
   //Initialisation camera
-  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 20, new BABYLON.Vector3(0, 0, 0), scene);
+  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 20, new BABYLON.Vector3(0, 7.5, 0), scene);
 
   var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
-  camera.setPosition(new BABYLON.Vector3(-10, 1110, 0));
+  camera.setPosition(new BABYLON.Vector3(-10, 1667, 0));
 
   //Lights initialization
   initialisationLights(scene);
@@ -115,7 +115,7 @@ function createGolfHole(scene) {
 
 function initialisationSkyBox(scene) {
   // Skybox
-  var skybox = BABYLON.Mesh.CreateBox("skyBox", 2500.0, scene);
+  var skybox = BABYLON.Mesh.CreateBox("skyBox", 4000.0, scene);
   var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
   skyboxMaterial.backFaceCulling = false;
   skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/TropicalSunnyDay", scene);
@@ -132,14 +132,14 @@ function initialisationSkyBox(scene) {
  */
 function initialisationGround(scene) {
   //var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "heightMaps/heightMap2.png", 800, 1200, 100, 0, 10, scene, false);
-  var ground = BABYLON.Mesh.CreateGround("ground", 800, 1200, 100, scene);
+  var ground = BABYLON.Mesh.CreateGround("ground", 900, 1200, 100, scene);
   var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture("textures/grass.png", scene);
   groundMaterial.diffuseTexture.uScale = 6;
   groundMaterial.diffuseTexture.vScale = 6;
   groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   ground.position.y = 7;
-  ground.position.x=100;
+  ground.position.x=255;
   ground.material = groundMaterial;
 }
 
@@ -372,7 +372,7 @@ function initialisationTrack(scene) {
   var wallMaterial2 = new BABYLON.StandardMaterial("wall", scene);
   wall2.scaling.x = 70;
   wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall2.position = new BABYLON.Vector3(-205, 15, 200);
+  wall2.position = new BABYLON.Vector3(-235, 15, 200);
   wallMaterial2.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall2.material = wallMaterial1;
 
@@ -380,7 +380,7 @@ function initialisationTrack(scene) {
   var wallMaterial6 = new BABYLON.StandardMaterial("wall", scene);
   wall6.scaling.x = 60;
   wall6.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall6.position = new BABYLON.Vector3(0, 15, -600);
+  wall6.position = new BABYLON.Vector3(0, 15, -425);
   wallMaterial6.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall6.material = wallMaterial6;
 
@@ -388,7 +388,7 @@ function initialisationTrack(scene) {
   var wallMaterial7 = new BABYLON.StandardMaterial("wall", scene);
   wall7.scaling.x = 31;
   wall7.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall7.position = new BABYLON.Vector3(0, 15, 600);
+  wall7.position = new BABYLON.Vector3(0, 15, 425);
   wallMaterial7.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall7.material = wallMaterial7;
 }
