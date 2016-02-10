@@ -15,8 +15,8 @@ class Kinect {
      * It sets the shoot direction to -1.
      */
     constructor () {
-        this._shootDirection      = 315;
-        this._shootDirectionReady = 315;
+        this._shootDirection      = -1;
+        this._shootDirectionReady = -1;
     }
 
     /**
