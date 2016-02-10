@@ -14,7 +14,7 @@ angular.module('frontEndApp')
     function ($scope, services, position, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
-      $scope.currentPage = ""; //menu
+      $scope.currentPage = "swingGuideContainer"; //menu
       $scope.current3DPage = "scripts/gameMap/swingGuide.html"; //scripts/gameMap/homeEnvironment.html
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
