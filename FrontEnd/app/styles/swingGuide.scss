@@ -1,21 +1,14 @@
 .titleSwing{
-  padding-left:35%;
+  padding-left:32%;
 }
+
 
 .swingGuide{
   width:400px;
 }
 
-.swingGuide>h1{
+.swingGuide>h1, .swingGuide2>h1{
   color:white;
-}
-
-.contentAdvice{
-}
-
-.contentAdvice > .row{
-  //width:400px;
-  margin-left:5%;
 }
 
 .advice, .adviceTitle{
@@ -39,4 +32,13 @@
 
 .fa-mobile{
   padding-left:45%;
+}
+
+
+.titleSwing2{
+  padding-left:32%;
+}
+.swingGuide2{
+  margin-left:90px;
+  width:400px;
 }
