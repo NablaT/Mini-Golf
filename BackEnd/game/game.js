@@ -39,7 +39,7 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     // HDMI
-    golf = new Golf(numberPlayer, new Map(264, 216, new Position(46, 198), new Position(205, 77), 50, 10));
+    golf = new Golf(numberPlayer, new Map(269, 226, new Position(54, 214), new Position(211, 63), 2, 10));
     getGolf().map.toString();
     // VGA
     //golf = new Golf(numberPlayer, new Map(264, 216, new Position(46, 193), new Position(205, 77), 10, 10));
@@ -201,35 +201,43 @@ var distToVelocity = function (dist) {
  */
 var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callbackOutOfMap) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
+    var callback = function (dist) {
+        console.log(dist);
+        getGolf().map.setPositionBall(dist, kinect.shootDirectionReady,
+            function () {
+                getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+                getGolf().updatePlayerToPlay(function () {
+                    screen.emit('endGame', {});
+                    callbackEndOfGame();
+                    endGame();
+                }, function () {
+                    getPlayerToPlay();
+                    callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
+                });
+
+            }, function () {
+                getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
+                screen.emit('outOfMap', {});
+                // This timeout is to handle the change view in smartphone !
+                setTimeout(function () {
+                    callbackOutOfMap();
+                }, 2000);
+
+            });
+    };
     sphero.goSphero(distToVelocity(dist));
 
-    getPlayerToPlay().score += 1;
+    setTimeout(function () {
+        callback(sphero.getDist());
+    },7000);
+
+    getPlayerToPlay().score += 1; // TODO Improve this 2 lines
     getPlayerToPlay();
 
-    getGolf().map.setPositionBall(dist, kinect.shootDirectionReady,
-        function () {
-            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
-            getGolf().updatePlayerToPlay(function () {
-                screen.emit('endGame', {});
-                callbackEndOfGame();
-                endGame();
-            }, function () {
-                getPlayerToPlay();
-                callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
-            });
-
-        }, function () {
-            getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
-            screen.emit('outOfMap', {});
-            // This timeout is to handle the change view in smartphone !
-            setTimeout(function () {
-                callbackOutOfMap();
-            }, 2000);
-
-        });
-
     // TODO DELETE the next line when it will be working.
-    getGolf().map.toString();
+    setTimeout(function () {
+        getGolf().map.toString()
+    },9000);
 };
 
 module.exports = {
