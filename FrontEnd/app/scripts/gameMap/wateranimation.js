@@ -354,7 +354,7 @@ function initialisationTrack(scene) {
   var wallMaterial2 = new BABYLON.StandardMaterial("wall", scene);
   wall2.scaling.x = 70;
   wall2.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  wall2.position = new BABYLON.Vector3(-205, 15, 200);
+  wall2.position = new BABYLON.Vector3(-235, 15, 200);
   wallMaterial2.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall2.material = wallMaterial1;
 
@@ -362,7 +362,7 @@ function initialisationTrack(scene) {
   var wallMaterial6 = new BABYLON.StandardMaterial("wall", scene);
   wall6.scaling.x = 60;
   wall6.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall6.position = new BABYLON.Vector3(0, 15, -600);
+  wall6.position = new BABYLON.Vector3(0, 15, -560);
   wallMaterial6.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall6.material = wallMaterial6;
 
@@ -370,7 +370,7 @@ function initialisationTrack(scene) {
   var wallMaterial7 = new BABYLON.StandardMaterial("wall", scene);
   wall7.scaling.x = 31;
   wall7.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-  wall7.position = new BABYLON.Vector3(0, 15, 600);
+  wall7.position = new BABYLON.Vector3(0, 15, 560);
   wallMaterial7.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
   wall7.material = wallMaterial7;
 }
