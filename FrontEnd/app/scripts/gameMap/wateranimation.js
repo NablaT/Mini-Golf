@@ -98,7 +98,7 @@ function initialisationLights(scene) {
 function createGolfHole(scene) {
   var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
   var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  hole.position = new BABYLON.Vector3(270, 6, -350);
+  hole.position = new BABYLON.Vector3(510, 7.9, -390);
   hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
 
@@ -260,8 +260,8 @@ function initialisationStartingPoint(scene) {
   groundMaterial.diffuseTexture.vScale = 6;
   groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   ground.rotation = new BABYLON.Vector3(0, Math.PI / 5.2, 0);
-  ground.position.z = 510;
-  ground.position.x = -160;
+  ground.position.z = 480;
+  ground.position.x = -120;
   ground.position.y = 7.5;
   ground.material = groundMaterial;
 }
@@ -384,14 +384,14 @@ function createBoxes(scene) {
   var box1 = BABYLON.Mesh.CreateBox("wall", 25.0, scene);
   var boxMaterial1 = new BABYLON.StandardMaterial("wall", scene);
   box1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  box1.position = new BABYLON.Vector3(190, 25, 150);
+  box1.position = new BABYLON.Vector3(255, 25, 0);
   boxMaterial1.diffuseTexture = new BABYLON.Texture("textures/box.png", scene);
   box1.material = boxMaterial1;
 
   var box1 = BABYLON.Mesh.CreateBox("wall", 25.0, scene);
   var boxMaterial1 = new BABYLON.StandardMaterial("wall", scene);
   box1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-  box1.position = new BABYLON.Vector3(180, 25, 200);
+  box1.position = new BABYLON.Vector3(0, 25, 0);
   boxMaterial1.diffuseTexture = new BABYLON.Texture("textures/box2.png", scene);
   box1.material = boxMaterial1;
 
