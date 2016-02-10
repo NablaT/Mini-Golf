@@ -144,14 +144,7 @@ class Map {
      * @returns {boolean} True if the ball is on the map, else false.
      */
     isInMap () {
-        return !(this.ballPosition.latitude
-        < 0
-        || this.ballPosition.latitude
-        > this.width
-        || this.ballPosition.longitude
-        < 0
-        || this.ballPosition.longitude
-        > this.height);
+        return this.matrix.isInMatrix(this.ballPosition.longitude, this.ballPosition.latitude);
     };
 
     /**

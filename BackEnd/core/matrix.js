@@ -103,6 +103,17 @@ class Matrix {
     }
 
     /**
+     * This function checks if a point is in the matrix.
+     * @param {int} row - The row number.
+     * @param {int} column - The column number.
+     * @returns {boolean}
+     */
+    isInMatrix (row, column) {
+        var tmp = getElement(row, column);
+        return !(tmp === 'undefined' || tmp === ' ');
+    }
+
+    /**
      * This function prints the matrix.
      */
     toString () {
