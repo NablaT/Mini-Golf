@@ -20,6 +20,9 @@ var isInCalibrationPhase = false;
  */
 var angle;
 
+var x;
+var y;
+
 /////////////////////////////////               Event listener Socket                  /////////////////////////////////
 
 /**
@@ -35,7 +38,7 @@ socket.on('startCalibration', function (params) {
  * This event aims to finish the calibration of the sphero.
  */
 socket.on('stopCalibration', function (params) {
-    stopCalibration();
+    stopCalibration(configureLocator);
 });
 
 /**
@@ -43,7 +46,7 @@ socket.on('stopCalibration', function (params) {
  * This event aims to orients the sphero.
  */
 socket.on('ready', function (params) {
-    roll(0,params.angle);
+    roll(0, params.angle);
     angle = params.angle;
 });
 
@@ -52,7 +55,7 @@ socket.on('ready', function (params) {
  * This event aims to roll the sphero.
  */
 socket.on('go', function (params) {
-   roll(params.velocity, angle);
+    roll(params.velocity, angle);
 });
 
 /**
@@ -85,15 +88,52 @@ function connect () {
 }
 
 /**
+ * This function aimed to initialize the locator for the Sphero.
+ * It means that when this function is called,
+ * the position of the sphero is set to (0,0)
+ * and the positive y-axis corresponds to heading 0 for the Sphero (forward).
+ */
+function configureLocator () {
+    console.log('in configure');
+    orb.configureLocator({
+        flags  : 0x01,
+        x      : 0x0000,
+        y      : 0x0000,
+        yawTare: 0x0
+    }, function () {
+        x = 0;
+        y = 0;
+    })
+}
+
+function readLocator () {
+    orb.readLocator(function (err, data) {
+        if (err) {
+            console.error("error: ", err);
+        } else {
+            var dist = Math.sqrt(Math.pow((data.xpos-x),2) + Math.pow((data.ypos - y),2));
+            x = data.xpos;
+            y = data.ypos;
+            console.log('before');
+            console.log(dist);
+            socket.emit('newPositionSphero', {dist : dist});
+            console.log('x ' + data.xpos);
+            console.log('y ' + data.ypos);
+        }
+    });
+}
+
+/**
  * This function send the signal to roll to the sphero.
  * @param {int} velocity - The velocity of the sphero. Between 0 et 255.
  * @param {int} angle - The direction in degrees of the sphero. Between 0 et 359.
  */
 function roll (velocity, angle) {
-    if (isInCalibrationPhase){
-        stopCalibration();
+    if (isInCalibrationPhase) {
+        stopCalibration(configureLocator);
     }
-    orb.roll(velocity,angle);
+    //readLocator();
+    orb.roll(velocity, angle, undefined, setTimeout(readLocator, 7000));
 }
 
 /**
@@ -109,9 +149,10 @@ function startCalibration () {
 /**
  * This function send the signal to finish the calibration to the sphero.
  */
-function stopCalibration () {
+function stopCalibration (callback) {
     orb.finishCalibration(function () {
         isInCalibrationPhase = false;
+        callback();
     });
 }
 
@@ -141,7 +182,7 @@ function handle (key, velocity) {
     }
 
     if (key === "F") {
-        stopCalibration();
+        stopCalibration(configureLocator);
     }
 
     if (key === "&") {
