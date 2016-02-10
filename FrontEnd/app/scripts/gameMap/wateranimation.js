@@ -14,11 +14,11 @@ function createScene() {
   var scene = new BABYLON.Scene(engine);
 
   //Initialisation camera
-  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 20, new BABYLON.Vector3(0, 0, 0), scene);
+  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 20, new BABYLON.Vector3(-10, 0, 0), scene);
 
   var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), scene);
 
-  camera.setPosition(new BABYLON.Vector3(-10, 1000, 0));
+  camera.setPosition(new BABYLON.Vector3(-30, 1000, 0));
 
   //Lights initialization
   initialisationLights(scene);
@@ -115,7 +115,7 @@ function createGolfHole(scene) {
 
 function initialisationSkyBox(scene) {
   // Skybox
-  var skybox = BABYLON.Mesh.CreateBox("skyBox", 2000.0, scene);
+  var skybox = BABYLON.Mesh.CreateBox("skyBox", 4000.0, scene);
   var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
   skyboxMaterial.backFaceCulling = false;
   skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("skybox/TropicalSunnyDay", scene);
