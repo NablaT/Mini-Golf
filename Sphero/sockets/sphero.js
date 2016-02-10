@@ -91,7 +91,7 @@ function connect () {
  */
 function roll (velocity, angle) {
     if (isInCalibrationPhase){
-        finishCalibration();
+        stopCalibration();
     }
     orb.roll(velocity,angle);
 }
