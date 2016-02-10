@@ -3,12 +3,16 @@ var io = require("../core/core.js").getIO();
 // Route for the sphero socket.
 var spheroSocket = io.of('/sphero');
 
-var callbackNewPos = function () {
-    console.error('This message should not appeared');
-};
-
+/**
+ * This variable contains the new distance done by the Sphero.
+ * @type {int}
+ */
 var dist = null;
 
+/**
+ * This function gets the distance variable.
+ * @returns {int} The distance done by the Sphero.
+ */
 var getDist = function () {
     return dist;
 };
@@ -40,7 +44,7 @@ spheroSocket.on('connection', function (socket) {
 
     /////////////////////////////////             Sphero Socket Events                 /////////////////////////////////
 
-    socket.on('newPositionSphero', newPos);
+    socket.on('newDistanceSphero', newDistance);
 
     /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
 
@@ -76,7 +80,11 @@ spheroSocket.on('connection', function (socket) {
 
     /////////////////////////////////         Callback Sphero Socket Events            /////////////////////////////////
 
-    function newPos (params) {
+    /**
+     * This function registers the new distance done of the Sphero.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function newDistance (params) {
         dist = params.dist;
     }
 
@@ -87,7 +95,6 @@ spheroSocket.on('connection', function (socket) {
  * @param {int} velocity - The velocity sphero.
  */
 var goSphero = function (velocity) {
-    //callbackNewPos = callback;
     spheroSocket.emit('go', {"velocity": velocity});
 };
 

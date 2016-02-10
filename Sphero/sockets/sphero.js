@@ -15,12 +15,21 @@ var sphero = require("sphero"),
 var isInCalibrationPhase = false;
 
 /**
- * A variable to know the direction of the sphero.
+ * A variable to know the direction of the Sphero.
  * @type {int}
  */
 var angle;
 
+/**
+ * A variable to know the x position of the Sphero.
+ * @type {int}
+ */
 var x;
+
+/**
+ * A variable to know the y position of the Sphero.
+ * @type {int}
+ */
 var y;
 
 /////////////////////////////////               Event listener Socket                  /////////////////////////////////
@@ -88,13 +97,12 @@ function connect () {
 }
 
 /**
- * This function aimed to initialize the locator for the Sphero.
+ * This function aimed to initialize the location for the Sphero.
  * It means that when this function is called,
  * the position of the sphero is set to (0,0)
  * and the positive y-axis corresponds to heading 0 for the Sphero (forward).
  */
 function configureLocator () {
-    console.log('in configure');
     orb.configureLocator({
         flags  : 0x01,
         x      : 0x0000,
@@ -106,19 +114,18 @@ function configureLocator () {
     })
 }
 
+/**
+ * This function aimed to read the location of the sphero.
+ */
 function readLocator () {
     orb.readLocator(function (err, data) {
         if (err) {
             console.error("error: ", err);
         } else {
-            var dist = Math.sqrt(Math.pow((data.xpos-x),2) + Math.pow((data.ypos - y),2));
-            x = data.xpos;
-            y = data.ypos;
-            console.log('before');
-            console.log(dist);
-            socket.emit('newPositionSphero', {dist : dist});
-            console.log('x ' + data.xpos);
-            console.log('y ' + data.ypos);
+            var dist = Math.sqrt(Math.pow((data.xpos - x), 2) + Math.pow((data.ypos - y), 2));
+            x        = data.xpos;
+            y        = data.ypos;
+            socket.emit('newDistanceSphero', {dist: dist});
         }
     });
 }
@@ -132,7 +139,6 @@ function roll (velocity, angle) {
     if (isInCalibrationPhase) {
         stopCalibration(configureLocator);
     }
-    //readLocator();
     orb.roll(velocity, angle, undefined, setTimeout(readLocator, 7000));
 }
 
