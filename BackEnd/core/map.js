@@ -1,6 +1,7 @@
 'use strict';
 
-var Matrix = require('./matrix.js');
+var Matrix   = require('./matrix.js'),
+    Position = require('./position.js');
 
 /**
  * This class represents a matrix.
@@ -24,7 +25,7 @@ class Map {
         this._holePosition  = holePosition;
         this._holeSide      = holeSide;
         this._matrix        = new Matrix(height, width, '-', deformationAngle);
-        this._ballPosition  = startPosition;
+        this._ballPosition  = Position.copy(startPosition);
 
         this.printHole();
 
@@ -143,14 +144,7 @@ class Map {
      * @returns {boolean} True if the ball is on the map, else false.
      */
     isInMap () {
-        return !(this.ballPosition.latitude
-        < 0
-        || this.ballPosition.latitude
-        > this.width
-        || this.ballPosition.longitude
-        < 0
-        || this.ballPosition.longitude
-        > this.height);
+        return this.matrix.isInMatrix(this.ballPosition.longitude, this.ballPosition.latitude);
     };
 
     /**

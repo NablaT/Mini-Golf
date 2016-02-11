@@ -4,6 +4,20 @@ var io = require("../core/core.js").getIO();
 var spheroSocket = io.of('/sphero');
 
 /**
+ * This variable contains the new distance done by the Sphero.
+ * @type {int}
+ */
+var dist = null;
+
+/**
+ * This function gets the distance variable.
+ * @returns {int} The distance done by the Sphero.
+ */
+var getDist = function () {
+    return dist;
+};
+
+/**
  * Event listener.
  * Every time a client socket try to connect to the serveur at the /sphero route,
  * this event 'connection' is triggered.
@@ -11,6 +25,69 @@ var spheroSocket = io.of('/sphero');
 spheroSocket.on('connection', function (socket) {
     // If the connection succeed, the 'connectSphero' event is emitted.
     socket.emit('connectSphero', {});
+
+    /////////////////////////////////            Base Socket Events                    /////////////////////////////////
+
+    socket.on('disconnect', disconnect);
+
+    socket.on('error', error);
+
+    socket.on('reconnect', reconnect);
+
+    socket.on('reconnect_attempt', reconnectAttempt);
+
+    socket.on('reconnecting', reconnecting);
+
+    socket.on('reconnect_error', reconnectError);
+
+    socket.on('reconnect_failed', reconnectFailed);
+
+    /////////////////////////////////             Sphero Socket Events                 /////////////////////////////////
+
+    socket.on('newDistanceSphero', newDistance);
+
+    /////////////////////////////////         Callbacks Base Socket Events             /////////////////////////////////
+
+    function disconnect () {
+        console.log("Client disconnected for Root namespace");
+    }
+
+    function error (errorData) {
+        console.log("An error occurred during Client connection for Root namespace");
+        console.error(errorData);
+    }
+
+    function reconnect (attemptNumber) {
+        console.log("Client Connection for Root namespace after " + attemptNumber + " attempts.");
+    }
+
+    function reconnectAttempt () {
+        console.log("Client reconnect attempt for Root namespace");
+    }
+
+    function reconnecting (attemptNumber) {
+        console.log("Client Reconnection for Root namespace - Attempt number " + attemptNumber);
+    }
+
+    function reconnectError (errorData) {
+        console.log("An error occurred during Client reconnection for Root namespace");
+        console.error(errorData);
+    }
+
+    function reconnectFailed () {
+        console.log("Failed to reconnect Client for Root namespace. No new attempt will be done.")
+    }
+
+    /////////////////////////////////         Callback Sphero Socket Events            /////////////////////////////////
+
+    /**
+     * This function registers the new distance done of the Sphero.
+     * @param {Object} params - The json object containing the parameters.
+     */
+    function newDistance (params) {
+        dist = params.dist;
+    }
+
 });
 
 /**
@@ -48,5 +125,6 @@ module.exports = {
     goSphero        : goSphero,
     startCalibration: startCalibration,
     stopCalibration : stopCalibration,
-    ready           : ready
+    ready           : ready,
+    getDist         : getDist
 };

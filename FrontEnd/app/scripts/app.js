@@ -54,6 +54,11 @@ angular
         controller: 'LoadingcontainerCtrl',
         controllerAs: 'loadingContainer'
       })
+      .when('/swingGuideContainer',{
+        templateUrl: 'views/swingGuideContainer.html',
+        controller: 'SwingguidecontentCtrl',
+        controllerAs: 'swingGuideContainer'
+      })
       .otherwise({
         redirectTo: '/'
       });
