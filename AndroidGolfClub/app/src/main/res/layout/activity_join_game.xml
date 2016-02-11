@@ -37,38 +37,24 @@
             android:textColor="#FFFFFF"/>
 
         <EditText
-            android:layout_width="285dp"
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
             android:id="@+id/name"
-            android:minWidth="200dp"
             android:textColor="#FFFFFF"/>
+
+        <Button
+            android:text="Ok"
+            android:id="@+id/btnjoin"
+            android:background="@drawable/btn_ball_texture"
+            android:textColor="#FFFFFF"
+            android:onClick="joinGame"
+            android:layout_gravity="right"
+            android:layout_width="67dp"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 
-    <Button
-        android:layout_height="wrap_content"
-        android:text="Rejoindre la partie"
-        android:id="@+id/btnjoin"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_ball_texture"
-        android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
-        android:textColor="#FFFFFF"
-        android:onClick="joinGame" />
-
-
-    <Button
-        android:layout_height="wrap_content"
-        android:text="Retour à la configuration du serveur"
-        android:id="@+id/btnback"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_ball_texture"
-        android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
-        android:textColor="#FFFFFF"
-        android:onClick="back" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -78,6 +64,18 @@
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
         android:layout_weight="0.45" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:text="Retour à la configuration du serveur"
+        android:id="@+id/btnback"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_ball_texture"
+        android:layout_width="match_parent"
+        android:layout_marginTop="300dp"
+        android:textColor="#FFFFFF"
+        android:onClick="back" />
 
 
 </LinearLayout>
