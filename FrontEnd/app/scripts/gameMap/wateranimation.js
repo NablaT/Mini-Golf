@@ -79,10 +79,20 @@ function createScene() {
 
 function initialisationLights(scene) {
   // Lumiere 3
-  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(-400, 50, 630),
+  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(400, 50, 630),
     new BABYLON.Vector3(8, -1, -10), 1.1, 16, scene);
   light3.intensity = 100.4;
-  light3.rotation = new BABYLON.Vector3(0, Math.PI , 0);
+  light3.rotation = new BABYLON.Vector3(0,2* Math.PI , 0);
+  var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
+  lightSphere3.position = light3.position;
+  lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
+  lightSphere3.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
+  lightSphere3.rotation=new BABYLON.Vector3(0, Math.PI , 0);
+
+  var light3 = new BABYLON.SpotLight("spot03", new BABYLON.Vector3(-200, 50, 630),
+    new BABYLON.Vector3(8, -1, -10), 1.1, 16, scene);
+  light3.intensity = 100.4;
+  light3.rotation = new BABYLON.Vector3(0,2* Math.PI , 0);
   var lightSphere3 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
   lightSphere3.position = light3.position;
   lightSphere3.material = new BABYLON.StandardMaterial("light", scene);
@@ -98,7 +108,7 @@ function initialisationLights(scene) {
 function createGolfHole(scene) {
   var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
   var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
-  hole.position = new BABYLON.Vector3(510, 7.9, -390);
+  hole.position = new BABYLON.Vector3(0, 7.9, -390);
   hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
 
@@ -261,7 +271,7 @@ function initialisationStartingPoint(scene) {
   groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
   ground.rotation = new BABYLON.Vector3(0, Math.PI / 5.2, 0);
   ground.position.z = 480;
-  ground.position.x = -120;
+  ground.position.x = 600;
   ground.position.y = 7.5;
   ground.material = groundMaterial;
 }
@@ -284,7 +294,7 @@ function initialisationWater(scene) {
   water.colorBlendFactor = 0.0;
   water.addToRenderList(skybox);
   waterMesh.material = water;
-
+/*
   //var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 80, 70, 16, scene, false);  //2048, 2048, 16, scene, false);
   var waterMesh= BABYLON.Mesh.CreateCylinder("skyBox", 3,90,10,6,1,scene,false);
   var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
@@ -301,7 +311,7 @@ function initialisationWater(scene) {
   waterMesh.rotation= new BABYLON.Vector3(0, Math.PI / 9, 0);
   water.colorBlendFactor = 0.0;
   water.addToRenderList(skybox);
-  waterMesh.material = water;
+  waterMesh.material = water;*/
 }
 
 /**
@@ -358,7 +368,7 @@ function initialisationTrack(scene) {
    wall5.position = new BABYLON.Vector3(-300, 15, -350);
    wallMaterial5.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
    wall5.material = wallMaterial5;
-   */
+
 
   var wall1 = BABYLON.Mesh.CreateBox("wall", 10.0, scene);
   var wallMaterial1 = new BABYLON.StandardMaterial("wall", scene);
@@ -390,7 +400,7 @@ function initialisationTrack(scene) {
   wall7.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
   wall7.position = new BABYLON.Vector3(0, 15, 425);
   wallMaterial7.diffuseTexture = new BABYLON.Texture("textures/wall.png", scene);
-  wall7.material = wallMaterial7;
+  wall7.material = wallMaterial7;*/
 }
 
 /**

@@ -70,7 +70,8 @@ class Matrix {
      * @returns {*} Returns an element.
      */
     getElement (rowNumber, columnNumber) {
-        if (rowNumber >= this.row || columnNumber >= this.column) {
+        if (rowNumber < 0 || rowNumber >= this.row || columnNumber < 0 || columnNumber >= this.column) {
+            console.log('getelement return undefined');
             return;
         }
         return this.matrix[rowNumber][columnNumber];
@@ -110,7 +111,8 @@ class Matrix {
      */
     isInMatrix (row, column) {
         var tmp = this.getElement(row, column);
-        return !(tmp === 'undefined' || tmp === ' ');
+        return !(tmp === undefined || tmp === ' ');
+
     }
 
     /**

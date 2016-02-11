@@ -129,11 +129,13 @@ class Map {
     check (callbackInHole, callbackOutOfMap) {
 
         if (this.isInMap()) {
+            console.log('The Ball is in MAP');
             if (this.isInHole()) {
                 callbackInHole();
             }
         }
         else {
+            console.log('OUT OF MAP START MAP');
             callbackOutOfMap();
         }
 
@@ -192,7 +194,7 @@ class Map {
             for (let j = this.holePosition.longitude - (this.holeSide / 2);
                  j < this.holePosition.longitude + (this.holeSide / 2);
                  j++) {
-                this.matrix.setElement(j, i, ' ');
+                this.matrix.setElement(j, i, '*');
             }
         }
     }
