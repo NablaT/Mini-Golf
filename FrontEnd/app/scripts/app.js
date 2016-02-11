@@ -59,6 +59,11 @@ angular
         controller: 'SwingguidecontentCtrl',
         controllerAs: 'swingGuideContainer'
       })
+      .when('/endPageContainer',{
+        templateUrl: 'views/endPageContainer.html',
+        controller: 'EndpagectrlCtrl',
+        controllerAs: 'endpageContainer'
+      })
       .otherwise({
         redirectTo: '/'
       });
