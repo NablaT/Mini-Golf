@@ -14,8 +14,8 @@ angular.module('frontEndApp')
     function ($scope, services, position, $location, $controller, $timeout, constants) {
 
       // The id of the current page.
-      $scope.currentPage = ""; //menu
-      $scope.current3DPage = "scripts/gameMap/index.html"; //scripts/gameMap/homeEnvironment.html
+      $scope.currentPage = "menu"; //menu
+      $scope.current3DPage = "scripts/gameMap/homeEnvironment.html"; //scripts/gameMap/homeEnvironment.html
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
@@ -207,6 +207,15 @@ angular.module('frontEndApp')
       }
 
 
+      /**
+       * Function updateContentSwingGuide. This function updates the content of the home page
+       * for the swing guide.
+       */
+      $scope.updateContentSwingGuide = function(){
+        console.log("oui okay");
+        $scope.current3DPage="scripts/gameMap/swingGuide.html";
+        $scope.currentPage="swingGuideContainer";
+      }
 
       /**
        * Function OpenMenu. This function puts all the players

@@ -18,7 +18,7 @@
  */
 angular.module('frontEndApp')
   .constant('constants', {
-    backendUrl : 'http://192.168.1.5:3000/', // L'adresse du serveur.
-    backendUrlEcran:'http://192.168.1.5:3000/ecran'
+    backendUrl : 'http://192.168.1.11:3000/', // L'adresse du serveur.
+    backendUrlEcran:'http://192.168.1.11:3000/ecran'
    //backendUrlEcran:'http://localhost:3000/ecran'
   });

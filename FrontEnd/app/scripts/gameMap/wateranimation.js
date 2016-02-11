@@ -153,7 +153,7 @@ function initialisationFountain(scene) {
   // On crée ensuite l'objet fountain. Cet objet est une sphere et va servir de "source visuelle"
   // a la fontaine.
   var fountain = BABYLON.Mesh.CreateSphere("foutain", 1, 1, scene); // 15,15,
-  fountain.position = new BABYLON.Vector3(250, 17, 550);
+  fountain.position = new BABYLON.Vector3(250, 17, 600);
   fountain.rotation = new BABYLON.Vector3(Math.PI / 2, Math.PI, 2 * (Math.PI));
   return fountain;
 }
@@ -284,6 +284,24 @@ function initialisationWater(scene) {
   water.colorBlendFactor = 0.0;
   water.addToRenderList(skybox);
   waterMesh.material = water;
+
+  //var waterMesh = BABYLON.Mesh.CreateGround("waterMesh", 80, 70, 16, scene, false);  //2048, 2048, 16, scene, false);
+  var waterMesh= BABYLON.Mesh.CreateCylinder("skyBox", 3,90,10,6,1,scene,false);
+  var water = new BABYLON.WaterMaterial("water", scene, new BABYLON.Vector2(512, 512));
+  water.backFaceCulling = true;
+  water.bumpTexture = new BABYLON.Texture("textures/13_DIFFUSE.png", scene); //13_DIFFUSE
+  water.windForce = -10;
+  water.waveHeight = 0.5;
+  water.bumpHeight = 0.1;
+  water.windDirection = new BABYLON.Vector2(1, 1);
+  water.waterColor = new BABYLON.Color3(0, 0, 221 / 255);
+  waterMesh.position.y=7.7;
+  waterMesh.position.x=100;
+  waterMesh.position.z=100;
+  waterMesh.rotation= new BABYLON.Vector3(0, Math.PI / 9, 0);
+  water.colorBlendFactor = 0.0;
+  water.addToRenderList(skybox);
+  waterMesh.material = water;
 }
 
 /**
@@ -381,7 +399,7 @@ function initialisationTrack(scene) {
  */
 
 function createBoxes(scene) {
-  var box1 = BABYLON.Mesh.CreateBox("wall", 25.0, scene);
+  /*var box1 = BABYLON.Mesh.CreateBox("wall", 25.0, scene);
   var boxMaterial1 = new BABYLON.StandardMaterial("wall", scene);
   box1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   box1.position = new BABYLON.Vector3(255, 25, 0);
@@ -393,7 +411,7 @@ function createBoxes(scene) {
   box1.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   box1.position = new BABYLON.Vector3(0, 25, 0);
   boxMaterial1.diffuseTexture = new BABYLON.Texture("textures/box2.png", scene);
-  box1.material = boxMaterial1;
+  box1.material = boxMaterial1;*/
 
 
 }
