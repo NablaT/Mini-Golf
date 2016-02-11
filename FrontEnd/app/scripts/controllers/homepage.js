@@ -180,12 +180,11 @@ angular.module('frontEndApp')
        * "endGame" event on the server.
        **/
       function checkingIfGameStops(){
-        $scope.current3DPage="views/endPage.html";
-        $scope.currentPage="endPageContainer";
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
-              giveWinner();
+              giveWinner();//TODO
+              $scope.winnerName="Pierre";// TODO TOCHANGE 
               $scope.current3DPage="views/endPage.html";
               $scope.currentPage="endPageContainer";
             });
