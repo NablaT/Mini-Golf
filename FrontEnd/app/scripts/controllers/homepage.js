@@ -212,9 +212,17 @@ angular.module('frontEndApp')
        * for the swing guide.
        */
       $scope.updateContentSwingGuide = function(){
-        console.log("oui okay");
         $scope.current3DPage="scripts/gameMap/swingGuide.html";
         $scope.currentPage="swingGuideContainer";
+      }
+
+      /**
+       * Function updateContentSwingGuide. This function updates the content of the home page
+       * for the swing guide.
+       */
+      $scope.updateContentEndPage = function(){
+        $scope.current3DPage="views/endPage.html";
+        $scope.currentPage="endPageContainer";
       }
 
       /**
