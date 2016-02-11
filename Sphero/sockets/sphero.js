@@ -139,6 +139,9 @@ function roll (velocity, angle) {
     if (isInCalibrationPhase) {
         stopCalibration(configureLocator);
     }
+    if (velocity > 255) {
+        velocity = 255;
+    }
     orb.roll(velocity, angle, undefined, setTimeout(readLocator, 7000));
 }
 
