@@ -109,7 +109,7 @@ class Matrix {
      * @returns {boolean}
      */
     isInMatrix (row, column) {
-        var tmp = getElement(row, column);
+        var tmp = this.getElement(row, column);
         return !(tmp === 'undefined' || tmp === ' ');
     }
 
