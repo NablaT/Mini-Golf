@@ -162,6 +162,8 @@ public class DisplayResultsActivity extends AppCompatActivity {
 
                     JSONObject data = (JSONObject) args[0];
 
+                    DataKeeper.getInstance().setHasCalibrate(false);
+
                     try {
                         // change current player
                         DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));

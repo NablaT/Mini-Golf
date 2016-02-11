@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         final String me = dk.getPlayerName();
         final String current = dk.getCurrentPlayer();
         final boolean gameEnded = dk.isGameEnded();
+        final boolean hasCalibrated = dk.isHasCalibrate();
 
         if (me != null) {
 
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
+
                             newShoot.setEnabled(false);
                             calibrateSpehro.setEnabled(false);
                             text.setText("La partie est terminée !");
@@ -184,10 +186,15 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void run() {
-                                newShoot.setEnabled(true);
-                                calibrateSpehro.setEnabled(true);
-                                text.setText(me + ", c'est à toi de jouer");
 
+                                // check if has calibrated the sphero
+                                if (hasCalibrated){
+                                    text.setText(me + ", c'est à toi de jouer");
+                                    newShoot.setEnabled(true);
+                                } else {
+                                    text.setText(me + ", calibre la sphero avant de jouer");
+                                }
+                                calibrateSpehro.setEnabled(true);
                             }
                         });
 
@@ -299,6 +306,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            DataKeeper.getInstance().setHasCalibrate(false);
+
                             JSONObject data = (JSONObject) args[0];
 
                             try {
@@ -319,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
                                 // Play the song
                                 new PlaySongInHoleTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                             }
-
 
                         }
                     });

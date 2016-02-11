@@ -40,11 +40,6 @@ public class CalibrateActivity extends AppCompatActivity {
 
         socket = SocketGolf.getInstance().getSocket();
 
-        // register event play
-        // if we receive the event play when we calibrate the sphero
-        // it won't arrive normally
-        socket.on("play", play);
-
         calibrating = false;
     }
 
@@ -63,6 +58,8 @@ public class CalibrateActivity extends AppCompatActivity {
 
             // emit the event to start the calibration
             socket.emit("startCalibration", new JSONObject());
+
+            DataKeeper.getInstance().setHasCalibrate(true);
 
         } else {
 
@@ -96,41 +93,9 @@ public class CalibrateActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.calibration_done), Toast.LENGTH_SHORT).show();
         }
 
-        // unregister event play
-        socket.off("play", play);
-
         // go to main activity
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
-
-    /**
-     * Spcket play event listener
-     */
-    private Emitter.Listener play = new Emitter.Listener() {
-
-        @Override
-        public void call(final Object... args) {
-
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    Log.i("socketio", "received event : play");
-
-                    JSONObject data = (JSONObject) args[0];
-
-                    try {
-                        // change current player
-                        DataKeeper.getInstance().setCurrentPlayer(data.getString("name"));
-                    } catch (JSONException e) {
-                        return;
-                    }
-                }
-
-            }).start();
-        }
-    };
 
 }

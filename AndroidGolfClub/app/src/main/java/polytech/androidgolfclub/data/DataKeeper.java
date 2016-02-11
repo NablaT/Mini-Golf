@@ -32,6 +32,8 @@ public class DataKeeper {
 
     private boolean firstPlayerToPLay;
 
+    private boolean hasCalibrate;
+
     private static DataKeeper ourInstance = new DataKeeper();
 
     public static DataKeeper getInstance() {
@@ -43,6 +45,7 @@ public class DataKeeper {
         currentPlayer = null;
         gameEnded = false;
         firstPlayerToPLay = true;
+        hasCalibrate = false;
     }
 
     public boolean isGameEnded() {
@@ -66,5 +69,14 @@ public class DataKeeper {
         currentPlayer = null;
         gameEnded = false;
         firstPlayerToPLay = true;
+        hasCalibrate = false;
+    }
+
+    public boolean isHasCalibrate() {
+        return hasCalibrate;
+    }
+
+    public void setHasCalibrate(boolean hasCalibrate) {
+        this.hasCalibrate = hasCalibrate;
     }
 }
