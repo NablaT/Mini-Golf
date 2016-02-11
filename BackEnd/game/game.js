@@ -178,8 +178,49 @@ var isValidShoot = function (datas, strikeForce) {
         console.log("The movement is not good");
         return false;
     }
+
+    else if (timeBetween2times(datas) < 200) {
+        console.log('The movement is too fast');
+        return false;
+    }
+
     console.log('Shoot valid');
     return true;
+};
+
+/**
+ * This function calculates the time between the time when we have load th shoot and the time when we shoot.
+ * @param {Array} datas - The array of the accelerometer datas in 4 dimensions.
+ */
+var timeBetween2times = function (datas) {
+    var t0 = 0; // temps au début du tir
+    var t1; // temps lorsqu'on a chargé le tir
+    var t2; // temps au moment du tir
+    var zmin = 0; // acceleration à t2
+    var t, z;
+    var t2index;
+
+    var datas_size = datas.length;
+    for (let i = 0; i < datas_size; i++) {
+        t = datas[i].t;
+        z = datas[i].z;
+        if (z < zmin) {
+            zmin    = z;
+            t2      = t;
+            t2index = i;
+        }
+    }
+
+    // on parcourt les datas à partir de t2 vers t0 pour trouver t1
+    // t1 est le premier point où z est positif
+    for (let i = t2index; i > t0; i--) {
+        z = datas[i].z;
+        t = datas[i].t;
+        if (z > 0) {
+            t1 = t;
+            break;
+        }
+    }
 };
 
 /**
@@ -229,7 +270,7 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
 
     setTimeout(function () {
         callback(sphero.getDist());
-    },7000);
+    }, 7000);
 
     getPlayerToPlay().score += 1; // TODO Improve this 2 lines
     getPlayerToPlay();
@@ -237,7 +278,7 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
     // TODO DELETE the next line when it will be working.
     setTimeout(function () {
         getGolf().map.toString()
-    },9000);
+    }, 9000);
 };
 
 module.exports = {
