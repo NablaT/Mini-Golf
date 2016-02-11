@@ -26,7 +26,9 @@ angular.module('frontEndApp')
       $scope.iconmenu = false;
       $scope.currentScreen;
 
-      $scope.audio;
+      $scope.audio= new Audio('');
+      $scope.winnerName="";
+
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
@@ -178,11 +180,14 @@ angular.module('frontEndApp')
        * "endGame" event on the server.
        **/
       function checkingIfGameStops(){
+        $scope.current3DPage="views/endPage.html";
+        $scope.currentPage="endPageContainer";
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
+              giveWinner();
               $scope.current3DPage="views/endPage.html";
-              $scope.currentPage="";
+              $scope.currentPage="endPageContainer";
             });
           }
         });
@@ -265,4 +270,21 @@ angular.module('frontEndApp')
       function updateScore() {
         $scope.currentPage = "scores";
       }
+
+     /* function giveWinner(){
+        var maxScore=0;
+        var playerList= new [];
+        for(var i=0; i<$scope.players;i++){
+          if(maxScore<$scope.players[i]._score){
+            playerList.put($scope.player[i]._playerName);
+            maxScore=$scope.player[i]._score;
+          }
+          else if(maxScore>$scope.players[i]._score){
+            playerList= new[];
+          }
+          else{
+
+          }
+        }
+      }*/
     }]);
