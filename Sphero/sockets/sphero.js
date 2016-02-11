@@ -65,6 +65,7 @@ socket.on('ready', function (params) {
  */
 socket.on('go', function (params) {
     roll(params.velocity, angle);
+    setTimeout(readLocator, 5000);
 });
 
 /**
@@ -121,7 +122,10 @@ function readLocator () {
     orb.readLocator(function (err, data) {
         if (err) {
             console.error("error: ", err);
+            readLocator();
         } else {
+            console.log(data.xpos);
+            console.log(data.ypos);
             var dist = Math.sqrt(Math.pow((data.xpos - x), 2) + Math.pow((data.ypos - y), 2));
             x        = data.xpos;
             y        = data.ypos;
@@ -142,7 +146,7 @@ function roll (velocity, angle) {
     if (velocity > 255) {
         velocity = 255;
     }
-    orb.roll(velocity, angle, undefined, setTimeout(readLocator, 7000));
+    orb.roll(velocity, angle);
 }
 
 /**
