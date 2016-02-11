@@ -65,6 +65,7 @@ socket.on('ready', function (params) {
  */
 socket.on('go', function (params) {
     roll(params.velocity, angle);
+    // This timeout handles the fact that we need to wait the sphero is stopped before sending its position.
     setTimeout(readLocator, 5000);
 });
 
