@@ -321,7 +321,7 @@ public class ShootActivity extends AppCompatActivity {
 
                             // Great shoot
                             // Play the song
-                            if (Results.getInstance().getForce() < 30) {
+                            if (Results.getInstance().getForce()*10 < 30) {
                                 // short shoot, it's a putt
                                 new PlaySongPutterShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                             } else {
@@ -489,8 +489,11 @@ public class ShootActivity extends AppCompatActivity {
         public void onSensorChanged(SensorEvent event) {
 
             if (shooting) {
-                Long time = Calendar.getInstance().getTimeInMillis() - timeStartShoot;
-                resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
+                Long now = Calendar.getInstance().getTimeInMillis();
+                if (now != null){
+                    Long time = now - timeStartShoot;
+                    resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
+                }
             }
         }
 

@@ -40,11 +40,11 @@ public class ShootErrorActivity extends AppCompatActivity {
         Double force = bundle.getDouble("reason");
 
         switch (force.intValue()) {
-            case -4 : reasonText.setText("La kinect ne te vois pas!"); break;
-            case -3 : reasonText.setText("Erreur de connexion"); break;
-            case -2 : reasonText.setText("Erreur sur le serveur"); break;
-            case -1 : reasonText.setText("Tir non valide"); break;
-            default : reasonText.setText("Erreur non traitée"); break;
+            case -4 : reasonText.setText(getString(R.string.error_kinect)); break;
+            case -3 : reasonText.setText(getString(R.string.error_connection)); break;
+            case -2 : reasonText.setText(getString(R.string.error_server)); break;
+            case -1 : reasonText.setText(getString(R.string.dummy_content_fail)); break;
+            default : reasonText.setText(getString(R.string.error_unknown)); break;
 
         }
     }

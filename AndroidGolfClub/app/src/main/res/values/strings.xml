@@ -5,7 +5,13 @@
     <string name="dummy_content_before">Maintenez votre doigt enfoncé en tirant</string>
     <string name="dummy_content_shoot">Tirez puis relachez</string>
     <string name="dummy_content_after">Tir effectué !</string>
-    <string name="dummy_content_fail">Mauvais tir ! \n Tenez le smartphone correctement et effectuez un mouvement ample et réaliste</string>
+    <string name="dummy_content_fail">Tir non valide ! \n Tiens le smartphone correctement et effectue un mouvement ample et réaliste</string>
+
+    <string name="error_kinect">La kinect ne te vois pas !</string>
+    <string name="error_not_accpted">Tir non valide ! \n Tiens le smartphone correctement et effectue un mouvement ample et réaliste</string>
+    <string name="error_connection">Erreur de connecion</string>
+    <string name="error_server">Erreur sur le serveur</string>
+    <string name="error_unknown">Erreur inconnue</string>
 
     <string name="title_activity_display_results">Analyse du dernier tir</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
