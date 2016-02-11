@@ -207,6 +207,15 @@ angular.module('frontEndApp')
       }
 
 
+      /**
+       * Function updateContentSwingGuide. This function updates the content of the home page
+       * for the swing guide.
+       */
+      $scope.updateContentSwingGuide = function(){
+        console.log("oui okay");
+        $scope.current3DPage="scripts/gameMap/swingGuide.html";
+        $scope.currentPage="swingGuideContainer";
+      }
 
       /**
        * Function OpenMenu. This function puts all the players
