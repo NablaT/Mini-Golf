@@ -39,10 +39,8 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     // HDMI
-    golf = new Golf(numberPlayer, new Map(269, 226, new Position(54, 214), new Position(211, 63), 2, 10));
+    golf = new Golf(numberPlayer, new Map(269, 226, new Position(36, 31), new Position(209, 206), 40, 10));
     getGolf().map.toString();
-    // VGA
-    //golf = new Golf(numberPlayer, new Map(264, 216, new Position(46, 193), new Position(205, 77), 10, 10));
     screen.emit('waitingForPlayers', {});
 };
 
@@ -221,6 +219,9 @@ var timeBetween2times = function (datas) {
             break;
         }
     }
+
+    console.log('t1 = ' + t1);
+    console.log('t2 = ' + t2);
 };
 
 /**
@@ -242,21 +243,31 @@ var distToVelocity = function (dist) {
  */
 var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callbackOutOfMap) {
     var dist = Math.abs(strikeForce) * 30; // fake calcul, result in cm
+
+    // TODO improve this shit
     var callback = function (dist) {
         console.log(dist);
         getGolf().map.setPositionBall(dist, kinect.shootDirectionReady,
+            /**
+             * This callback is triggered when the ball is in the hole.
+             */
             function () {
                 getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
-                getGolf().updatePlayerToPlay(function () {
-                    screen.emit('endGame', {});
-                    callbackEndOfGame();
-                    endGame();
-                }, function () {
-                    getPlayerToPlay();
-                    callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
-                });
+                getGolf().updatePlayerToPlay(
+                    function () {
+                        screen.emit('endGame', {});
+                        callbackEndOfGame();
+                        endGame();
+                    }, function () {
+                        getPlayerToPlay();
+                        callbackChangeOfPlayer(getGolf().getPlayerToPlay().playerName);
+                    });
 
-            }, function () {
+            },
+            /**
+             * This callback is triggered when the ball is out of the map.
+             */
+            function () {
                 getGolf().map.ballPosition = Position.copy(getGolf().map.startPosition);
                 screen.emit('outOfMap', {});
                 // This timeout is to handle the change view in smartphone !
@@ -268,17 +279,19 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
     };
     sphero.goSphero(distToVelocity(dist));
 
+    // This timeout is to handle the fact that the new position of the sphero is sent 5 secondes later.
     setTimeout(function () {
         callback(sphero.getDist());
-    }, 7000);
+    }, 4500);
 
     getPlayerToPlay().score += 1; // TODO Improve this 2 lines
     getPlayerToPlay();
 
     // TODO DELETE the next line when it will be working.
+    // This timeout is to handle the fact that there are timeout for the rest.
     setTimeout(function () {
         getGolf().map.toString()
-    }, 9000);
+    }, 5000);
 };
 
 module.exports = {
