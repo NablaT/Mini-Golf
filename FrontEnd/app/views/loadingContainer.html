@@ -2,13 +2,37 @@
 <div class="loadingpage">
   <!--<iframe class="loadingdiv" src="views/loading.html"></iframe>-->
 
-  <div class="container labelContainer">
+  <div class="container labelContainer left">
     <div class="row ">
       <div class="col-lg-4"></div>
       <div class="waiting col-lg-4 offset-4">
         <label class="waitinglabel">{{messageForWaitingFrame}} </label>
       </div>
     </div>
+  </div>
+  <div class="container labelContainer top">
+    <div class="row ">
+      <div class="col-lg-4"></div>
+      <div class="waiting col-lg-4 offset-4">
+        <label class="waitinglabel">{{messageForWaitingFrame}} </label>
+      </div>
+    </div>
+  </div>
+  <div class="container labelContainer bottom">
+    <div class="row ">
+      <div class="col-lg-4"></div>
+      <div class="waiting col-lg-4 offset-4">
+        <label class="waitinglabel">{{messageForWaitingFrame}} </label>
+      </div>
+    </div>
+  </div>
+  <div class="container labelContainerRight right">
+   <div class="row ">
+    <div class="col-lg-4"></div>
+    <div class="waiting labelRight col-lg-4 offset-4">
+      <label class="waitinglabel">{{messageForWaitingFrame}} </label>
+    </div>
+  </div>
   </div>
   <button class="homeButtonLoading col-lg-2" ng-click="updateHomePage('menu','scripts/gameMap/homeEnvironment.html')"> >
     <!-- ng-click="updateHomePage('menu')" -->

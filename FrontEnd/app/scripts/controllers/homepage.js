@@ -20,7 +20,7 @@ angular.module('frontEndApp')
       $scope.nbOfPlayer = 1;
       $scope.players;
 
-      $scope.messageForWaitingFrame = "En attente que la game se lance";
+      $scope.messageForWaitingFrame = "En attente que le jeu se lance";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;

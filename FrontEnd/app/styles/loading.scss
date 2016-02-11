@@ -14,9 +14,7 @@
   z-index:4;
   font-size: 40px;
   text-align:center;
-  margin-left: 45%;
   width:900px;
-  margin-top: 720px;
   position: absolute;
   font-family: "Rockwell";
 }
@@ -33,5 +31,38 @@
   top:1%;
   width: 90px;
   z-index:5;
+}
+
+.bottom{
+
+  left:15%;
+  margin-top: 780px;
+}
+.left{
+  -webkit-transform: rotate(90deg);
+  margin-top: 47%;
+  z-index:6;
+  position:absolute;
+  right:47%;
+}
+
+.top{
+  margin-top: 5%;
+  right:40%;
+  -webkit-transform: rotate(180deg);
+}
+
+.right{
+
+  -webkit-transform: rotate(-90deg);
+  left:50%;
+  top:50%;
+  z-index:7;
+  position:absolute;
+
+}
+
+.labelRight{
+  margin-left:80px;
 }
 
