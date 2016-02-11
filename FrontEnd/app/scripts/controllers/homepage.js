@@ -20,7 +20,7 @@ angular.module('frontEndApp')
       $scope.nbOfPlayer = 1;
       $scope.players;
 
-      $scope.messageForWaitingFrame = "Waiting for the game to starts";
+      $scope.messageForWaitingFrame = "En attente que la game se lance";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
@@ -43,7 +43,7 @@ angular.module('frontEndApp')
         if (!(path3DEnvironement === '')) {
           $scope.current3DPage = path3DEnvironement;
         }
-        $scope.messageForWaitingFrame = "Waiting until the game starts";
+        $scope.messageForWaitingFrame = "En attente que le jeu se lance";
         $scope.saveCurrentPlayer = "";
         $scope.iconmenu = false;
       }
@@ -74,7 +74,7 @@ angular.module('frontEndApp')
           //player.setNbPlayer($scope.nbOfPlayer);
           //services.postGameIsRunning(true);
           $scope.currentPage = "waitingFrame";
-          $scope.messageForWaitingFrame = "Waiting for players ...";
+          $scope.messageForWaitingFrame = "En attente des joueurs ...";
           services.postNumberOfPlayer($scope.nbOfPlayer).then(
             function (data) {
               console.log(data);
@@ -141,10 +141,13 @@ angular.module('frontEndApp')
        * Function checkingMessageForWaitingFrame. This function is always checking the status of the game.
        */
       function checkingMessageForWaitingFrame(){
+        console.log("je rentre dans checking for waiting frame");
+        /*$scope.audio = new Audio('sound/waiting_sound.mp3');
+        $scope.audio.play();*/
         $scope.socket.on("waitingForPlayers", function (params) {
           if (params !== {}) {
             $scope.$apply(function () {
-              $scope.messageForWaitingFrame = "Waiting for players";
+              $scope.messageForWaitingFrame = "En attente des joueurs";
               $scope.audio = new Audio('sound/waiting_sound.mp3');
               $scope.audio.play();
             });
@@ -184,7 +187,7 @@ angular.module('frontEndApp')
           if (params != {}) {
             $scope.$apply(function () {
               giveWinner();//TODO
-              $scope.winnerName="Pierre";// TODO TOCHANGE 
+              $scope.winnerName="Pierre";// TODO TOCHANGE
               $scope.current3DPage="views/endPage.html";
               $scope.currentPage="endPageContainer";
             });
