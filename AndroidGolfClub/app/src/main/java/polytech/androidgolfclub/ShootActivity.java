@@ -118,7 +118,7 @@ public class ShootActivity extends AppCompatActivity {
                             Log.i("TOUCH", "TOUCH DOWN !");
 
                             // launch the event that the player is ready (touch down)
-                            if (socket.connected()){
+                            if (socket.connected()) {
 
                                 Log.i("socketio", "emit event ready");
                                 socket.emit("ready", new JSONObject());
@@ -152,7 +152,7 @@ public class ShootActivity extends AppCompatActivity {
 
                             // tir effectué
                             // send datas to server
-                            if (!shootCanceled){ // check if the shoot has been canceled
+                            if (!shootCanceled) { // check if the shoot has been canceled
                                 sendShoot();
                             }
 
@@ -185,7 +185,7 @@ public class ShootActivity extends AppCompatActivity {
     /**
      * Register events
      */
-    private void registerSocketListeners(){
+    private void registerSocketListeners() {
         socket.on("readyResponse", readyResponse);
         socket.on("goResponse", goResponse);
         socket.on("play", play);
@@ -194,14 +194,34 @@ public class ShootActivity extends AppCompatActivity {
     /**
      * Unregister events
      */
-    private void unregisterSocketListeners(){
+    private void unregisterSocketListeners() {
         socket.off("readyResponse", readyResponse);
         socket.off("goResponse", goResponse);
         socket.off("play", play);
     }
 
     /**
-     * Play ball in hole song
+     * Big fzil song
+     */
+    private class PlaySongFailTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootActivity.this, R.raw.fail);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+    }
+
+    /**
+     * Big shoot song
      */
     private class PlaySongShootTask extends AsyncTask<Void, Void, Void> {
 
@@ -215,6 +235,24 @@ public class ShootActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
+            player.start();
+            return null;
+        }
+    }
+
+    /**
+     * Small shoot song
+     */
+    private class PlaySongPutterShootTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootActivity.this, R.raw.shoot_putter);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
             player.start();
             return null;
         }
@@ -235,7 +273,7 @@ public class ShootActivity extends AppCompatActivity {
             String rep = null;
             try {
                 rep = data.getString("response");
-                if ("ok".equals(rep)){
+                if ("ok".equals(rep)) {
                     shootCanceled = false;
                 } else {
                     kinectNotSetError();
@@ -283,7 +321,12 @@ public class ShootActivity extends AppCompatActivity {
 
                             // Great shoot
                             // Play the song
-                            new PlaySongShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            if (Results.getInstance().getForce() < 30) {
+                                // short shoot, it's a putt
+                                new PlaySongPutterShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            } else {
+                                new PlaySongShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
 
                             // shoot accepted
                             // vibration de confirmation
@@ -345,7 +388,7 @@ public class ShootActivity extends AppCompatActivity {
     /**
      * This method is called when there is a connectivy error withe server on socket io
      */
-    private void connectivityError(){
+    private void connectivityError() {
 
         Log.i("GOLF", "CONNECTIVITY ERROR");
         shootCanceled = true;
@@ -355,7 +398,7 @@ public class ShootActivity extends AppCompatActivity {
     /**
      * This method is called when the position of the player is not set by the kinect
      */
-    private void kinectNotSetError(){
+    private void kinectNotSetError() {
 
         Log.i("GOLF", "Position on kinect not set");
         shootCanceled = true;
@@ -364,14 +407,18 @@ public class ShootActivity extends AppCompatActivity {
 
     /**
      * THis medthod is called in case of error during the shoot
+     *
      * @param error the error code you can find in ShootErrorActivity
      */
-    private void shootError(final int error){
+    private void shootError(final int error) {
 
         handler.post(new Runnable() {
 
             @Override
             public void run() {
+
+                // fail song
+                new PlaySongFailTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
 
@@ -399,7 +446,7 @@ public class ShootActivity extends AppCompatActivity {
      * THis medthod is called when a shoot is valid
      * Construct the json to send to the server with the datas of the shoot and send it by socket io
      */
-    private void sendShoot(){
+    private void sendShoot() {
 
         // the object with the datas of the shoot to send
         JSONArray json = new JSONArray();
@@ -409,7 +456,7 @@ public class ShootActivity extends AppCompatActivity {
 
         // construct the json to send
         for (Map.Entry<Long, Float[]> entry : values.entrySet()) {
-            try{
+            try {
                 JSONObject object = new JSONObject();
                 Float[] vals = entry.getValue();
 
@@ -425,7 +472,7 @@ public class ShootActivity extends AppCompatActivity {
         }
 
         // emit the evnt with the datas to the server
-        if (socket.connected()){
+        if (socket.connected()) {
             socket.emit("go", json);
         } else {
             connectivityError();
@@ -441,8 +488,8 @@ public class ShootActivity extends AppCompatActivity {
         @Override
         public void onSensorChanged(SensorEvent event) {
 
-            if (shooting){
-                Long time = Calendar.getInstance().getTimeInMillis()-timeStartShoot;
+            if (shooting) {
+                Long time = Calendar.getInstance().getTimeInMillis() - timeStartShoot;
                 resultShoot.addValue(time, event.values[0], event.values[1], event.values[2]);
             }
         }
@@ -457,72 +504,5 @@ public class ShootActivity extends AppCompatActivity {
     public void onBackPressed() {
         unregisterSocketListeners();
         super.onBackPressed();
-    }
-
-    /**
-     * Used with HTTP REQUESTS
-     *
-     *
-     * Send datas to server task
-     * It also receive the response
-     */
-    @Deprecated
-    private class SendDatasTask extends AsyncTask<String, Void, Double> {
-
-        protected Double doInBackground(String... urls) {
-
-            // Send datas to server
-            return WebMinigolf.go();
-        }
-
-        @Override
-        protected void onPostExecute(Double force) {
-
-            if (force>0){
-
-                // shoot accepted
-                // vibration de confirmation
-                vibrator.vibrate(500);
-
-                resultShoot.setForce(force);
-                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
-
-                Intent i = new Intent(ShootActivity.this, ShootAcceptedActivity.class);
-
-                startActivity(i);
-
-            } else {
-
-
-                // erreur de tir
-                if (force==-3){
-
-                    // connectivity error
-                    Log.i("GOLF", "CONNECTIVITY ERROR");
-                } else if (force == -2) {
-
-                    // server error
-                    Log.i("GOLF", "SERVER ERROR");
-                } else if (force == -1) {
-
-                    // shoot not accepted by the server
-                    Log.i("GOLF", "SHOOT ERROR");
-                }
-
-                vibrator.vibrate(PATTERN_VIBRATOR_ERROR, -1);
-
-                mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                mtextContentView.setText(getResources().getText(R.string.dummy_content_fail));
-
-                Intent i = new Intent(ShootActivity.this, ShootErrorActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putDouble("reason", force);
-                i.putExtras(bundle);
-                startActivity(i);
-
-            }
-
-        }
     }
 }
