@@ -12,7 +12,8 @@ if (BABYLON.Engine.isSupported()) {
  * Function Connect. This function makes the connection with the server.
  **/
 function connect() {
-  socket = io.connect("http://192.168.1.11:3000/ecran");
+  console.log("oui  je rentre dans conect");
+  socket = io.connect("http://192.168.1.5:3000/ecran");
 
   socket.io.on('connect_error', function (err) {
     console.log('Error connecting to server');
@@ -30,11 +31,11 @@ function createScene() {
 
   var engine = new BABYLON.Engine(canvas, true);
   var scene = new BABYLON.Scene(engine);
-  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 1000, new BABYLON.Vector3(0, 0, 0), scene);
+  var camera = new BABYLON.ArcRotateCamera("Camera", 1, 0.8, 1000, new BABYLON.Vector3(0, -5, 0), scene);
 
+//girlwithgolffusion
 
-
-  BABYLON.SceneLoader.Load("", "girl.babylon", engine, function (newScene) {
+  BABYLON.SceneLoader.Load("", "girlwithgolffusion3.babylon", engine, function (newScene) {
     var Scene= newScene;
    // Scene.meshes[1].rotation=new BABYLON.Vector3(3*(Math.PI)/2,0,3*(Math.PI)/2);
 
@@ -44,15 +45,16 @@ function createScene() {
 
       }*/
 
-
     socket.on("direction", function (params) {
-      console.log("je rentre et je reçois: "+ params);
+
       for(var i=0; i<Scene.meshes.length;i++){
 
-        Scene.meshes[i].rotation=new BABYLON.Vector3(3*(Math.PI)/2, 0 , params.direction);
+        Scene.meshes[i].rotation=new BABYLON.Vector3(0, -params.direction -Math.PI/2,0 );
 
       }
     });
+
+
 
     Scene.executeWhenReady(function () {
       Scene.activeCamera.attachControl(canvas);
@@ -63,17 +65,8 @@ function createScene() {
     })
   });
 
-  camera.attachControl(canvas, false);
+  //camera.attachControl(canvas, false);
 
-
-  var light = new BABYLON.SpotLight("spot01", new BABYLON.Vector3(-50, 40, -32),
-    new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-  light.intensity = 108;
-
-  var lightSphere1 = BABYLON.Mesh.CreateSphere("sphere", 10, 2, scene);
-  lightSphere1.position = light.position;
-  lightSphere1.material = new BABYLON.StandardMaterial("light", scene);
-  lightSphere1.material.emissiveColor = new BABYLON.Color3(1, 1, 0);
 
   // The first parameter can be used to specify which mesh to import. Here we import all meshes
   /*BABYLON.SceneLoader.ImportMesh("", "", "girl.babylon", scene, function (newMeshes) {
