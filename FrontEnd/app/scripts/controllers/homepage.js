@@ -26,6 +26,7 @@ angular.module('frontEndApp')
       $scope.iconmenu = false;
       $scope.currentScreen;
 
+      $scope.audio;
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
@@ -77,6 +78,8 @@ angular.module('frontEndApp')
               console.log(data);
               console.log("number of players: ", $scope.nbOfPlayer);
               $scope.players = data;
+
+
               console.log("player 0", $scope.players[0]);
               //$scope.players=data
             },
@@ -140,6 +143,8 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.messageForWaitingFrame = "Waiting for players";
+              $scope.audio = new Audio('sound/waiting_sound.mp3');
+              $scope.audio.play();
             });
           }
         });
@@ -157,7 +162,6 @@ angular.module('frontEndApp')
                 $scope.currentPage = "gameContainer";
               }
               else if($scope.currentScreen==="guide"){
-                console.log("in checking if game starts: currentScreen guide");
                 $scope.current3DPage = "scripts/gameMap/swingGuide.html";
                 $scope.currentPage = "swingGuideContainer";
               }
