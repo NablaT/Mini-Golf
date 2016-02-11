@@ -115,6 +115,26 @@ public class ShootAcceptedActivity extends AppCompatActivity {
     }
 
     /**
+     * Big fail song
+     */
+    private class PlaySongFailTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
+            player = MediaPlayer.create(ShootAcceptedActivity.this, R.raw.fail);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            player.start();
+            return null;
+        }
+    }
+
+    /**
      * Play ball in hole song
      */
     private class PlaySongInHoleTask extends AsyncTask<Void, Void, Void> {
@@ -308,6 +328,8 @@ public class ShootAcceptedActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            // fail song
+                            new PlaySongFailTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                             // disable button because it's somebody else turn
                             btnReshoot.setEnabled(false);

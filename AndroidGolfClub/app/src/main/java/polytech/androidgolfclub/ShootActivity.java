@@ -319,6 +319,12 @@ public class ShootActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            resultShoot.setForce(force);
+
+                            // shoot accepted
+                            // vibration de confirmation
+                            vibrator.vibrate(500);
+
                             // Great shoot
                             // Play the song
                             if (Results.getInstance().getForce()*10 < 30) {
@@ -328,11 +334,6 @@ public class ShootActivity extends AppCompatActivity {
                                 new PlaySongShootTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                             }
 
-                            // shoot accepted
-                            // vibration de confirmation
-                            vibrator.vibrate(500);
-
-                            resultShoot.setForce(force);
                             mContentView.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                             mtextContentView.setText(getResources().getText(R.string.dummy_content_after));
 
