@@ -24,6 +24,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,10 +34,11 @@
             android:label="Rejoindre une partie"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".WaitingStartActivity"
-            android:label="En attente"
+        <activity
+            android:name=".WaitingStartActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
+            android:label="En attente"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivity"
@@ -90,6 +92,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="polytech.androidgolfclub.MainActivity" />
+        </activity>
+        <activity android:name=".SelectClubActivity" >
         </activity>
     </application>
 

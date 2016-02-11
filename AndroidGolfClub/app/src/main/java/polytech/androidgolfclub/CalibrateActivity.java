@@ -87,6 +87,15 @@ public class CalibrateActivity extends AppCompatActivity {
      */
     public void backClick(View view){
 
+        if (calibrating){
+
+            // emit the event to stop the calibration
+            socket.emit("stopCalibration", new JSONObject());
+
+            // display message
+            Toast.makeText(this, getString(R.string.calibration_done), Toast.LENGTH_SHORT).show();
+        }
+
         // unregister event play
         socket.off("play", play);
 

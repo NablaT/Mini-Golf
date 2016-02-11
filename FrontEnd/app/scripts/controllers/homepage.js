@@ -158,8 +158,8 @@ angular.module('frontEndApp')
               }
               else if($scope.currentScreen==="guide"){
                 console.log("in checking if game starts: currentScreen guide");
-                $scope.current3DPage = "scripts/GameMap/swingGuide.html";
-                $scope.currentPage = "guideContainer";
+                $scope.current3DPage = "scripts/gameMap/swingGuide.html";
+                $scope.currentPage = "swingGuideContainer";
               }
               else{
                 updateScore();
