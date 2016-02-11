@@ -104,8 +104,8 @@ class Map {
      */
     setPositionBall (distance, angle, callbackInHole, callbackOutOfMap) {
 
-        this.ballPosition.latitude += parseInt(Math.cos(Map.toRadians(angle)) * distance, 10);
-        this.ballPosition.longitude += parseInt(Math.sin(Map.toRadians(angle)) * distance, 10);
+        this.ballPosition.latitude -= parseInt(Math.sin(Map.toRadians(angle)) * distance, 10);
+        this.ballPosition.longitude += parseInt(Math.cos(Map.toRadians(angle)) * distance, 10);
 
         this.check(callbackInHole, callbackOutOfMap);
     }
