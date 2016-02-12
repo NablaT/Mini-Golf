@@ -13,7 +13,7 @@ if (BABYLON.Engine.isSupported()) {
  **/
 function connect() {
   console.log("oui  je rentre dans conect");
-  socket = io.connect("http://192.168.1.5:3000/ecran");
+  socket = io.connect("http://192.168.1.6:3000/ecran");
 
   socket.io.on('connect_error', function (err) {
     console.log('Error connecting to server');
