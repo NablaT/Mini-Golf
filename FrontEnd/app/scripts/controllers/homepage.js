@@ -14,11 +14,9 @@ angular.module('frontEndApp')
     function ($scope, services, position, $location, $controller, $timeout, constants,makeSound) {
 
       // The id of the current page.
-     // $scope.currentPage = "menu"; //menu
-     // $scope.current3DPage = "scripts/gameMap/homeEnvironment.html"; //scripts/gameMap/homeEnvironment.html
-
-      $scope.current3DPage="views/endPage.html";
-      $scope.currentPage="endPageContainer";
+      $scope.currentPage = "menu"; //menu
+      $scope.current3DPage = "scripts/gameMap/homeEnvironment.html"; //scripts/gameMap/homeEnvironment.html
+      
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
