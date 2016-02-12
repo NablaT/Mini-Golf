@@ -189,10 +189,11 @@ angular.module('frontEndApp')
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
-              giveWinner();//TODO
-              $scope.winnerName="Pierre";// TODO TOCHANGE
+              //giveWinner();//TODO
+              //$scope.winnerName="Pierre";// TODO TOCHANGE
               $scope.current3DPage="views/endPage.html";
-              $scope.currentPage="endPageContainer";
+              $scope.currentPage="";
+              //$scope.currentPage="endPageContainer";
             });
           }
         });
