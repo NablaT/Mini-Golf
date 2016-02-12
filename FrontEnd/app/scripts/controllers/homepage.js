@@ -14,8 +14,11 @@ angular.module('frontEndApp')
     function ($scope, services, position, $location, $controller, $timeout, constants,makeSound) {
 
       // The id of the current page.
-      $scope.currentPage = "menu"; //menu
-      $scope.current3DPage = "scripts/gameMap/homeEnvironment.html"; //scripts/gameMap/homeEnvironment.html
+     // $scope.currentPage = "menu"; //menu
+     // $scope.current3DPage = "scripts/gameMap/homeEnvironment.html"; //scripts/gameMap/homeEnvironment.html
+
+      $scope.current3DPage="views/endPage.html";
+      $scope.currentPage="endPageContainer";
       $scope.controllerPage = "HomepageCtrl";
       $scope.nbOfPlayer = 1;
       $scope.players;
@@ -29,6 +32,7 @@ angular.module('frontEndApp')
       $scope.audio;
       $scope.winnerName="";
 
+      //giveWinner();
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
@@ -150,6 +154,7 @@ angular.module('frontEndApp')
             $scope.$apply(function () {
               $scope.messageForWaitingFrame = "En attente des joueurs";
 
+
               makeSound.setSong("sound/waiting_song.mp3");
               makeSound.playSong();
             });
@@ -189,11 +194,12 @@ angular.module('frontEndApp')
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
-              //giveWinner();//TODO
+              giveWinner();//TODO
               //$scope.winnerName="Pierre";// TODO TOCHANGE
-              $scope.current3DPage="views/endPage.html";
-              $scope.currentPage="";
-              //$scope.currentPage="endPageContainer";
+              if($scope.currentScreen==="game"){
+                $scope.current3DPage="views/endPage.html";
+                $scope.currentPage="endPageContainer";
+              }
             });
           }
         });
@@ -277,20 +283,16 @@ angular.module('frontEndApp')
         $scope.currentPage = "scores";
       }
 
-     /* function giveWinner(){
+      function giveWinner(){
         var maxScore=0;
-        var playerList= new [];
+       // var playerList= new Array();
+        var playerName;
         for(var i=0; i<$scope.players;i++){
           if(maxScore<$scope.players[i]._score){
-            playerList.put($scope.player[i]._playerName);
+            //playerList.add($scope.player[i]._playerName);
+            playerName=$scope.player[i]._playerName;
             maxScore=$scope.player[i]._score;
           }
-          else if(maxScore>$scope.players[i]._score){
-            playerList= new[];
-          }
-          else{
-
-          }
         }
-      }*/
+      }
     }]);
