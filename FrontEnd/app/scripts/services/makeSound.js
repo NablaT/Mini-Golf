@@ -45,7 +45,7 @@ angular.module('frontEndApp')
       },
 
       stopSong:function(){
-        audio.stop();
+        //audio.stop();
       }
     };
   });
