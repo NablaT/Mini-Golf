@@ -21,10 +21,10 @@ function createScene(){
 
   // Setup environment
   var camera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 0, 1.5, 20,
-    new BABYLON.Vector3(0, 0, 0), scene);
+    new BABYLON.Vector3(0, -3, 0), scene);
   camera.attachControl(canvas, true);
 
-  //camera.setPosition(new BABYLON.Vector3(25, -10, 0));
+  //camera.setPosition(new BABYLON.Vector3(0, 0, 0));
 
   var fountain = initialisationFountain(scene);
 

@@ -10,8 +10,8 @@
 angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$rootScope', 'services',
     'position', '$location', '$controller', '$timeout',
-    'constants',
-    function ($scope, services, position, $location, $controller, $timeout, constants) {
+    'constants', 'makeSound',
+    function ($scope, services, position, $location, $controller, $timeout, constants,makeSound) {
 
       // The id of the current page.
       $scope.currentPage = "menu"; //menu
@@ -20,17 +20,21 @@ angular.module('frontEndApp')
       $scope.nbOfPlayer = 1;
       $scope.players;
 
-      $scope.messageForWaitingFrame = "Waiting for the game to starts";
+      $scope.messageForWaitingFrame = "En attente que le jeu se lance";
       $scope.saveCurrentPlayer = "";
       $scope.socket;
       $scope.iconmenu = false;
       $scope.currentScreen;
+
+      $scope.audio;
+      $scope.winnerName="";
 
       connect();
       getBackPlayer();
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
       checkingIfGameStops();
+
 
       /**
        * Function updateHomePage. This function updates the home page.
@@ -40,7 +44,7 @@ angular.module('frontEndApp')
         if (!(path3DEnvironement === '')) {
           $scope.current3DPage = path3DEnvironement;
         }
-        $scope.messageForWaitingFrame = "Waiting until the game starts";
+        $scope.messageForWaitingFrame = "En attente que le jeu se lance";
         $scope.saveCurrentPlayer = "";
         $scope.iconmenu = false;
       }
@@ -71,12 +75,14 @@ angular.module('frontEndApp')
           //player.setNbPlayer($scope.nbOfPlayer);
           //services.postGameIsRunning(true);
           $scope.currentPage = "waitingFrame";
-          $scope.messageForWaitingFrame = "Waiting for players ...";
+          $scope.messageForWaitingFrame = "En attente des joueurs ...";
           services.postNumberOfPlayer($scope.nbOfPlayer).then(
             function (data) {
               console.log(data);
               console.log("number of players: ", $scope.nbOfPlayer);
               $scope.players = data;
+
+
               console.log("player 0", $scope.players[0]);
               //$scope.players=data
             },
@@ -136,10 +142,16 @@ angular.module('frontEndApp')
        * Function checkingMessageForWaitingFrame. This function is always checking the status of the game.
        */
       function checkingMessageForWaitingFrame(){
+        console.log("je rentre dans checking for waiting frame");
+        /*$scope.audio = new Audio('sound/waiting_sound.mp3');
+        $scope.audio.play();*/
         $scope.socket.on("waitingForPlayers", function (params) {
           if (params !== {}) {
             $scope.$apply(function () {
-              $scope.messageForWaitingFrame = "Waiting for players";
+              $scope.messageForWaitingFrame = "En attente des joueurs";
+
+              makeSound.setSong("sound/waiting_song.mp3");
+              makeSound.playSong();
             });
           }
         });
@@ -152,12 +164,12 @@ angular.module('frontEndApp')
         $scope.socket.on("gameStart", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
+              makeSound.stopSong();
               if($scope.currentScreen==="game"){
                 $scope.current3DPage = "scripts/GameMap/index.html";
                 $scope.currentPage = "gameContainer";
               }
               else if($scope.currentScreen==="guide"){
-                console.log("in checking if game starts: currentScreen guide");
                 $scope.current3DPage = "scripts/gameMap/swingGuide.html";
                 $scope.currentPage = "swingGuideContainer";
               }
@@ -177,8 +189,10 @@ angular.module('frontEndApp')
         $scope.socket.on("endGame", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
+              giveWinner();//TODO
+              $scope.winnerName="Pierre";// TODO TOCHANGE
               $scope.current3DPage="views/endPage.html";
-              $scope.currentPage="";
+              $scope.currentPage="endPageContainer";
             });
           }
         });
@@ -261,4 +275,21 @@ angular.module('frontEndApp')
       function updateScore() {
         $scope.currentPage = "scores";
       }
+
+     /* function giveWinner(){
+        var maxScore=0;
+        var playerList= new [];
+        for(var i=0; i<$scope.players;i++){
+          if(maxScore<$scope.players[i]._score){
+            playerList.put($scope.player[i]._playerName);
+            maxScore=$scope.player[i]._score;
+          }
+          else if(maxScore>$scope.players[i]._score){
+            playerList= new[];
+          }
+          else{
+
+          }
+        }
+      }*/
     }]);

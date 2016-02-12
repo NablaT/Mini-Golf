@@ -39,7 +39,7 @@ var getGolf = function () {
  */
 var initGame = function (numberPlayer) {
     // HDMI
-    golf = new Golf(numberPlayer, new Map(269, 226, new Position(54, 214), new Position(211, 63), 16, 10));
+    golf = new Golf(numberPlayer, new Map(269, 226, new Position(36, 31), new Position(209, 206), 40, 10));
     getGolf().map.toString();
     screen.emit('waitingForPlayers', {});
 };
@@ -282,7 +282,7 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
     // This timeout is to handle the fact that the new position of the sphero is sent 5 secondes later.
     setTimeout(function () {
         callback(sphero.getDist());
-    }, 5000);
+    }, 4500);
 
     getPlayerToPlay().score += 1; // TODO Improve this 2 lines
     getPlayerToPlay();
@@ -291,7 +291,7 @@ var go = function (strikeForce, callbackChangeOfPlayer, callbackEndOfGame, callb
     // This timeout is to handle the fact that there are timeout for the rest.
     setTimeout(function () {
         getGolf().map.toString()
-    }, 6000);
+    }, 5000);
 };
 
 module.exports = {
