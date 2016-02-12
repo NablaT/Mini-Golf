@@ -10,8 +10,8 @@
 angular.module('frontEndApp')
   .controller('HomepageCtrl', ['$rootScope', 'services',
     'position', '$location', '$controller', '$timeout',
-    'constants',
-    function ($scope, services, position, $location, $controller, $timeout, constants) {
+    'constants', 'makeSound',
+    function ($scope, services, position, $location, $controller, $timeout, constants,makeSound) {
 
       // The id of the current page.
       $scope.currentPage = "menu"; //menu
@@ -26,7 +26,7 @@ angular.module('frontEndApp')
       $scope.iconmenu = false;
       $scope.currentScreen;
 
-      $scope.audio= new Audio('');
+      $scope.audio;
       $scope.winnerName="";
 
       connect();
@@ -34,6 +34,7 @@ angular.module('frontEndApp')
       checkingMessageForWaitingFrame();
       checkingIfGameStarts();
       checkingIfGameStops();
+
 
       /**
        * Function updateHomePage. This function updates the home page.
@@ -148,8 +149,9 @@ angular.module('frontEndApp')
           if (params !== {}) {
             $scope.$apply(function () {
               $scope.messageForWaitingFrame = "En attente des joueurs";
-              $scope.audio = new Audio('sound/waiting_sound.mp3');
-              $scope.audio.play();
+
+              makeSound.setSong("sound/waiting_song.mp3");
+              makeSound.playSong();
             });
           }
         });
@@ -162,6 +164,7 @@ angular.module('frontEndApp')
         $scope.socket.on("gameStart", function (params) {
           if (params != {}) {
             $scope.$apply(function () {
+              makeSound.stopSong();
               if($scope.currentScreen==="game"){
                 $scope.current3DPage = "scripts/GameMap/index.html";
                 $scope.currentPage = "gameContainer";
