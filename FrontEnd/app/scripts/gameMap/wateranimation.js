@@ -115,6 +115,52 @@ function createGolfHole(scene) {
 
   holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
   hole.material = holeMaterial;
+  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
+  var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
+  hole.position = new BABYLON.Vector3(-50, 7.9, -330);
+  hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
+  var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
+  hole.position = new BABYLON.Vector3(-130, 7.9, -320);
+  hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
+  var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
+  hole.position = new BABYLON.Vector3(0, 7.9, -470);
+  hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
+  var hole = BABYLON.Mesh.CreateCylinder("cylinder", 3, 90, 10, 6, 1, scene, false);// 15,15,
+  var holeMaterial = new BABYLON.StandardMaterial("cylinder", scene);
+  hole.position = new BABYLON.Vector3(0, 7.9, -550);
+  hole.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  hole.diffuseColor = new BABYLON.Color3(0, 0, 0);
+
+
+  holeMaterial.diffuseTexture = new BABYLON.Texture("textures/hole.png", scene);
+  hole.material = holeMaterial;
   return hole;
 }
 
