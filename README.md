@@ -8,7 +8,7 @@ You can see in this git repository several folders with specific functionality:
 - AndroidGolfClub : Contains the program for the smartphone application.
 - BackEnd: Contains the server program.
 - FrontEnd: Contains the program for all the touch screens and the game track interface.
-- Sphero: Contains the program for the Sphero
+- Sphero: Contains the little server for the sphero
 - kinect: Contains the program for the Kinect
 
 In each folder you will find a README.md with instructions to install everything needed to run the application.
