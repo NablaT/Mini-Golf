@@ -64,29 +64,3 @@ Running `grunt test` will run the unit tests with karma.
 ## Deploy
 
 Running `grunt deploy` will deploy the folder dist into the web.
-
-
-{
-  "bitwise": true,
-  "browser": true,
-  "curly": true,
-  "eqeqeq": true,
-  "esnext": true,
-  "latedef": true,
-  "noarg": true,
-  "node": true,
-  "strict": true,
-  "undef": true,
-  "unused": true,
-  "globals": {
-    "angular": false
-  }
-}
-
-
-{
-  "requireCamelCaseOrUpperCaseIdentifiers": true,
-  "requireCapitalizedConstructors": true,
-  "requireParenthesesAroundIIFE": true,
-  "validateQuoteMarks": "'"
-}
