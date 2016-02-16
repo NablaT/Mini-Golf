@@ -1,1 +1,1 @@
-# Mini-Golf - Android Golf Club
+# Android Golf Club - MINI-GOLF 

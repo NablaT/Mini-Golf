@@ -1,7 +1,9 @@
-# front-end
+# Front-end - MINI-GOLF
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.14.0.
+The Front-End has been developed with AngularJS. You can find the standard structure of an angular project with the folder app which contains views, styles and scripts. 
+However, in the folder script you can find an additional repository called gameMap. This folder contains all 3D environment used in this project. 
 
 ## Needed tools
 
